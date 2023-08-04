@@ -1,0 +1,42 @@
+{
+  "theme": {
+    "front": {
+      "bg": "bg-primary text-white",
+      "card": "bg-primary no-shadow"
+    },
+    "header": "bg-primary text-white",
+    "footer": "bg-grey-8 text-white"
+  },
+  "lock": {
+    "enabled": true,
+    "shuffle": false
+  },
+  "links": [
+    {
+      "title": "main.docs",
+      "caption": "amberdoc.obiba.org",
+      "icon": "school",
+      "link": "https://amberdoc.obiba.org/en/latest/visit-user-guide/"
+    },
+    {
+      "title": "main.forum",
+      "caption": "forum.obiba.org",
+      "icon": "record_voice_over",
+      "link": "https://forum.obiba.org"
+    }
+  ],
+  "i18n": {
+    "en": {
+      "locales": {
+        "en": "English",
+        "fr": "français"
+      }
+    },
+    "fr": {
+      "locales": {
+        "en": "English",
+        "fr": "français"
+      }
+    }
+  }
+}

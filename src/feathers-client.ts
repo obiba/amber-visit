@@ -1,0 +1,35 @@
+import { createPiniaClient } from "feathers-pinia";
+import { pinia } from "./modules/pinia";
+import rest from "@feathersjs/rest-client";
+import { axios } from "./boot/axios";
+import feathers from "@feathersjs/feathers";
+import auth from "@feathersjs/authentication-client";
+import { iff, discard } from "feathers-hooks-common";
+
+const restClient = rest(process.env.API);
+
+export const feathersClient = feathers()
+  .configure(restClient.axios(axios))
+  .configure(auth({ storage: window.localStorage }))
+  .hooks({
+    before: {
+      all: [
+        iff(
+          (context) => ["create", "update", "patch"].includes(context.method),
+          discard("__id", "__isTemp", "__v")
+        ),
+      ],
+    },
+    after: {
+      all: [
+        // context => console.debug(context)
+      ],
+    },
+  });
+
+export const api = createPiniaClient(feathersClient, {
+  pinia,
+  idField: "id",
+  whitelist: ["$regex"],
+  paramsForServer: [],
+});
