@@ -5,7 +5,6 @@ export default {
   main: {
     brand: "Amber Visit",
     brand_caption: "Participant interview system",
-    home: "Home",
     logout: "Sign out",
     docs: "Docs",
     forum: "Forum",
@@ -13,7 +12,7 @@ export default {
     code: "Participant code",
   },
   login: {
-    user_title: "Enter your user credentials",
+    user_title: "",
     as_user: "I am an investigator",
     submit: "Submit",
     participant_title: "",

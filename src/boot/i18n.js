@@ -20,9 +20,9 @@ const i18n = createI18n({
 });
 const t = i18n.global.t;
 
-export default boot(({ app }) => {
+export default ({ app }) => {
   // Set i18n instance on app
   app.use(i18n);
-});
+};
 
 export { i18n, t, locales };
