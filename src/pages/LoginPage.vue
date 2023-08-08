@@ -18,51 +18,153 @@
           <div class="col">
             <q-card :class="settings.theme.front.card">
               <q-card-section v-if="strategy === 'local'">
-                <div class="text-center q-pt-sm">
-                  <div class="col text-subtitle">
-                    {{ $t("login.user_title") }}
+                <q-card-section v-show="!withToken">
+                  <div class="text-center q-pt-sm">
+                    <div class="col text-subtitle">
+                      {{ $t("login.user_title") }}
+                    </div>
                   </div>
-                </div>
+                  <q-form @submit="onSubmit" class="q-gutter-md">
+                    <q-input
+                      dark
+                      color="white"
+                      v-model="email"
+                      :label="$t('login.email')"
+                      lazy-rules
+                    >
+                      <template v-slot:prepend>
+                        <q-icon name="fas fa-envelope" size="xs" />
+                      </template>
+                    </q-input>
+
+                    <q-input
+                      type="password"
+                      dark
+                      color="white"
+                      v-model="password"
+                      :label="$t('login.password')"
+                      lazy-rules
+                    >
+                      <template v-slot:prepend>
+                        <q-icon name="fas fa-lock" size="xs" />
+                      </template>
+                    </q-input>
+
+                    <div>
+                      <q-btn
+                        :label="$t('login.submit')"
+                        type="submit"
+                        color="secondary"
+                        :disable="disableSubmit"
+                      />
+                    </div>
+                  </q-form>
+                </q-card-section>
+                <q-card-section v-show="secret">
+                  <div class="col text-subtitle">
+                    {{ $t("login.totp") }}
+                  </div>
+                  <div class="text-center q-mt-md">
+                    <img :src="qr" />
+                  </div>
+                  <div class="col text-subtitle q-mt-md">
+                    {{ $t("login.totp_secret") }}
+                  </div>
+                  <q-input dark dense color="white" v-model="secret" readonly>
+                    <template v-slot:after>
+                      <q-btn
+                        round
+                        dense
+                        flat
+                        icon="content_copy"
+                        @click="onCopySecret"
+                      />
+                    </template>
+                  </q-input>
+                </q-card-section>
+                <q-card-section v-show="withToken">
+                  <q-form @submit="onSubmit" class="q-gutter-md">
+                    <q-input
+                      type="number"
+                      dark
+                      color="white"
+                      v-model="token"
+                      :label="$t('login.token')"
+                      lazy-rules
+                      class="no-spinner"
+                    >
+                      <template v-slot:prepend>
+                        <q-icon name="fas fa-mobile" size="xs" />
+                      </template>
+                    </q-input>
+                    <div>
+                      <q-btn
+                        :label="$t('login.validate')"
+                        type="submit"
+                        color="secondary"
+                        :disable="disableValidate"
+                      />
+                      <q-btn
+                        :label="$t('cancel')"
+                        @click="onCancelToken"
+                        flat
+                        stretch
+                        class="text-bold q-ml-md"
+                      />
+                    </div>
+                  </q-form>
+                </q-card-section>
               </q-card-section>
-              <q-card-section v-if="strategy === 'api-key'">
+              <q-card-section v-if="strategy === 'participant'">
                 <div class="text-center q-pt-sm">
                   <div class="col text-subtitle">
                     {{ $t("login.participant_title") }}
                   </div>
                 </div>
-                <q-form @submit="onSubmit" class="q-gutter-md">
+                <q-form
+                  @submit="onSubmit"
+                  class="q-gutter-md"
+                  autocomplete="off"
+                >
                   <q-input
+                    v-show="!withPassword"
+                    autocomplete="new-password"
                     dark
                     color="white"
                     v-model="code"
                     :label="$t('login.code')"
-                    lazy-rules
-                    class="no-spinner"
+                    mask="XXXXXX"
                   >
                     <template v-slot:prepend>
                       <q-icon name="fas fa-mobile" size="xs" />
                     </template>
                   </q-input>
+                  <q-input
+                    v-show="withPassword"
+                    type="password"
+                    autocomplete="new-password"
+                    dark
+                    color="white"
+                    v-model="password"
+                    :label="$t('login.participant_password')"
+                  >
+                    <template v-slot:prepend>
+                      <q-icon name="fas fa-key" size="xs" />
+                    </template>
+                  </q-input>
                   <div>
                     <q-btn
-                      :label="$t('login.validate')"
+                      :label="$t('login.enter')"
                       type="submit"
-                      color="dark"
-                      :disable="disableValidate"
-                    />
-                    <q-btn
-                      :label="$t('cancel')"
-                      @click="onCancelCode"
-                      flat
-                      stretch
-                      class="text-bold q-ml-md"
+                      color="secondary"
+                      :disable="disableEnter"
                     />
                   </div>
                 </q-form>
               </q-card-section>
               <q-card-section>
                 <q-btn
-                  v-if="strategy === 'api-key'"
+                  v-if="strategy === 'participant'"
                   flat
                   dense
                   no-caps
@@ -77,7 +179,7 @@
                   dense
                   no-caps
                   class="text-bold"
-                  @click="toStrategy('api-key')"
+                  @click="toStrategy('participant')"
                 >
                   {{ $t("login.as_participant") }}
                 </q-btn>
@@ -114,12 +216,11 @@
 </template>
 
 <script>
-import { useI18n } from "vue-i18n";
 import { defineComponent, ref } from "vue";
 import AppBanner from "src/components/AppBanner.vue";
 import { locales } from "../boot/i18n";
 import { settings } from "../boot/settings";
-import { useQuasar } from "quasar";
+import { Notify, copyToClipboard } from "quasar";
 
 export default defineComponent({
   name: "LoginPage",
@@ -127,29 +228,28 @@ export default defineComponent({
     AppBanner,
   },
   setup() {
-    const { api } = useFeathers();
-    const User = api.service("user");
     const authStore = useAuthStore();
-
-    const $q = useQuasar();
+    const { api } = useFeathers();
+    const interviewDesignService = api.service("itwd");
+    const itwStore = useInterviewStore();
     const { locale } = useI18n({ useScope: "global" });
 
     return {
       locale,
       settings,
       authStore,
-      code: ref(""),
+      interviewDesignService,
+      itwStore,
       email: ref(""),
       token: ref(""),
       secret: ref(""),
       password: ref(""),
-      strategy: ref("api-key"),
+      qr: ref(""),
+      withToken: ref(false),
+      strategy: ref("participant"),
+      code: ref(""),
+      withPassword: ref(false),
     };
-  },
-  watch: {
-    code() {
-      this.code = this.code.toUpperCase();
-    },
   },
   computed: {
     localeOptions() {
@@ -163,8 +263,17 @@ export default defineComponent({
     hasLocales() {
       return locales.length > 1;
     },
+    disableEnter() {
+      return (
+        this.code.length !== 6 ||
+        (this.withPassword && this.password.length < 8)
+      );
+    },
+    disableSubmit() {
+      return this.email.length === 0 || this.password.length === 0;
+    },
     disableValidate() {
-      return this.code.length !== 6;
+      return this.token.length < 6;
     },
   },
   methods: {
@@ -173,32 +282,118 @@ export default defineComponent({
     },
     toStrategy(strategy) {
       this.strategy = strategy;
+      this.withPassword = false;
+      this.withToken = false;
+      this.code = "";
+      this.password = "";
+      this.email = "";
+      this.secret = "";
+      this.token = "";
     },
     makePayload() {
       const payload = {
-        strategy: this.strategy,
+        strategy: "local",
       };
-      if (this.strategy === "local") {
-        payload.email = this.email;
-        payload.password = this.password;
-        if (this.token && this.token.length > 0) {
-          payload.token = this.token;
-        }
-        if (this.secret && this.secret.length > 0) {
-          payload.secret = this.secret;
-        }
-      } else {
-        payload.code = this.code;
+      payload.email = this.email;
+      payload.password = this.password;
+      if (this.token && this.token.length > 0) {
+        payload.token = this.token;
+      }
+      if (this.secret && this.secret.length > 0) {
+        payload.secret = this.secret;
       }
       return payload;
     },
-    onSubmit() {
-      const payload = this.makePayload();
-      this.authStore.clearError();
-      this.authStore.authenticate(payload);
+    onCopySecret() {
+      copyToClipboard(this.secret).then(() => {
+        Notify.create({
+          message: this.$t("login.secret_copied"),
+          color: "positive",
+        });
+      });
     },
-    onCancelCode() {
-      this.code = "";
+    onCancelToken() {
+      this.withToken = false;
+    },
+    onCancelPassword() {
+      this.withPassword = false;
+    },
+    onSubmit() {
+      if (this.strategy === "local") {
+        const payload = this.makePayload();
+        this.authStore.clearError();
+        this.authStore
+          .authenticate(payload)
+          .then((response) => {
+            if (response.data && response.data.qr && response.data.secret) {
+              // 2FA is enabled for that user
+              this.qr = response.data.qr;
+              this.secret = response.data.secret;
+              this.withToken = true;
+            } else {
+              this.redirect();
+            }
+          })
+          .catch((err) => {
+            const type = err.className;
+            if (
+              type === "bad-request" &&
+              err.message.startsWith("Token required")
+            ) {
+              this.withToken = true;
+            } else if (
+              type === "bad-request" &&
+              err.message.startsWith("Invalid token")
+            ) {
+              Notify.create({
+                message: this.$t("login.failed_token"),
+                color: "negative",
+              });
+              this.token = "";
+            } else {
+              Notify.create({
+                message: this.$t("login.failed"),
+                color: "negative",
+              });
+            }
+          });
+      } else {
+        const credentials = btoa(
+          this.withPassword ? `${this.code}:${this.password}` : this.code
+        );
+        this.interviewDesignService
+          .find({
+            query: {},
+            headers: { Authorization: `Participant ${credentials}` },
+          })
+          .then((response) => {
+            this.itwStore.$patch({
+              design: response.data[0],
+              cred: credentials,
+            });
+            this.redirect();
+          })
+          .catch((err) => {
+            const type = err.className;
+            if (
+              type === "not-authenticated" &&
+              err.message.startsWith("A participant password is required")
+            ) {
+              this.withPassword = true;
+            } else {
+              console.error(err);
+              Notify.create({
+                message: this.$t("login.participant_failed"),
+                color: "negative",
+              });
+            }
+          });
+      }
+    },
+    redirect() {
+      const redirectTo = this.authStore.loginRedirect || "/";
+      this.authStore.loginRedirect = null;
+      this.$router.push(redirectTo);
     },
   },
 });

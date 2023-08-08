@@ -5,5 +5,6 @@ export default {
   main: {
     brand: "Amber Visit",
     brand_caption: "Entrevues de participants",
+    home: "Accueil",
   },
 };

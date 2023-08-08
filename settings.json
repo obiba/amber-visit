@@ -1,11 +1,13 @@
 {
   "theme": {
     "front": {
-      "bg": "bg-primary text-white",
-      "card": "bg-primary no-shadow"
+      "bg": "bg-brand text-white",
+      "card": "bg-dark no-shadow"
     },
-    "header": "bg-primary text-white",
-    "footer": "bg-grey-8 text-white"
+    "header": "bg-dark text-white",
+    "footer": "bg-grey-8 text-white",
+    "drawer": "bg-grey-4 text-secondary",
+    "page": "bg-grey-2"
   },
   "lock": {
     "enabled": true,

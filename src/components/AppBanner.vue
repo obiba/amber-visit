@@ -1,11 +1,7 @@
 <template>
   <div>
     <div class="col text-center">
-      <img
-        alt="Quasar logo"
-        src="~assets/quasar-logo-vertical.svg"
-        style="width: 100px; height: 100px"
-      />
+      <img src="icons/apple-icon-72x72.png" />
     </div>
     <div class="colcol text-center q-mb-lg">
       <div class="text-h6">

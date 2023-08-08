@@ -304,6 +304,7 @@
     "watchWithFilter": true,
     "whenever": true,
     "useFeathers": true,
-    "useFeathersService": true
+    "useFeathersService": true,
+    "useInterviewStore": true
   }
 }

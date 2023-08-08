@@ -29,7 +29,8 @@ export const feathersClient = feathers()
 
 export const api = createPiniaClient(feathersClient, {
   pinia,
-  idField: "id",
+  storage: window.localStorage,
+  idField: "_id",
   whitelist: ["$regex"],
   paramsForServer: [],
 });
