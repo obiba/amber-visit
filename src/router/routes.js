@@ -5,6 +5,11 @@ const routes = [
     children: [{ path: "", component: () => import("pages/HomePage.vue") }],
   },
   {
+    path: "/step/:id",
+    component: () => import("src/pages/InterviewStep.vue"),
+    meta: { requiresAuth: true },
+  },
+  {
     path: "/login",
     component: () => import("pages/LoginPage.vue"),
   },

@@ -31,6 +31,50 @@
   dependencies:
     regenerator-runtime "^0.13.11"
 
+"@blitzar/form@https://gitpkg.now.sh/obiba/blitzar/packages/form?v1.0.7-obiba":
+  version "1.0.7"
+  resolved "https://gitpkg.now.sh/obiba/blitzar/packages/form?v1.0.7-obiba#15c6153e04fb9ea7bc6f60b8c01ce4a2c068efef"
+  dependencies:
+    "@blitzar/types" "^1.0.7"
+    "@blitzar/utils" "^1.0.7"
+    case-anything "^2.1.2"
+    copy-anything "^2.0.3"
+    filter-anything "^2.2.1"
+    is-what "^3.14.1"
+    map-anything "^1.0.4"
+    merge-anything "^4.0.2"
+    nestify-anything "^1.0.3"
+    snarkdown "^2.0.0"
+
+"@blitzar/types@^1.0.7", "@blitzar/types@^1.2.4":
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/@blitzar/types/-/types-1.2.4.tgz#dbe732e034510b7459acb26f9c8105f57e8adebe"
+  integrity sha512-uLFfwxfvzl/2BbQfM9y66NyaGYtXbgxnQqUPMcUmyoimsz4pvTEuJ6hnIpnhYOLYhC8qPL845hq8HBrU33PfqA==
+  dependencies:
+    ts-toolbelt "^9.6.0"
+
+"@blitzar/types@https://gitpkg.now.sh/obiba/blitzar/packages/types?v1.0.7-obiba":
+  version "1.0.7"
+  resolved "https://gitpkg.now.sh/obiba/blitzar/packages/types?v1.0.7-obiba#80d3ff6a6c9b795bd39306cdb6f243d0f63f90c4"
+
+"@blitzar/utils@^1.0.7":
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/@blitzar/utils/-/utils-1.2.4.tgz#c627b9c90d785c03aa6bfcce444a92d459515e2d"
+  integrity sha512-NpO7Hvw08VsF/dYDFkWkwg2iUW4MjdOSGlaV9t+Ar1KE1RrU0AKSFNntzsQWTp6NcpbH0S+b4w2whNS0X567mQ==
+  dependencies:
+    "@blitzar/types" "^1.2.4"
+    commafy-anything "^2.1.2"
+    flatten-anything "^2.0.7"
+    is-what "^4.1.7"
+
+"@blitzar/utils@https://gitpkg.now.sh/obiba/blitzar/packages/utils?v1.0.7-obiba":
+  version "1.0.7"
+  resolved "https://gitpkg.now.sh/obiba/blitzar/packages/utils?v1.0.7-obiba#5a1a54681cc8e2049d5fd7f3402d772bc15162c9"
+  dependencies:
+    commafy-anything "^2.1.0"
+    flatten-anything "^2.0.4"
+    is-what "^3.14.1"
+
 "@esbuild/linux-loong64@0.14.54":
   version "0.14.54"
   resolved "https://registry.yarnpkg.com/@esbuild/linux-loong64/-/linux-loong64-0.14.54.tgz#de2a4be678bd4d0d1ffbb86e6de779cde5999028"
@@ -1177,6 +1221,11 @@ canvg@^3.0.6:
     stackblur-canvas "^2.0.0"
     svg-pathdata "^6.0.3"
 
+case-anything@^2.1.2:
+  version "2.1.13"
+  resolved "https://registry.yarnpkg.com/case-anything/-/case-anything-2.1.13.tgz#0cdc16278cb29a7fcdeb072400da3f342ba329e9"
+  integrity sha512-zlOQ80VrQ2Ue+ymH5OuM/DlDq64mEm+B9UTdHULv5osUMD6HalNTblf2b1u/m6QecjsnOkBpqVZ+XPwIVsy7Ng==
+
 chalk@^4.0.0, chalk@^4.1.0, chalk@^4.1.1:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/chalk/-/chalk-4.1.2.tgz#aac4e2b7734a740867aeb16bf02aad556a1e7a01"
@@ -1286,6 +1335,11 @@ combined-stream@^1.0.8:
   dependencies:
     delayed-stream "~1.0.0"
 
+commafy-anything@^2.1.0, commafy-anything@^2.1.2:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/commafy-anything/-/commafy-anything-2.1.2.tgz#67f3eeaf6e983b8a793dc791a839d0ed3a4839be"
+  integrity sha512-10EDlgJRsQKhQ0f07+3t3Noi89JTcwURAU3G+/mDzpZcIYeIIk84eLiukYc2/OJiiXeY1PWVl4qEn8HbP1v2rw==
+
 commander@^2.19.0:
   version "2.20.3"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.20.3.tgz#fd485e84c03eb4881c20722ba48035e8531aeb33"
@@ -1371,6 +1425,13 @@ cookie@0.5.0:
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/cookie/-/cookie-0.5.0.tgz#d1f5d71adec6558c58f389987c366aa47e994f8b"
   integrity sha512-YZ3GUyn/o8gfKJlnlX7g7xq4gyO6OSuhGPKaaGssGB2qgDUS0gPgtTvoyZLTt9Ab6dC4hfc9dV5arkvc/OCmrw==
+
+copy-anything@^2.0.3:
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/copy-anything/-/copy-anything-2.0.6.tgz#092454ea9584a7b7ad5573062b2a87f5900fc480"
+  integrity sha512-1j20GZTsvKNkc4BY3NpMOM8tt///wY3FpIzozTOFO2ffuZcV61nojHXVKIy3WM+7ADCy5FVhdZYHYDdgTU0yJw==
+  dependencies:
+    is-what "^3.14.1"
 
 core-js@^3.6.0, core-js@^3.8.3:
   version "3.32.0"
@@ -2229,6 +2290,14 @@ fill-range@^7.0.1:
   dependencies:
     to-regex-range "^5.0.1"
 
+filter-anything@^2.2.1, filter-anything@^2.2.4:
+  version "2.2.4"
+  resolved "https://registry.yarnpkg.com/filter-anything/-/filter-anything-2.2.4.tgz#658bd0fe3c87a80b87efe809658d17849b33bd41"
+  integrity sha512-yWC4q7o9A53SpOtl1/pLriidgkQH9b3BbVxe7T5i/v2BQ1DsnLU6hgTdufEEMH7x6gFlHQ51A1X7H9y9BG7Qmg==
+  dependencies:
+    is-what "^3.14.1"
+    ts-toolbelt "^9.6.0"
+
 finalhandler@1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/finalhandler/-/finalhandler-1.2.0.tgz#7d23fe5731b207b4640e4fcd00aec1f9207a7b32"
@@ -2262,6 +2331,14 @@ flatted@^3.1.0:
   version "3.2.7"
   resolved "https://registry.yarnpkg.com/flatted/-/flatted-3.2.7.tgz#609f39207cb614b89d0765b477cb2d437fbf9787"
   integrity sha512-5nqDSxl8nn5BSNxyR3n4I6eDmbolI6WT+QqR547RwxQapgjQBmtktdP+HTBb/a/zLsbzERTONyUB5pefh5TtjQ==
+
+flatten-anything@^2.0.4, flatten-anything@^2.0.7:
+  version "2.0.7"
+  resolved "https://registry.yarnpkg.com/flatten-anything/-/flatten-anything-2.0.7.tgz#a79e81a36fc1b4327e72b7015ee4a8a8473ecd7a"
+  integrity sha512-fsqRneoHoc6o5R+4CzMA8cYqUWz9EHmqygkJSu09MFbA8c3VGIoPjg96UI7IFtkHsoJFmCQZC83ITsJyuoJ+Lg==
+  dependencies:
+    filter-anything "^2.2.4"
+    is-what "^3.14.1"
 
 follow-redirects@^1.0.0, follow-redirects@^1.15.0:
   version "1.15.2"
@@ -2747,7 +2824,12 @@ is-unicode-supported@^0.1.0:
   resolved "https://registry.yarnpkg.com/is-unicode-supported/-/is-unicode-supported-0.1.0.tgz#3f26c76a809593b52bfa2ecb5710ed2779b522a7"
   integrity sha512-knxG2q4UC3u8stRGyAVJCOdxFmv5DZiRcdlIaAQXAbSfJya+OhopNotLQrstBhququ4ZpuKbDc/8S6mgXgPFPw==
 
-is-what@^4.1.8:
+is-what@^3.14.1:
+  version "3.14.1"
+  resolved "https://registry.yarnpkg.com/is-what/-/is-what-3.14.1.tgz#e1222f46ddda85dead0fd1c9df131760e77755c1"
+  integrity sha512-sNxgpk9793nzSs7bA6JQJGeIuRBQhAaNGG77kzYQgMkrID+lS6SlK07K5LaptscDlSaIgH+GPFzf+d75FVxozA==
+
+is-what@^4.1.7, is-what@^4.1.8:
   version "4.1.15"
   resolved "https://registry.yarnpkg.com/is-what/-/is-what-4.1.15.tgz#de43a81090417a425942d67b1ae86e7fae2eee0e"
   integrity sha512-uKua1wfy3Yt+YqsD6mTUEa2zSi3G1oPlqTflgaPJ7z63vUGN5pxFpnQfeSLMFnJDEsdvOtkp1rUWkYjB4YfhgA==
@@ -3053,6 +3135,11 @@ magic-string@^0.30.0, magic-string@^0.30.1, magic-string@^0.30.2:
   dependencies:
     "@jridgewell/sourcemap-codec" "^1.4.15"
 
+map-anything@^1.0.4:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/map-anything/-/map-anything-1.0.6.tgz#b547c879b36a353002c3451e274373a547671a8c"
+  integrity sha512-bcSVnS5d9VTSVOQ3qQUAMyU8PTNzc7JwQcD4WP3DybwGJRjJ0Eam0QfxtpyVsCg3DDRtJn8JoTSCt4a3AvgQiw==
+
 mapbox-to-css-font@^2.4.1:
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/mapbox-to-css-font/-/mapbox-to-css-font-2.4.2.tgz#a9e31b363ad8ca881cd339ca99f2d2a6b02ea5dd"
@@ -3062,6 +3149,14 @@ media-typer@0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/media-typer/-/media-typer-0.3.0.tgz#8710d7af0aa626f8fffa1ce00168545263255748"
   integrity sha512-dq+qelQ9akHpcOl/gUVRTxVIOkAJ1wR3QAvb4RsVjS8oVoFjDGTc679wJYmUmknUF5HwMLOgb5O+a3KxfWapPQ==
+
+merge-anything@^4.0.2:
+  version "4.0.5"
+  resolved "https://registry.yarnpkg.com/merge-anything/-/merge-anything-4.0.5.tgz#a50b20581d18a83b66375793e4ccf88b0f5e3cad"
+  integrity sha512-YsYvYYMYZZITlVqf8UiGWVU8jI8mFNuv64iNY0hKH6alkrZsE3XNVlUnRbUvWnKIzEeYawfY8wNrTuPwHcbleA==
+  dependencies:
+    is-what "^3.14.1"
+    ts-toolbelt "^9.6.0"
 
 merge-anything@^5.1.7:
   version "5.1.7"
@@ -3210,6 +3305,13 @@ negotiator@0.6.3:
   version "0.6.3"
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.3.tgz#58e323a72fedc0d6f9cd4d31fe49f51479590ccd"
   integrity sha512-+EUsqGPLsM+j/zdChZjsnX51g4XrHFOIXwfnCVPGlQk/k5giakcKsuxCObBRu6DSm9opw/O6slWbJdghQM4bBg==
+
+nestify-anything@^1.0.3:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/nestify-anything/-/nestify-anything-1.0.5.tgz#99c5338abcd8efa653ffb4104a7413c01a758bec"
+  integrity sha512-2L7DIoD5U3bqSYaapmi4ZZrgWzd/UgSyV4HVwmB67QUk8ygWIdd+ilDOUG3f1FWW+5I/oPbhCRz/Nvnc1iWwIw==
+  dependencies:
+    merge-anything "^4.0.2"
 
 no-case@^2.2.0:
   version "2.3.2"
@@ -4263,6 +4365,11 @@ ts-algebra@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/ts-algebra/-/ts-algebra-1.2.0.tgz#f91c481207a770f0d14d055c376cbee040afdfc9"
   integrity sha512-kMuJJd8B2N/swCvIvn1hIFcIOrLGbWl9m/J6O3kHx9VRaevh00nvgjPiEGaRee7DRaAczMYR2uwWvXU22VFltw==
+
+ts-toolbelt@^9.6.0:
+  version "9.6.0"
+  resolved "https://registry.yarnpkg.com/ts-toolbelt/-/ts-toolbelt-9.6.0.tgz#50a25426cfed500d4a09bd1b3afb6f28879edfd5"
+  integrity sha512-nsZd8ZeNUzukXPlJmTBwUAuABDe/9qtVDelJeT/qW0ow3ZS3BsQJtNkan1802aM9Uf68/Y8ljw86Hu0h5IUW3w==
 
 tslib@^2.1.0:
   version "2.6.1"

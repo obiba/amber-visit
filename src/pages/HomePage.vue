@@ -82,7 +82,8 @@
 
                     <q-item-section side top>
                       <q-btn
-                        :title="$t('main.new_case_report')"
+                        v-if="itwStore.getRecordStatus(step._id) === null"
+                        :title="$t('main.start_record')"
                         :icon-right="
                           $q.lang.rtl ? 'chevron_left' : 'chevron_right'
                         "
@@ -90,7 +91,30 @@
                         rounded
                         no-caps
                         class="q-mt-sm q-mb-sm"
-                        @click="onStepStart(step.name)"
+                        :to="`step/${step._id}`"
+                      />
+                      <q-btn
+                        v-if="
+                          itwStore.getRecordStatus(step._id) === 'in_progress'
+                        "
+                        :title="$t('main.start_record')"
+                        icon-right="fas fa-ellipsis-h"
+                        color="primary"
+                        rounded
+                        no-caps
+                        class="q-mt-sm q-mb-sm"
+                        :to="`step/${step._id}`"
+                      />
+                      <q-btn
+                        v-if="
+                          itwStore.getRecordStatus(step._id) === 'completed'
+                        "
+                        :title="$t('main.start_record')"
+                        icon-right="check"
+                        color="positive"
+                        rounded
+                        no-caps
+                        class="q-mt-sm q-mb-sm"
                       />
                     </q-item-section>
                   </q-item>
