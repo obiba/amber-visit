@@ -74,9 +74,9 @@
                 <template v-for="step in itwStore.design.steps" :key="step._id">
                   <q-item :dark="settings.theme.dark" class="q-pt-lg q-pb-lg">
                     <q-item-section>
-                      <q-item-label>{{ step.label }}</q-item-label>
+                      <q-item-label>{{ tr(step.label) }}</q-item-label>
                       <q-item-label caption lines="2">{{
-                        step.description
+                        tr(step.description)
                       }}</q-item-label>
                     </q-item-section>
 
@@ -111,6 +111,10 @@
 import { defineComponent } from "vue";
 import { Notify } from "quasar";
 import { settings } from "../boot/settings";
+import {
+  makeBlitzarQuasarSchemaForm,
+  makeSchemaFormTr,
+} from "@obiba/quasar-ui-amber";
 
 export default defineComponent({
   name: "HomePage",
@@ -119,7 +123,9 @@ export default defineComponent({
     const { api } = useFeathers();
     const interviewDesignService = api.service("itwd");
     const itwStore = useInterviewStore();
+    const { locale } = useI18n({ useScope: "global" });
     return {
+      locale,
       auth,
       settings,
       interviewDesignService,
@@ -129,6 +135,11 @@ export default defineComponent({
     };
   },
   methods: {
+    tr(key) {
+      return makeSchemaFormTr(this.itwStore.design, { locale: this.locale })(
+        key
+      );
+    },
     onReceive(val) {
       this.receive = val;
       if (val) {
