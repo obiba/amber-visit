@@ -5,7 +5,7 @@
         <div class="col"></div>
         <div class="col-md-6 col-sm-8 col-xs-12">
           <div v-if="auth.user">
-            <q-card class="q-mb-md">
+            <q-card flat class="q-mb-md bg-grey-3">
               <q-card-section>
                 <q-list>
                   <q-item v-if="itwStore.participant && !receive">
@@ -57,17 +57,22 @@
               </q-card-section>
             </q-card>
           </div>
-          <q-card v-if="itwStore.design && !receive">
+          <q-card
+            v-if="itwStore.design && !receive"
+            :dark="settings.theme.dark"
+            flat
+          >
             <q-card-section>
               <div class="q-pl-md q-pr-md">
-                <div class="text-h6">{{ itwStore.design.name }}</div>
+                <div class="text-h6">{{ itwStore.design.label }}</div>
                 <div>{{ itwStore.design.description }}</div>
               </div>
             </q-card-section>
+            <q-separator :dark="settings.theme.dark"></q-separator>
             <q-card-section>
-              <q-list>
+              <q-list :dark="settings.theme.dark" separator>
                 <template v-for="step in itwStore.design.steps" :key="step._id">
-                  <q-item>
+                  <q-item :dark="settings.theme.dark" class="q-pt-lg q-pb-lg">
                     <q-item-section>
                       <q-item-label>{{ step.label }}</q-item-label>
                       <q-item-label caption lines="2">{{
@@ -91,7 +96,6 @@
                       />
                     </q-item-section>
                   </q-item>
-                  <q-separator spaced inset />
                 </template>
               </q-list>
             </q-card-section>
@@ -106,6 +110,7 @@
 <script>
 import { defineComponent } from "vue";
 import { Notify } from "quasar";
+import { settings } from "../boot/settings";
 
 export default defineComponent({
   name: "HomePage",
@@ -116,6 +121,7 @@ export default defineComponent({
     const itwStore = useInterviewStore();
     return {
       auth,
+      settings,
       interviewDesignService,
       code: ref(""),
       receive: ref(false),
