@@ -6,9 +6,15 @@ export default {
     brand: "Amber Visit",
     brand_caption: "Entrevues de participants",
     logout: "Quitter",
+    docs: "Docs",
+    forum: "Forum",
+    powered_by: "Propulsé par",
+    code: "Code du participant",
   },
   login: {
     code: "Votre code de participant",
     participant_password: "Votre mot de passe",
   },
+  cancel: "Annuler",
+  start: "Commencer",
 };

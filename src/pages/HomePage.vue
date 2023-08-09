@@ -64,8 +64,8 @@
           >
             <q-card-section>
               <div class="q-pl-md q-pr-md">
-                <div class="text-h6">{{ itwStore.design.label }}</div>
-                <div>{{ itwStore.design.description }}</div>
+                <div class="text-h6">{{ tr(itwStore.design.label) }}</div>
+                <div v-html="md(tr(itwStore.design.description))"></div>
               </div>
             </q-card-section>
             <q-separator :dark="settings.theme.dark"></q-separator>
@@ -81,8 +81,6 @@
                     </q-item-section>
 
                     <q-item-section side top>
-                      <q-item-label caption>5 min ago</q-item-label>
-                      <q-icon name="star" color="yellow" />
                       <q-btn
                         :title="$t('main.new_case_report')"
                         :icon-right="
@@ -111,6 +109,7 @@
 import { defineComponent } from "vue";
 import { Notify } from "quasar";
 import { settings } from "../boot/settings";
+import snarkdown from "snarkdown";
 import {
   makeBlitzarQuasarSchemaForm,
   makeSchemaFormTr,
@@ -139,6 +138,17 @@ export default defineComponent({
       return makeSchemaFormTr(this.itwStore.design, { locale: this.locale })(
         key
       );
+    },
+    truncate(text) {
+      if (!text) return text;
+      const sentences = text.split(".");
+      return (
+        sentences[0] +
+        (sentences.length > 1 && sentences[1] !== "" ? "..." : ".")
+      );
+    },
+    md(text) {
+      return text ? snarkdown(text) : text;
     },
     onReceive(val) {
       this.receive = val;
