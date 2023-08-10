@@ -82,7 +82,7 @@
 
                     <q-item-section side top>
                       <q-btn
-                        v-if="itwStore.getRecordStatus(step._id) === null"
+                        v-if="itwStore.getRecordStatus(step.name) === null"
                         :title="$t('main.start_record')"
                         :icon-right="
                           $q.lang.rtl ? 'chevron_left' : 'chevron_right'
@@ -91,11 +91,11 @@
                         rounded
                         no-caps
                         class="q-mt-sm q-mb-sm"
-                        :to="`step/${step._id}`"
+                        :to="`step/${step.name}`"
                       />
                       <q-btn
                         v-if="
-                          itwStore.getRecordStatus(step._id) === 'in_progress'
+                          itwStore.getRecordStatus(step.name) === 'in_progress'
                         "
                         :title="$t('main.start_record')"
                         icon-right="fas fa-ellipsis-h"
@@ -103,11 +103,11 @@
                         rounded
                         no-caps
                         class="q-mt-sm q-mb-sm"
-                        :to="`step/${step._id}`"
+                        :to="`step/${step.name}`"
                       />
                       <q-btn
                         v-if="
-                          itwStore.getRecordStatus(step._id) === 'completed'
+                          itwStore.getRecordStatus(step.name) === 'completed'
                         "
                         :title="$t('main.start_record')"
                         icon-right="check"

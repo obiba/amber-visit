@@ -2,10 +2,10 @@ import { defineStore } from "pinia";
 
 export const useInterviewStore = defineStore("itw", {
   state: () => ({
-    design: null,
-    record: null,
-    cred: null,
-    itw: null,
+    design: null, // the interview design
+    record: null, // the current step form record
+    cred: null, // the participant credentials if self-administered
+    itw: null, // the interview collected data, to be saved
   }),
   getters: {
     participant: (state) => state.design?.participant,
@@ -22,49 +22,97 @@ export const useInterviewStore = defineStore("itw", {
         : { query: {} },
   },
   actions: {
-    getStep(id) {
-      return this.design?.steps?.find((step) => step._id === id);
+    /**
+     * Get the step definition from the interview design.
+     * @param {string} name
+     * @returns
+     */
+    getStep(name) {
+      return this.design?.steps?.find((step) => step.name === name);
     },
-    setupRecord(stepId) {
-      if (this.itw && this.itw[stepId]) {
-        this.record = this.itw[stepId];
+    /**
+     * Initiate or reinstate the current record for the step.
+     * @param {string} name
+     */
+    setupRecord(name) {
+      this.initInterview();
+      // TODO add other steps data
+      if (this.itw.steps[name]) {
+        this.record = {
+          name,
+          data: this.itw.steps[name].data,
+        };
       } else {
         // start the record of the step
         this.record = {
-          id: stepId,
+          name,
           data: { __page: 0 },
-          status: "in_progress",
         };
       }
     },
-    updateRecord(val) {
-      this.record = val;
+    /**
+     * Update the current record and merge into the interview steps data.
+     * @param {string} name
+     * @param {Object} data
+     */
+    updateRecord(name, data) {
+      this.record = {
+        name,
+        data,
+      };
+      this.mergeRecord("in_progress");
     },
+    /**
+     * Pause form: merge current record into the interview steps data with 'in_progress' status and set record to null.
+     */
     pauseRecord() {
-      if (!this.itw) {
-        this.itw = {};
-      }
+      this.initInterview();
       if (this.record) {
-        this.itw[this.record.id] = this.record;
-        this.itw[this.record.id].status = "in_progress";
+        this.mergeRecord("in_progress");
         this.record = null;
       }
     },
+    /**
+     * Complete form: merge current record into the interview steps data with 'completed' status and set record to null.
+     */
     completeRecord() {
-      if (!this.itw) {
-        this.itw = {};
-      }
+      this.initInterview();
       if (this.record) {
-        this.itw[this.record.id] = this.record;
-        this.itw[this.record.id].status = "completed";
+        this.mergeRecord("completed");
         this.record = null;
       }
     },
-    getRecordStatus(stepId) {
-      if (this.itw && this.itw[stepId]) {
-        return this.itw[stepId].status;
+    /**
+     * Get step status: 'in_progress', 'completed' or null (i.e. not started).
+     * @param {string} name
+     * @returns
+     */
+    getRecordStatus(name) {
+      if (this.itw && this.itw.steps[name]) {
+        return this.itw.steps[name].status;
       }
       return null;
+    },
+    /**
+     * Initialize the interview if not already done.
+     */
+    initInterview() {
+      if (!this.itw) {
+        this.itw = {
+          code: this.participant.code,
+          interviewDesign: this.design._id,
+          steps: {},
+        };
+      }
+    },
+    /**
+     * Merge current record into the interview steps data.
+     * @param {string} status
+     */
+    mergeRecord(status) {
+      this.itw.steps[this.record.name] = this.record;
+      this.itw.steps[this.record.name].status = status;
+      // TODO remove other steps data
     },
   },
   persist: true,

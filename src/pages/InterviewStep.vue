@@ -188,6 +188,7 @@
           flat
           :label="$q.screen.lt.sm ? '' : $t('pause')"
           icon="pause"
+          :disable="isFinalStep"
           @click="onPause"
         />
       </q-toolbar>
@@ -259,7 +260,7 @@ export default defineComponent({
   },
 
   mounted() {
-    this.step = this.itwStore.getStep(this.stepId);
+    this.step = this.itwStore.getStep(this.stepName);
     if (this.step) {
       if (this.step.schema.layout) {
         this.mode = this.step.schema.layout;
@@ -271,14 +272,14 @@ export default defineComponent({
       });
       // TODO reinstate previous data and other steps data + participant data (for skip conditions)
       const record = this.itwStore.record;
-      if (!record || record.id !== this.stepId || !record.data) {
-        this.itwStore.setupRecord(this.stepId);
+      if (!record || record.id !== this.stepName || !record.data) {
+        this.itwStore.setupRecord(this.stepName);
       }
       this.formData = this.itwStore.record.data;
       this.updateProgress();
       this.remountCounter++;
     } else {
-      console.error("No such interview step with id: " + this.stepId);
+      console.error("No such interview step with id: " + this.stepName);
       this.$router.push("/");
     }
   },
@@ -307,8 +308,8 @@ export default defineComponent({
     currentLocale() {
       return this.$root.$i18n.locale;
     },
-    stepId() {
-      return this.$route.params.id;
+    stepName() {
+      return this.$route.params.name;
     },
     toc() {
       const toc = [];
@@ -416,10 +417,7 @@ export default defineComponent({
       for (const key in payload.data) {
         record.data[key] = payload.data[key];
       }
-      this.itwStore.updateRecord({
-        id: this.stepId,
-        data: record.data,
-      });
+      this.itwStore.updateRecord(this.stepName, record.data);
     },
     canNext() {
       return (
@@ -450,10 +448,7 @@ export default defineComponent({
       }
     },
     updateFormData() {
-      this.itwStore.updateRecord({
-        id: this.stepId,
-        data: this.formData,
-      });
+      this.itwStore.updateRecord(this.stepName, this.formData);
     },
     onValidate() {
       this.errors = getBlitzarErrors(
