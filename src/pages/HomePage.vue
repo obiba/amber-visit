@@ -61,6 +61,7 @@
             v-if="itwStore.design && !receive"
             :dark="settings.theme.dark"
             flat
+            class="q-mb-md"
           >
             <q-card-section>
               <div class="q-pl-md q-pr-md">
@@ -122,6 +123,54 @@
               </q-list>
             </q-card-section>
           </q-card>
+          <div v-if="!auth.user">
+            <q-card flat class="q-mb-md bg-grey-3">
+              <q-card-section>
+                <q-list>
+                  <q-item>
+                    <q-item-section>
+                      {{ $t("main.investigator_help") }}
+                    </q-item-section>
+                    <q-item-section avatar>
+                      <q-btn
+                        icon-right="help"
+                        color="info"
+                        rounded
+                        no-caps
+                        @click="showHelp = !showHelp"
+                      />
+                    </q-item-section>
+                  </q-item>
+                </q-list>
+              </q-card-section>
+              <q-card-section v-show="showHelp">
+                <q-list>
+                  <q-item
+                    v-for="investigator in itwStore.investigators"
+                    :key="investigator.email"
+                    class="q-mb-md"
+                  >
+                    <q-item-section>
+                      <q-item-label overline
+                        >{{ investigator.firstname }}
+                        {{ investigator.lastname }}</q-item-label
+                      >
+                      <q-item-label v-if="investigator.email">
+                        <q-icon name="fas fa-envelope" class="q-mr-sm" />
+                        <a :href="`mailto:${investigator.email}`">{{
+                          investigator.email
+                        }}</a></q-item-label
+                      >
+                      <q-item-label v-if="investigator.phone">
+                        <q-icon name="fas fa-phone" class="q-mr-sm" />
+                        {{ investigator.phone }}</q-item-label
+                      >
+                    </q-item-section>
+                  </q-item>
+                </q-list>
+              </q-card-section>
+            </q-card>
+          </div>
         </div>
         <div class="col"></div>
       </div>
@@ -134,10 +183,7 @@ import { defineComponent } from "vue";
 import { Notify } from "quasar";
 import { settings } from "../boot/settings";
 import snarkdown from "snarkdown";
-import {
-  makeBlitzarQuasarSchemaForm,
-  makeSchemaFormTr,
-} from "@obiba/quasar-ui-amber";
+import { makeSchemaFormTr } from "@obiba/quasar-ui-amber";
 
 export default defineComponent({
   name: "HomePage",
@@ -154,6 +200,7 @@ export default defineComponent({
       interviewDesignService,
       code: ref(""),
       receive: ref(false),
+      showHelp: ref(false),
       itwStore,
     };
   },

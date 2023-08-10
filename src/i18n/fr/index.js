@@ -10,6 +10,7 @@ export default {
     forum: "Forum",
     powered_by: "Propulsé par",
     code: "Code du participant",
+    investigator_help: "Besoin d'aide ? Contactez un investigateur",
   },
   login: {
     code: "Votre code de participant",
