@@ -235,20 +235,12 @@ export default defineComponent({
       }
     },
     onLoad(code, done) {
-      const payload = this.itwStore.payload;
-      if (!this.itwStore.cred) {
-        // the credentials contains the participant's code
-        payload.query = { $limit: 1, code: code };
-      }
-      this.interviewDesignService
-        .find(payload)
+      this.itwStore
+        .initByInterviewer(code)
         .then((response) => {
           if (typeof done === "function") {
             done();
           }
-          this.itwStore.$patch({
-            design: response.data[0],
-          });
           this.receive = false;
         })
         .catch((err) => {

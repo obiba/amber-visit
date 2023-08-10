@@ -361,16 +361,12 @@ export default defineComponent({
         const credentials = btoa(
           this.withPassword ? `${this.code}:${this.password}` : this.code
         );
-        this.interviewDesignService
-          .find({
-            query: {},
-            headers: { Authorization: `Participant ${credentials}` },
-          })
-          .then((response) => {
-            this.itwStore.$patch({
-              design: response.data[0],
-              cred: credentials,
-            });
+        this.itwStore
+          .initByParticipant(
+            this.code,
+            this.withPassword ? this.password : undefined
+          )
+          .then(() => {
             this.redirect();
           })
           .catch((err) => {

@@ -143,7 +143,8 @@ export default defineComponent({
       this.$i18n.locale = opt.value;
     },
     onLogout() {
-      this.itwStore.$reset();
+      // TODO make sure no save is pending
+      this.itwStore.reset();
       if (this.authStore.user) {
         this.authStore.logout().then(() => {
           this.$router.push("/login");

@@ -4,6 +4,8 @@ import { ref, computed } from "vue";
 export const useInterviewStore = defineStore(
   "itw",
   () => {
+    const { api } = useFeathers();
+    const interviewDesignService = api.service("itwd");
     const design = ref(null); // the interview design
     const record = ref(null); // the current step form record
     const cred = ref(null); // the participant credentials if self-administered
@@ -13,11 +15,28 @@ export const useInterviewStore = defineStore(
     const participant = computed(() => design.value?.participant);
     const investigators = computed(() => design.value?.investigators);
     const steps = computed(() => design.value?.steps);
-    const payload = computed(() =>
-      cred.value
-        ? { query: {}, headers: { Authorization: `Participant ${cred.value}` } }
-        : { query: {} }
-    );
+
+    async function initByParticipant(code, password) {
+      cred.value = btoa(password ? `${code}:${password}` : code);
+      return interviewDesignService
+        .find({
+          query: {},
+          headers: { Authorization: `Participant ${cred.value}` },
+        })
+        .then((response) => {
+          design.value = response.data[0];
+        });
+    }
+
+    async function initByInterviewer(code) {
+      return interviewDesignService
+        .find({
+          query: { $limit: 1, code: code },
+        })
+        .then((response) => {
+          design.value = response.data[0];
+        });
+    }
 
     /**
      * Initialize the interview if not already done.
@@ -157,6 +176,14 @@ export const useInterviewStore = defineStore(
       // TODO remove other steps data
     }
 
+    function reset() {
+      design.value = null;
+      record.value = null;
+      cred.value = null;
+      itw.value = null;
+      save.value = null;
+    }
+
     return {
       design,
       record,
@@ -167,12 +194,15 @@ export const useInterviewStore = defineStore(
       investigators,
       steps,
       payload,
+      initByInterviewer,
+      initByParticipant,
       getStep,
       setupRecord,
       updateRecord,
       pauseRecord,
       completeRecord,
       getRecordStatus,
+      reset,
     };
   },
   {
