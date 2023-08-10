@@ -142,6 +142,7 @@
                   </q-item>
                 </q-list>
               </q-card-section>
+              <q-separator />
               <q-card-section v-show="showHelp">
                 <q-list>
                   <q-item
