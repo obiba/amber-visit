@@ -10,11 +10,9 @@
                 <q-list>
                   <q-item v-if="itwStore.participant && !receive">
                     <q-item-section>
-                      <q-item-label class="text-h6">{{
-                        itwStore.participant.code
-                      }}</q-item-label>
+                      <div class="text-h6">{{ itwStore.participant.code }}</div>
                     </q-item-section>
-                    <q-item-section side top>
+                    <q-item-section avatar>
                       <q-btn
                         :title="$t('main.receive_participant')"
                         icon-right="person"
@@ -32,14 +30,15 @@
                         v-model="code"
                         :label="$t('main.code')"
                         mask="XXXXXX"
+                        class="q-mb-md"
                       />
                     </q-item-section>
-                    <q-item-section side top>
+                    <q-item-section avatar>
                       <q-btn
                         color="dark"
                         @click="onLoad(code)"
-                        class="q-mt-md"
                         :disable="!code || code.length < 6"
+                        class="q-mt-md"
                         >{{ $t("start") }}</q-btn
                       >
                       <q-btn
@@ -48,7 +47,7 @@
                         color="secondary"
                         flat
                         no-caps
-                        class="q-mt-sm q-mb-sm"
+                        class="q-mt-sm"
                         @click="onReceive(false)"
                       />
                     </q-item-section>
