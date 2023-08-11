@@ -11,6 +11,10 @@ export default {
     powered_by: "Powered by",
     code: "Participant code",
     investigator_help: "Need some help? Contact an investigator",
+    pending_save: "Pending data save (are you offline?)",
+    save_now: "Save now",
+    interview_completed:
+      "You have completed the interview, thanks for your contribution!",
   },
   login: {
     user_title: "",

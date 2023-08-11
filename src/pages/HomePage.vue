@@ -1,7 +1,7 @@
 <template>
   <q-page v-cloak>
     <q-pull-to-refresh @refresh="onRefresh">
-      <div class="row q-pa-md">
+      <div class="row q-pa-md q-mt-lg">
         <div class="col"></div>
         <div class="col-md-6 col-sm-8 col-xs-12">
           <div v-if="auth.user">

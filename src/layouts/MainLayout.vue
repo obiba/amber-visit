@@ -38,6 +38,23 @@
           </q-btn-dropdown>
         </div>
       </q-toolbar>
+      <q-toolbar
+        v-if="itwStore.pending"
+        class="bg-warning text-black q-pt-sm q-pb-sm"
+        style="min-height: 20px"
+      >
+        <div>{{ $t("main.pending_save") }}</div>
+        <q-btn flat dense no-caps class="q-ml-lg" @click="onSaveNow">{{
+          $t("main.save_now")
+        }}</q-btn>
+      </q-toolbar>
+      <q-toolbar
+        v-if="itwStore.completed"
+        class="bg-info q-pt-sm q-pb-sm"
+        style="min-height: 20px"
+      >
+        <div>{{ $t("main.interview_completed") }}</div>
+      </q-toolbar>
     </q-header>
 
     <q-drawer
@@ -144,7 +161,7 @@ export default defineComponent({
     },
     onLogout() {
       // TODO make sure no save is pending
-      this.itwStore.reset();
+      this.itwStore.reset(true);
       if (this.authStore.user) {
         this.authStore.logout().then(() => {
           this.$router.push("/login");
@@ -152,6 +169,9 @@ export default defineComponent({
       } else {
         this.$router.push("/login");
       }
+    },
+    onSaveNow() {
+      this.itwStore.savePendingRecords();
     },
   },
 });

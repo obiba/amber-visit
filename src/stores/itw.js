@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { ref, computed } from "vue";
+import { ref, computed, toHandlers } from "vue";
 
 export const useInterviewStore = defineStore(
   "itw",
@@ -12,11 +12,18 @@ export const useInterviewStore = defineStore(
     const code = ref(null); // the current participant's code
     const cred = ref(null); // the participant credentials if self-administered
     const itw = ref(null); // the interview collected data, to be saved
-    const save = ref(null); // the completed interviews to save
+    const tosave = ref([]); // mark steps which changes are to be saved
 
     const participant = computed(() => design.value?.participant);
     const investigators = computed(() => design.value?.investigators);
     const steps = computed(() => design.value?.steps);
+    const pending = computed(() => tosave.value.length > 0); // has pending changes to be saved
+    const completed = computed(() => {
+      if (itw.value) {
+        return itw.value.state === "completed";
+      }
+      return false;
+    });
 
     async function initByParticipant(code, password) {
       if (code) {
@@ -47,21 +54,27 @@ export const useInterviewStore = defineStore(
         .then(() => initInterview());
     }
 
+    function makePayload() {
+      const payload = {};
+      if (cred.value) {
+        payload.query = {};
+        payload.headers = { Authorization: `Participant ${cred.value}` };
+      } else {
+        payload.query = { code: code.value };
+      }
+      return payload;
+    }
+
     /**
      * Initialize the interview if not already done.
      */
     async function initInterview() {
       if (!itw.value) {
-        const payload = {};
-        if (cred.value) {
-          payload.query = {};
-          payload.headers = { Authorization: `Participant ${cred.value}` };
-        } else {
-          payload.query = { $limit: 1, code: code.value };
-        }
+        // get the interview data if we do not have it already
+        const payload = makePayload();
         return itwService.find(payload).then((response) => {
           itw.value = response.data[0];
-        }); // TODO handle error
+        });
       } else {
         return new Promise((resolve) => resolve());
       }
@@ -82,20 +95,30 @@ export const useInterviewStore = defineStore(
      */
     async function setupRecord(name) {
       return initInterview().then(() => {
-        // TODO add other steps data
         const step = itw.value.steps?.find((step) => step.name === name);
+        let rec;
         if (step) {
-          record.value = {
+          rec = {
             name,
             data: step.data,
           };
         } else {
           // start the record of the step
-          record.value = {
+          rec = {
             name,
             data: { __page: 0 },
           };
         }
+        // add other steps data
+        itw.value.steps
+          ?.filter((step) => step.name !== name)
+          .forEach((step) => {
+            if (!rec.data._) {
+              rec.data._ = {};
+            }
+            rec.data._[step.name] = step.data;
+          });
+        record.value = rec;
       });
     }
 
@@ -131,26 +154,59 @@ export const useInterviewStore = defineStore(
      * @param {string} state
      */
     async function saveRecord(state) {
-      const payload = {};
-      if (cred.value) {
-        payload.query = {};
-        payload.headers = { Authorization: `Participant ${cred.value}` };
-      } else {
-        payload.query = { code: code.value };
-      }
+      const payload = makePayload();
       const stepDesign = getStepDesign(record.value.name);
-      const data = {
+      const stepObj = {
         form: stepDesign.form,
         revision: stepDesign.revision,
         ...record.value,
       };
-      data.state = state;
+      stepObj.state = state;
+      delete stepObj.data._;
       return itwService
-        .patch(itw.value._id, { steps: [data] }, payload)
+        .patch(itw.value._id, { steps: [stepObj] }, payload)
         .then((response) => {
           record.value = null;
           itw.value = response;
+        })
+        .catch((err) => {
+          // handle save error
+          // include patch data to current itw, so that it works offline and saving can be postponed
+          if (!itw.value.steps) {
+            itw.value.steps = [stepObj];
+          } else {
+            const idx = itw.value.steps
+              .map((step) => step.name)
+              .indexOf(stepObj.name);
+            if (idx < 0) {
+              itw.value.steps.push(stepObj);
+            } else {
+              itw.value.steps.splice(idx, 1, stepObj);
+            }
+          }
+          if (!tosave.value.includes(stepObj.name)) {
+            tosave.value.push(stepObj.name);
+          }
         });
+    }
+
+    /**
+     * Save steps data that could not be changed before.
+     * @returns
+     */
+    async function savePendingRecords() {
+      if (tosave.value.length > 0) {
+        const stepObjs = itw.value.steps.filter((step) =>
+          tosave.value.includes(step.name)
+        );
+        const payload = makePayload();
+        return itwService
+          .patch(itw.value._id, { steps: stepObjs }, payload)
+          .then((response) => {
+            itw.value = response;
+            tosave.value = [];
+          });
+      }
     }
 
     /**
@@ -178,13 +234,19 @@ export const useInterviewStore = defineStore(
       // TODO remove other steps data
     }
 
-    function reset() {
-      code.value = null;
-      design.value = null;
-      record.value = null;
-      cred.value = null;
-      itw.value = null;
-      save.value = null;
+    /**
+     * Clear store from data.
+     */
+    function reset(force) {
+      // check if changes to saved, otherwise data will be lost
+      if (tosave.value.length === 0 || force) {
+        code.value = null;
+        design.value = null;
+        record.value = null;
+        cred.value = null;
+        itw.value = null;
+        tosave.value = [];
+      }
     }
 
     return {
@@ -193,10 +255,14 @@ export const useInterviewStore = defineStore(
       design,
       record,
       itw,
-      save,
+      tosave,
+      // computed
       participant,
       investigators,
       steps,
+      pending,
+      completed,
+      // methods
       initByInterviewer,
       initByParticipant,
       initInterview,
@@ -206,6 +272,7 @@ export const useInterviewStore = defineStore(
       pauseRecord,
       completeRecord,
       getRecordStatus,
+      savePendingRecords,
       reset,
     };
   },
