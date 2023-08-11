@@ -113,11 +113,9 @@ export const useInterviewStore = defineStore(
         itw.value.steps
           ?.filter((step) => step.name !== name)
           .forEach((step) => {
-            if (!rec.data._) {
-              rec.data._ = {};
-            }
-            rec.data._[step.name] = step.data;
+            rec.data[step.name] = step.data;
           });
+        rec.data.participant = itw.value.data;
         record.value = rec;
       });
     }
@@ -162,7 +160,8 @@ export const useInterviewStore = defineStore(
         ...record.value,
       };
       stepObj.state = state;
-      delete stepObj.data._;
+      design.value.steps.forEach((step) => delete stepObj.data[step.name]);
+      delete stepObj.data.participant;
       return itwService
         .patch(itw.value._id, { steps: [stepObj] }, payload)
         .then((response) => {
