@@ -5,9 +5,11 @@ export const useInterviewStore = defineStore(
   "itw",
   () => {
     const { api } = useFeathers();
-    const interviewDesignService = api.service("itwd");
+    const itwdService = api.service("itwd");
+    const itwService = api.service("itw");
     const design = ref(null); // the interview design
     const record = ref(null); // the current step form record
+    const code = ref(null); // the current participant's code
     const cred = ref(null); // the participant credentials if self-administered
     const itw = ref(null); // the interview collected data, to be saved
     const save = ref(null); // the completed interviews to save
@@ -17,37 +19,51 @@ export const useInterviewStore = defineStore(
     const steps = computed(() => design.value?.steps);
 
     async function initByParticipant(code, password) {
-      cred.value = btoa(password ? `${code}:${password}` : code);
-      return interviewDesignService
+      if (code) {
+        cred.value = btoa(password ? `${code}:${password}` : code);
+      }
+      return itwdService
         .find({
           query: {},
           headers: { Authorization: `Participant ${cred.value}` },
         })
         .then((response) => {
           design.value = response.data[0];
-        });
+          itw.value = null;
+        })
+        .then(() => initInterview());
     }
 
-    async function initByInterviewer(code) {
-      return interviewDesignService
+    async function initByInterviewer(pcode) {
+      code.value = pcode;
+      return itwdService
         .find({
-          query: { $limit: 1, code: code },
+          query: { $limit: 1, code: pcode },
         })
         .then((response) => {
           design.value = response.data[0];
-        });
+          itw.value = null;
+        })
+        .then(() => initInterview());
     }
 
     /**
      * Initialize the interview if not already done.
      */
-    function initInterview() {
+    async function initInterview() {
       if (!itw.value) {
-        itw.value = {
-          code: participant.value.code,
-          interviewDesign: design.value._id,
-          steps: {},
-        };
+        const payload = {};
+        if (cred.value) {
+          payload.query = {};
+          payload.headers = { Authorization: `Participant ${cred.value}` };
+        } else {
+          payload.query = { $limit: 1, code: code.value };
+        }
+        return itwService.find(payload).then((response) => {
+          itw.value = response.data[0];
+        }); // TODO handle error
+      } else {
+        return new Promise((resolve) => resolve());
       }
     }
 
@@ -56,7 +72,7 @@ export const useInterviewStore = defineStore(
      * @param {string} name
      * @returns
      */
-    function getStep(name) {
+    function getStepDesign(name) {
       return design.value?.steps?.find((step) => step.name === name);
     }
 
@@ -64,21 +80,23 @@ export const useInterviewStore = defineStore(
      * Initiate or reinstate the current record for the step.
      * @param {string} name
      */
-    function setupRecord(name) {
-      initInterview();
-      // TODO add other steps data
-      if (itw.value.steps[name]) {
-        record.value = {
-          name,
-          data: itw.value.steps[name].data,
-        };
-      } else {
-        // start the record of the step
-        record.value = {
-          name,
-          data: { __page: 0 },
-        };
-      }
+    async function setupRecord(name) {
+      return initInterview().then(() => {
+        // TODO add other steps data
+        const step = itw.value.steps?.find((step) => step.name === name);
+        if (step) {
+          record.value = {
+            name,
+            data: step.data,
+          };
+        } else {
+          // start the record of the step
+          record.value = {
+            name,
+            data: { __page: 0 },
+          };
+        }
+      });
     }
 
     /**
@@ -97,61 +115,42 @@ export const useInterviewStore = defineStore(
     /**
      * Pause form: merge current record into the interview steps data with 'in_progress' state and set record to null.
      */
-    function pauseRecord() {
-      initInterview();
-      if (record.value) {
-        mergeRecord("in_progress");
-        record.value = null;
-      }
+    async function pauseRecord() {
+      return saveRecord("in_progress");
     }
 
     /**
      * Complete form: merge current record into the interview steps data with 'completed' state and set record to null.
      */
-    function completeRecord() {
-      initInterview();
-      if (record.value) {
-        mergeRecord("completed");
-        record.value = null;
-      }
+    async function completeRecord() {
+      return saveRecord("completed");
     }
 
     /**
      * Save the interview with the provided state.
      * @param {string} state
      */
-    function saveInterview(state) {
-      const interview = {
-        code: participant.value.code,
-        identifier: participant.value.identifier,
-        participant: participant.value._id,
-        interviewDesign: design.value._id,
-        state: state,
-        steps: [],
-      };
-      for (const name in itw.value.steps) {
-        const stepRecord = itw.value.steps[name];
-        const stepDesign = design.value.steps.find(
-          (s) => s.name === stepRecord.name
-        );
-        const step = {
-          name: stepDesign.name,
-          form: stepDesign.form,
-          revision: stepDesign.revision,
-          state: stepRecord.state,
-          data: stepRecord.data,
-        };
-        interview.steps.push(step);
-      }
-      // make sure there is only one interview for the same participant
-      const idx = save.value
-        .map((itw) => itw.code)
-        .indexOf(participant.value.code);
-      if (idx < 0) {
-        save.value.push(interview);
+    async function saveRecord(state) {
+      const payload = {};
+      if (cred.value) {
+        payload.query = {};
+        payload.headers = { Authorization: `Participant ${cred.value}` };
       } else {
-        save.value.splice(idx, 1, interview);
+        payload.query = { code: code.value };
       }
+      const stepDesign = getStepDesign(record.value.name);
+      const data = {
+        form: stepDesign.form,
+        revision: stepDesign.revision,
+        ...record.value,
+      };
+      data.state = state;
+      return itwService
+        .patch(itw.value._id, { steps: [data] }, payload)
+        .then((response) => {
+          record.value = null;
+          itw.value = response;
+        });
     }
 
     /**
@@ -160,8 +159,11 @@ export const useInterviewStore = defineStore(
      * @returns
      */
     function getRecordStatus(name) {
-      if (itw.value && itw.value.steps[name]) {
-        return itw.value.steps[name].state;
+      if (itw.value && itw.value.steps) {
+        const step = itw.value.steps.find((step) => step.name === name);
+        if (step) {
+          return step.state;
+        }
       }
       return null;
     }
@@ -177,6 +179,7 @@ export const useInterviewStore = defineStore(
     }
 
     function reset() {
+      code.value = null;
       design.value = null;
       record.value = null;
       cred.value = null;
@@ -185,18 +188,19 @@ export const useInterviewStore = defineStore(
     }
 
     return {
+      cred,
+      code,
       design,
       record,
-      cred,
       itw,
       save,
       participant,
       investigators,
       steps,
-      payload,
       initByInterviewer,
       initByParticipant,
-      getStep,
+      initInterview,
+      getStepDesign,
       setupRecord,
       updateRecord,
       pauseRecord,

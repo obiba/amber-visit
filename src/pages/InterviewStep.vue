@@ -260,7 +260,7 @@ export default defineComponent({
   },
 
   mounted() {
-    this.step = this.itwStore.getStep(this.stepName);
+    this.step = this.itwStore.getStepDesign(this.stepName);
     if (this.step) {
       if (this.step.schema.layout) {
         this.mode = this.step.schema.layout;
@@ -272,12 +272,18 @@ export default defineComponent({
       });
       // TODO reinstate previous data and other steps data + participant data (for skip conditions)
       const record = this.itwStore.record;
+      const initForm = () => {
+        this.formData = this.itwStore.record.data;
+        this.updateProgress();
+        this.remountCounter++;
+      };
       if (!record || record.id !== this.stepName || !record.data) {
-        this.itwStore.setupRecord(this.stepName);
+        this.itwStore.setupRecord(this.stepName).then(() => {
+          initForm();
+        });
+      } else {
+        initForm();
       }
-      this.formData = this.itwStore.record.data;
-      this.updateProgress();
-      this.remountCounter++;
     } else {
       console.error("No such interview step with id: " + this.stepName);
       this.$router.push("/");
@@ -469,14 +475,12 @@ export default defineComponent({
           color: "negative",
         });
       } else {
-        this.itwStore.completeRecord();
-        this.$router.push("/");
+        this.itwStore.completeRecord().then(() => this.$router.push("/"));
       }
     },
     onPause() {
       this.updateFormData();
-      this.itwStore.pauseRecord();
-      this.$router.push("/");
+      this.itwStore.pauseRecord().then(() => this.$router.push("/"));
     },
     tr(key) {
       return makeSchemaFormTr(this.step.schema, { locale: this.currentLocale })(

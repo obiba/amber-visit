@@ -235,8 +235,10 @@ export default defineComponent({
       }
     },
     onLoad(code, done) {
-      this.itwStore
-        .initByInterviewer(code)
+      const promise = this.auth.user
+        ? this.itwStore.initByInterviewer(code)
+        : this.itwStore.initByParticipant();
+      promise
         .then((response) => {
           if (typeof done === "function") {
             done();
