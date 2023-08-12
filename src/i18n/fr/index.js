@@ -11,6 +11,7 @@ export default {
     powered_by: "Propulsé par",
     code: "Code du participant",
     investigator_help: "Besoin d'aide ? Contactez un investigateur",
+    time_estimate: "{0} minutes",
   },
   login: {
     code: "Votre code de participant",

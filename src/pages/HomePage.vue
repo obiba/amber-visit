@@ -85,6 +85,9 @@
                     </q-item-section>
 
                     <q-item-section side top>
+                      <q-item-label v-if="step.time_estimate" caption>{{
+                        $t("main.time_estimate", [step.time_estimate])
+                      }}</q-item-label>
                       <q-btn
                         v-if="itwStore.getRecordStatus(step.name) === null"
                         :title="$t('main.start_record')"

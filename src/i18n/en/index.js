@@ -15,6 +15,7 @@ export default {
     save_now: "Save now",
     interview_completed:
       "You have completed the interview, thanks for your contribution!",
+    time_estimate: "{0} minutes",
   },
   login: {
     user_title: "",
