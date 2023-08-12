@@ -5,7 +5,7 @@ export default {
   main: {
     brand: "Amber Visit",
     brand_caption: "Participant interview system",
-    logout: "Sign out",
+    logout: "Sign-out",
     docs: "Docs",
     forum: "Forum",
     powered_by: "Powered by",
@@ -25,6 +25,8 @@ export default {
     code: "Your participant code",
     participant_password: "Your participant secret",
     enter: "Enter",
+    participant_failed:
+      "Could not sign-in, please check your code or contact an investigator.",
     as_participant: "I am a participant",
     validate: "Validate",
     email: "Email",
