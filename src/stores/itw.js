@@ -24,7 +24,78 @@ export const useInterviewStore = defineStore(
       }
       return false;
     });
+    // compute the rendering options
+    const rendering = computed(() => {
+      const rval = {};
 
+      if (design.value) {
+        // collect data
+        const data = {
+          participant: design.value.participant
+            ? design.value.participant.data
+            : {},
+        };
+        // init each step with an empty data object
+        design.value.steps.forEach((step) => {
+          data[step.name] = {};
+        });
+        if (itw.value) {
+          itw.value.steps?.forEach((step) => {
+            data[step.name] = step.data;
+          });
+        }
+        design.value.steps.forEach((step) => {
+          rval[step.name] = {
+            visible: true,
+            disable: false,
+          };
+          if (step.condition && step.condition !== "") {
+            const script = `try {
+              return (${variableRefRewrite(step.condition)});
+            } catch(err) {
+              console.error(err);
+              return true;
+            }`;
+            const func = new Function(`return (data) => { ${script} }`)();
+            rval[step.name].visible = func(data);
+          }
+          if (step.disable && step.disable !== "") {
+            const script = `try {
+              return (${variableRefRewrite(step.disable)});
+            } catch(err) {
+              console.error(err);
+              return false;
+            }`;
+            const func = new Function(`return (data) => { ${script} }`)();
+            rval[step.name].disable = func(data);
+          }
+        });
+      }
+
+      return rval;
+    });
+
+    /**
+     * Rewrite the variable references $('xxx') in a JS script, for the condition/disable evaluation.
+     * @param {string} script
+     * @returns
+     */
+    function variableRefRewrite(script) {
+      const doRewrite = (match, p1, offset, string) => {
+        // console.log([match, p1, offset, string].join(', '))
+        return "data." + p1;
+      };
+      return script && typeof script === "string"
+        ? script.replace(/\$\('([\w\.]+)'\)/g, doRewrite)
+        : script;
+    }
+
+    /**
+     * Initialize design and interview data; to be called by the participant.
+     * @param {string} code
+     * @param {string} password
+     * @returns
+     */
     async function initByParticipant(code, password) {
       if (code) {
         cred.value = btoa(password ? `${code}:${password}` : code);
@@ -41,6 +112,11 @@ export const useInterviewStore = defineStore(
         .then(() => initInterview());
     }
 
+    /**
+     * Initialize design and interview data; to be called by the interviewer.
+     * @param {string} pcode
+     * @returns
+     */
     async function initByInterviewer(pcode) {
       code.value = pcode;
       return itwdService
@@ -54,6 +130,10 @@ export const useInterviewStore = defineStore(
         .then(() => initInterview());
     }
 
+    /**
+     * REST payload, with appropriate HTTP headers if participant is to be authenticated.
+     * @returns
+     */
     function makePayload() {
       const payload = {};
       if (cred.value) {
@@ -261,6 +341,7 @@ export const useInterviewStore = defineStore(
       steps,
       pending,
       completed,
+      rendering,
       // methods
       initByInterviewer,
       initByParticipant,

@@ -72,7 +72,11 @@
             <q-card-section>
               <q-list :dark="settings.theme.dark" separator>
                 <template v-for="step in itwStore.design.steps" :key="step._id">
-                  <q-item :dark="settings.theme.dark" class="q-pt-lg q-pb-lg">
+                  <q-item
+                    v-if="itwStore.rendering[step.name].visible"
+                    :dark="settings.theme.dark"
+                    class="q-pt-lg q-pb-lg"
+                  >
                     <q-item-section>
                       <q-item-label>{{ tr(step.label) }}</q-item-label>
                       <q-item-label caption lines="2">{{
@@ -87,11 +91,16 @@
                         :icon-right="
                           $q.lang.rtl ? 'chevron_left' : 'chevron_right'
                         "
-                        color="primary"
+                        :color="
+                          itwStore.rendering[step.name].disable
+                            ? 'secondary'
+                            : 'primary'
+                        "
                         rounded
                         no-caps
                         class="q-mt-sm q-mb-sm"
                         :to="`step/${step.name}`"
+                        :disable="itwStore.rendering[step.name].disable"
                       />
                       <q-btn
                         v-if="
@@ -99,11 +108,16 @@
                         "
                         :title="$t('main.start_record')"
                         icon-right="fas fa-ellipsis-h"
-                        color="primary"
+                        :color="
+                          itwStore.rendering[step.name].disable
+                            ? 'secondary'
+                            : 'primary'
+                        "
                         rounded
                         no-caps
                         class="q-mt-sm q-mb-sm"
                         :to="`step/${step.name}`"
+                        :disable="itwStore.rendering[step.name].disable"
                       />
                       <q-btn
                         v-if="
@@ -111,10 +125,15 @@
                         "
                         :title="$t('main.start_record')"
                         icon-right="check"
-                        color="positive"
+                        :color="
+                          itwStore.rendering[step.name].disable
+                            ? 'secondary'
+                            : 'positive'
+                        "
                         rounded
                         no-caps
                         class="q-mt-sm q-mb-sm"
+                        :disable="itwStore.rendering[step.name].disable"
                       />
                     </q-item-section>
                   </q-item>
