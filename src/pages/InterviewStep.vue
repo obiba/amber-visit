@@ -64,15 +64,17 @@
             </div>
             <div class="col-md-4 col-sm-8 col-xs-12 q-mt-sm q-mb-sm">
               <div v-if="isFinalStep">
-                <div class="text-subtitle1 q-mt-md q-mb-md">
+                <div class="text-subtitle1 q-mt-md q-mb-lg">
                   {{ $t("final_step_label") }}
                 </div>
-                <q-btn
-                  :label="$t('save')"
-                  icon="cloud_upload"
-                  color="primary"
-                  @click="onComplete"
-                />
+                <div class="flex flex-center">
+                  <q-btn
+                    :label="$t('save')"
+                    icon="cloud_upload"
+                    color="primary"
+                    @click="onComplete"
+                  />
+                </div>
               </div>
               <div v-else>
                 <BlitzForm
