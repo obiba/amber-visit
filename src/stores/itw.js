@@ -13,6 +13,7 @@ export const useInterviewStore = defineStore(
     const cred = ref(null); // the participant credentials if self-administered
     const itw = ref(null); // the interview collected data, to be saved
     const tosave = ref([]); // mark steps which changes are to be saved
+    const instructed = ref(false); // instructions were shown
 
     const participant = computed(() => design.value?.participant);
     const investigators = computed(() => design.value?.investigators);
@@ -325,16 +326,23 @@ export const useInterviewStore = defineStore(
         cred.value = null;
         itw.value = null;
         tosave.value = [];
+        instructed.value = false;
       }
     }
 
+    /**
+     * Mark that the instructions have been shown.
+     */
+    function instructionsShown() {
+      instructed.value = true;
+    }
+
     return {
-      cred,
       code,
       design,
       record,
       itw,
-      tosave,
+      instructed,
       // computed
       participant,
       investigators,
@@ -354,6 +362,7 @@ export const useInterviewStore = defineStore(
       getRecordStatus,
       savePendingRecords,
       reset,
+      instructionsShown,
     };
   },
   {

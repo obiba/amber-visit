@@ -194,6 +194,26 @@
         <div class="col"></div>
       </div>
     </q-pull-to-refresh>
+
+    <q-dialog v-model="showInstructions" position="bottom">
+      <q-card>
+        <q-card-section v-if="auth.user">
+          <div v-html="md(tr(itwStore.design.interviewer_instructions))"></div>
+        </q-card-section>
+        <q-card-section v-else>
+          <div v-html="md(tr(itwStore.design.participant_instructions))"></div>
+        </q-card-section>
+        <q-card-actions align="right">
+          <q-btn
+            flat
+            label="OK"
+            color="primary"
+            v-close-popup
+            @click="itwStore.instructionsShown()"
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
@@ -220,10 +240,21 @@ export default defineComponent({
       code: ref(""),
       receive: ref(false),
       showHelp: ref(false),
+      showInstructions: ref(false),
       itwStore,
     };
   },
+  mounted() {
+    this.doShowInstructions();
+  },
   methods: {
+    doShowInstructions() {
+      if (this.itwStore.instructed) return;
+
+      if (!this.auth.user && this.itwStore.design?.participant_instructions) {
+        this.showInstructions = true;
+      }
+    },
     tr(key) {
       return makeSchemaFormTr(this.itwStore.design, { locale: this.locale })(
         key
@@ -261,6 +292,11 @@ export default defineComponent({
         .then((response) => {
           if (typeof done === "function") {
             done();
+          } else {
+            this.showInstructions =
+              this.auth.user &&
+              !this.itwStore.instructed &&
+              this.itwStore.design.interviewer_instructions !== undefined;
           }
           this.receive = false;
         })
