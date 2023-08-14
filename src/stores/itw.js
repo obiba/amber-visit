@@ -14,6 +14,7 @@ export const useInterviewStore = defineStore(
     const itw = ref(null); // the interview collected data, to be saved
     const tosave = ref([]); // mark steps which changes are to be saved
     const instructed = ref(false); // instructions were shown
+    const rendering = ref({}); // the visibility/enability of the steps
 
     const participant = computed(() => design.value?.participant);
     const investigators = computed(() => design.value?.investigators);
@@ -25,12 +26,16 @@ export const useInterviewStore = defineStore(
       }
       return false;
     });
-    // compute the rendering options
-    const rendering = computed(() => {
+
+    /**
+     * Evaluate and set the rendering options.
+     * @returns The interview state
+     */
+    function evalRendering() {
       const rval = {};
 
       if (design.value) {
-        // collect data
+        // collect data, participant's ones are included
         const data = {
           participant: design.value.participant
             ? design.value.participant.data
@@ -42,11 +47,20 @@ export const useInterviewStore = defineStore(
         });
         if (itw.value) {
           itw.value.steps?.forEach((step) => {
-            data[step.name] = step.data;
+            if (step.state === "completed") {
+              // only include data of completed steps otherwise
+              // dependent steps could be actived while parent data could still be modified
+              data[step.name] = step.data;
+            }
+            rval[step.name] = {
+              state: step.state,
+            };
           });
         }
+        // eval condition and disable scripts
         design.value.steps.forEach((step) => {
           rval[step.name] = {
+            ...rval[step.name],
             visible: true,
             disable: false,
           };
@@ -73,8 +87,15 @@ export const useInterviewStore = defineStore(
         });
       }
 
-      return rval;
-    });
+      rendering.value = rval;
+
+      const completed =
+        Object.values(rval).filter(
+          (step) => step.visible && step.state !== "completed"
+        ).length === 0;
+
+      return completed ? "completed" : "in_progress";
+    }
 
     /**
      * Rewrite the variable references $('xxx') in a JS script, for the condition/disable evaluation.
@@ -109,6 +130,7 @@ export const useInterviewStore = defineStore(
         .then((response) => {
           design.value = response.data[0];
           itw.value = null;
+          rendering.value = {};
         })
         .then(() => initInterview());
     }
@@ -127,6 +149,7 @@ export const useInterviewStore = defineStore(
         .then((response) => {
           design.value = response.data[0];
           itw.value = null;
+          rendering.value = {};
         })
         .then(() => initInterview());
     }
@@ -155,6 +178,7 @@ export const useInterviewStore = defineStore(
         const payload = makePayload();
         return itwService.find(payload).then((response) => {
           itw.value = response.data[0];
+          evalRendering();
         });
       } else {
         return new Promise((resolve) => resolve());
@@ -243,27 +267,32 @@ export const useInterviewStore = defineStore(
       stepObj.state = state;
       design.value.steps.forEach((step) => delete stepObj.data[step.name]);
       delete stepObj.data.participant;
+
+      // include patch data to current itw, so that it works offline and saving can be postponed
+      if (!itw.value.steps) {
+        itw.value.steps = [stepObj];
+      } else {
+        const idx = itw.value.steps
+          .map((step) => step.name)
+          .indexOf(stepObj.name);
+        if (idx < 0) {
+          itw.value.steps.push(stepObj);
+        } else {
+          itw.value.steps.splice(idx, 1, stepObj);
+        }
+      }
+      const itwState = evalRendering();
+      itw.value.state = itwState;
+
       return itwService
-        .patch(itw.value._id, { steps: [stepObj] }, payload)
+        .patch(itw.value._id, { state: itwState, steps: [stepObj] }, payload)
         .then((response) => {
           record.value = null;
           itw.value = response;
+          evalRendering();
         })
         .catch((err) => {
           // handle save error
-          // include patch data to current itw, so that it works offline and saving can be postponed
-          if (!itw.value.steps) {
-            itw.value.steps = [stepObj];
-          } else {
-            const idx = itw.value.steps
-              .map((step) => step.name)
-              .indexOf(stepObj.name);
-            if (idx < 0) {
-              itw.value.steps.push(stepObj);
-            } else {
-              itw.value.steps.splice(idx, 1, stepObj);
-            }
-          }
           if (!tosave.value.includes(stepObj.name)) {
             tosave.value.push(stepObj.name);
           }
@@ -276,14 +305,29 @@ export const useInterviewStore = defineStore(
      */
     async function savePendingRecords() {
       if (tosave.value.length > 0) {
-        const stepObjs = itw.value.steps.filter((step) =>
-          tosave.value.includes(step.name)
-        );
+        const stepObjs = itw.value.steps
+          .filter((step) => tosave.value.includes(step.name))
+          .map((step) => {
+            if (!step.form || !step.revision) {
+              const stepDesign = getStepDesign(step.name);
+              return {
+                ...step,
+                form: stepDesign.form,
+                revision: stepDesign.revision,
+              };
+            }
+            return step;
+          });
         const payload = makePayload();
         return itwService
-          .patch(itw.value._id, { steps: stepObjs }, payload)
+          .patch(
+            itw.value._id,
+            { state: itw.value.state, steps: stepObjs },
+            payload
+          )
           .then((response) => {
             itw.value = response;
+            evalRendering();
             tosave.value = [];
           });
       }
@@ -327,6 +371,7 @@ export const useInterviewStore = defineStore(
         itw.value = null;
         tosave.value = [];
         instructed.value = false;
+        rendering.value = {};
       }
     }
 
@@ -343,13 +388,13 @@ export const useInterviewStore = defineStore(
       record,
       itw,
       instructed,
+      rendering,
       // computed
       participant,
       investigators,
       steps,
       pending,
       completed,
-      rendering,
       // methods
       initByInterviewer,
       initByParticipant,
