@@ -251,6 +251,9 @@ export default defineComponent({
       withPassword: ref(false),
     };
   },
+  mounted() {
+    this.authStore.logout();
+  },
   computed: {
     localeOptions() {
       return locales.map((loc) => {
@@ -331,6 +334,7 @@ export default defineComponent({
               this.secret = response.data.secret;
               this.withToken = true;
             } else {
+              this.itwStore.setUser(response.user);
               this.redirect();
             }
           })
@@ -387,7 +391,7 @@ export default defineComponent({
       }
     },
     redirect() {
-      const redirectTo = this.authStore.loginRedirect || "/";
+      const redirectTo = this.authStore.loginRedirect || "..";
       this.authStore.loginRedirect = null;
       this.$router.push(redirectTo);
     },

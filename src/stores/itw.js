@@ -7,7 +7,9 @@ export const useInterviewStore = defineStore(
     const { api } = useFeathers();
     const itwdService = api.service("itwd");
     const itwService = api.service("itw");
+    const authStore = useAuthStore();
 
+    const user = ref(null);
     const code = ref(null); // the current participant's code
     const design = ref(null); // the interview design
     const record = ref(null); // the current step form record
@@ -17,6 +19,10 @@ export const useInterviewStore = defineStore(
     const instructed = ref(false); // instructions were shown
     const rendering = ref({}); // the visibility/enability of the steps
 
+    const isAuthenticated = computed(() => {
+      if (authStore.isAuthenticated) return true;
+      return cred.value !== null;
+    });
     const participant = computed(() => design.value?.participant);
     const investigators = computed(() => design.value?.investigators);
     const steps = computed(() => design.value?.steps);
@@ -365,6 +371,7 @@ export const useInterviewStore = defineStore(
     function reset(force) {
       // check if changes to saved, otherwise data will be lost
       if (tosave.value.length === 0 || force) {
+        user.value = null;
         code.value = null;
         design.value = null;
         record.value = null;
@@ -383,7 +390,12 @@ export const useInterviewStore = defineStore(
       instructed.value = true;
     }
 
+    function setUser(payload) {
+      user.value = payload;
+    }
+
     return {
+      user,
       code,
       design,
       record,
@@ -392,6 +404,7 @@ export const useInterviewStore = defineStore(
       instructed,
       rendering,
       // computed
+      isAuthenticated,
       participant,
       investigators,
       steps,
@@ -410,6 +423,7 @@ export const useInterviewStore = defineStore(
       savePendingRecords,
       reset,
       instructionsShown,
+      setUser,
     };
   },
   {

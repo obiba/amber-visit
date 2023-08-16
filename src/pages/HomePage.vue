@@ -4,7 +4,7 @@
       <div class="row q-pa-md q-mt-lg">
         <div class="col"></div>
         <div class="col-md-6 col-sm-8 col-xs-12">
-          <div v-if="auth.user">
+          <div v-if="authStore.isAuthenticated">
             <q-card flat class="q-mb-md bg-grey-3">
               <q-card-section>
                 <q-list>
@@ -156,7 +156,7 @@
               </q-list>
             </q-card-section>
           </q-card>
-          <div v-if="!auth.user">
+          <div v-if="!authStore.isAuthenticated">
             <q-card flat class="q-mb-md bg-grey-3">
               <q-card-section>
                 <q-list>
@@ -210,9 +210,13 @@
       </div>
     </q-pull-to-refresh>
 
-    <q-dialog v-model="showInstructions" position="bottom">
+    <q-dialog
+      v-if="itwStore.isAuthenticated"
+      v-model="showInstructions"
+      position="bottom"
+    >
       <q-card>
-        <q-card-section v-if="auth.user">
+        <q-card-section v-if="authStore.isAuthenticated">
           <div v-html="md(tr(itwStore.design.interviewer_instructions))"></div>
         </q-card-section>
         <q-card-section v-else>
@@ -242,14 +246,14 @@ import { makeSchemaFormTr } from "@obiba/quasar-ui-amber";
 export default defineComponent({
   name: "HomePage",
   setup() {
-    const auth = useAuthStore();
+    const authStore = useAuthStore();
     const { api } = useFeathers();
     const interviewDesignService = api.service("itwd");
     const itwStore = useInterviewStore();
     const { locale } = useI18n({ useScope: "global" });
     return {
       locale,
-      auth,
+      authStore,
       settings,
       interviewDesignService,
       code: ref(""),
@@ -266,7 +270,10 @@ export default defineComponent({
     doShowInstructions() {
       if (this.itwStore.instructed) return;
 
-      if (!this.auth.user && this.itwStore.design?.participant_instructions) {
+      if (
+        !this.itwStore.user &&
+        this.itwStore.design?.participant_instructions
+      ) {
         this.showInstructions = true;
       }
     },
@@ -300,7 +307,7 @@ export default defineComponent({
       }
     },
     onLoad(code, done) {
-      const promise = this.auth.user
+      const promise = this.itwStore.user
         ? this.itwStore.initByInterviewer(code)
         : this.itwStore.initByParticipant();
       promise
@@ -309,7 +316,7 @@ export default defineComponent({
             done();
           } else {
             this.showInstructions =
-              this.auth.user &&
+              this.itwStore.user &&
               !this.itwStore.instructed &&
               this.itwStore.design.interviewer_instructions !== undefined;
           }

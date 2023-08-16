@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
+  <q-layout v-if="itwStore.isAuthenticated" view="lHh Lpr lFf">
     <q-header elevated :class="settings.theme.header">
       <q-toolbar>
         <q-btn
@@ -65,9 +65,20 @@
     >
       <q-list>
         <q-item-label header>
-          <q-chip color="secondary" text-color="white" class="q-ma-none">{{
-            authStore.user?.email || itwStore?.participant?.code
-          }}</q-chip>
+          <q-chip
+            v-if="authStore.isAuthenticated"
+            color="secondary"
+            text-color="white"
+            class="q-ma-none"
+            >{{ itwStore.user?.email }}</q-chip
+          >
+          <q-chip
+            v-else
+            color="secondary"
+            text-color="white"
+            class="q-ma-none"
+            >{{ itwStore?.participant?.code }}</q-chip
+          >
         </q-item-label>
 
         <q-item clickable @click="onLogout">
@@ -136,8 +147,8 @@ export default defineComponent({
     };
   },
   mounted() {
-    if (this.authStore.user && !this.authStore.isAuthenticated) {
-      this.$router.push("login");
+    if (!this.itwStore.isAuthenticated) {
+      this.onLogout();
     }
   },
   computed: {
@@ -162,7 +173,7 @@ export default defineComponent({
     onLogout() {
       // TODO make sure no save is pending
       this.itwStore.reset(true);
-      if (this.authStore.user) {
+      if (this.authStore.isAuthenticated) {
         this.authStore.logout().then(() => {
           this.$router.push("login");
         });

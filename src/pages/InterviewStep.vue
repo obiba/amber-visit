@@ -1,5 +1,5 @@
 <template>
-  <q-layout v-cloak view="hHh lpR fFf">
+  <q-layout v-if="itwStore.isAuthenticated" v-cloak view="hHh lpR fFf">
     <q-header
       elevated
       :class="settings.theme.header"
@@ -244,8 +244,10 @@ export default defineComponent({
     BlitzForm,
   },
   setup() {
+    const authStore = useAuthStore();
     const itwStore = useInterviewStore();
     return {
+      authStore,
       itwStore,
       errorsRemain: ref(false),
       errors: ref([]),
@@ -262,33 +264,37 @@ export default defineComponent({
   },
 
   mounted() {
-    this.step = this.itwStore.getStepDesign(this.stepName);
-    if (this.step) {
-      if (this.step.schema.layout) {
-        this.mode = this.step.schema.layout;
-      }
-      this.schema = makeBlitzarQuasarSchemaForm(this.step.schema, {
-        locale: this.currentLocale,
-        stepId: "__page",
-        debug: this.debug,
-      });
-      // TODO reinstate previous data and other steps data + participant data (for skip conditions)
-      const record = this.itwStore.record;
-      const initForm = () => {
-        this.formData = this.itwStore.record.data;
-        this.updateProgress();
-        this.remountCounter++;
-      };
-      if (!record || record.id !== this.stepName || !record.data) {
-        this.itwStore.setupRecord(this.stepName).then(() => {
-          initForm();
-        });
-      } else {
-        initForm();
-      }
+    if (!this.itwStore.isAuthenticated) {
+      this.onLogout();
     } else {
-      console.error("No such interview step with id: " + this.stepName);
-      this.$router.push("..");
+      this.step = this.itwStore.getStepDesign(this.stepName);
+      if (this.step) {
+        if (this.step.schema.layout) {
+          this.mode = this.step.schema.layout;
+        }
+        this.schema = makeBlitzarQuasarSchemaForm(this.step.schema, {
+          locale: this.currentLocale,
+          stepId: "__page",
+          debug: this.debug,
+        });
+        // TODO reinstate previous data and other steps data + participant data (for skip conditions)
+        const record = this.itwStore.record;
+        const initForm = () => {
+          this.formData = this.itwStore.record.data;
+          this.updateProgress();
+          this.remountCounter++;
+        };
+        if (!record || record.id !== this.stepName || !record.data) {
+          this.itwStore.setupRecord(this.stepName).then(() => {
+            initForm();
+          });
+        } else {
+          initForm();
+        }
+      } else {
+        console.error("No such interview step with id: " + this.stepName);
+        this.$router.push("..");
+      }
     }
   },
 
@@ -491,6 +497,17 @@ export default defineComponent({
     },
     md(text) {
       return text ? snarkdown(text) : text;
+    },
+    onLogout() {
+      // TODO make sure no save is pending
+      this.itwStore.reset(true);
+      if (this.authStore.isAuthenticated) {
+        this.authStore.logout().then(() => {
+          this.$router.push("../login");
+        });
+      } else {
+        this.$router.push("../login");
+      }
     },
   },
 });
