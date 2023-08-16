@@ -137,7 +137,7 @@ export default defineComponent({
   },
   mounted() {
     if (this.authStore.user && !this.authStore.isAuthenticated) {
-      this.$router.push("/login");
+      this.$router.push("login");
     }
   },
   computed: {
@@ -164,10 +164,10 @@ export default defineComponent({
       this.itwStore.reset(true);
       if (this.authStore.user) {
         this.authStore.logout().then(() => {
-          this.$router.push("/login");
+          this.$router.push("login");
         });
       } else {
-        this.$router.push("/login");
+        this.$router.push("login");
       }
     },
     onSaveNow() {

@@ -17,6 +17,10 @@ export default {
       "Vous avez complété l'entrevue, merci pour votre contribution !",
     time_estimate: "- | 1 minute | {count} minutes",
     receive_participant: "Recevoir un participant",
+    start_step: "Commencer",
+    continue_step: "Continuer",
+    waiting_step: "En attente",
+    completed_step: "Finalisé",
   },
   login: {
     user_title: "",

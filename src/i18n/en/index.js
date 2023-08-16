@@ -17,6 +17,10 @@ export default {
       "You have completed the interview, thanks for your contribution!",
     time_estimate: "- | 1 minute | {count} minutes",
     receive_participant: "Receive a participant",
+    start_step: "Start",
+    continue_step: "Continue",
+    waiting_step: "Waiting",
+    completed_step: "Completed",
   },
   login: {
     user_title: "",

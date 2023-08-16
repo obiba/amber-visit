@@ -90,7 +90,13 @@
                       }}</q-item-label>
                       <q-btn
                         v-if="itwStore.getRecordStatus(step.name) === null"
-                        :title="$t('main.start_record')"
+                        :title="
+                          $t(
+                            itwStore.rendering[step.name]?.disable
+                              ? 'main.waiting_step'
+                              : 'main.start_step'
+                          )
+                        "
                         :icon-right="
                           $q.lang.rtl ? 'chevron_left' : 'chevron_right'
                         "
@@ -109,7 +115,13 @@
                         v-if="
                           itwStore.getRecordStatus(step.name) === 'in_progress'
                         "
-                        :title="$t('main.start_record')"
+                        :title="
+                          $t(
+                            itwStore.rendering[step.name]?.disable
+                              ? 'main.waiting_step'
+                              : 'main.continue_step'
+                          )
+                        "
                         icon-right="fas fa-ellipsis-h"
                         :color="
                           itwStore.rendering[step.name]?.disable
@@ -126,7 +138,7 @@
                         v-if="
                           itwStore.getRecordStatus(step.name) === 'completed'
                         "
-                        :title="$t('main.start_record')"
+                        :title="$t('main.completed_step')"
                         icon-right="check"
                         :color="
                           itwStore.rendering[step.name]?.disable

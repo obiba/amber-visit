@@ -288,7 +288,7 @@ export default defineComponent({
       }
     } else {
       console.error("No such interview step with id: " + this.stepName);
-      this.$router.push("/");
+      this.$router.push("..");
     }
   },
 
@@ -477,12 +477,12 @@ export default defineComponent({
           color: "negative",
         });
       } else {
-        this.itwStore.completeRecord().then(() => this.$router.push("/"));
+        this.itwStore.completeRecord().then(() => this.$router.push(".."));
       }
     },
     onPause() {
       this.updateFormData();
-      this.itwStore.pauseRecord().then(() => this.$router.push("/"));
+      this.itwStore.pauseRecord().then(() => this.$router.push(".."));
     },
     tr(key) {
       return makeSchemaFormTr(this.step.schema, { locale: this.currentLocale })(
