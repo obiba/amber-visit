@@ -7,9 +7,10 @@ export const useInterviewStore = defineStore(
     const { api } = useFeathers();
     const itwdService = api.service("itwd");
     const itwService = api.service("itw");
+
+    const code = ref(null); // the current participant's code
     const design = ref(null); // the interview design
     const record = ref(null); // the current step form record
-    const code = ref(null); // the current participant's code
     const cred = ref(null); // the participant credentials if self-administered
     const itw = ref(null); // the interview collected data, to be saved
     const tosave = ref([]); // mark steps which changes are to be saved
@@ -387,6 +388,7 @@ export const useInterviewStore = defineStore(
       design,
       record,
       itw,
+      tosave,
       instructed,
       rendering,
       // computed

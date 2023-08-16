@@ -15,7 +15,7 @@ export default {
     save_now: "Save now",
     interview_completed:
       "You have completed the interview, thanks for your contribution!",
-    time_estimate: "{0} minutes",
+    time_estimate: "- | 1 minute | {count} minutes",
   },
   login: {
     user_title: "",
@@ -41,4 +41,11 @@ export default {
   },
   cancel: "Cancel",
   start: "Start",
+  "Participant not found": "Participant not found.",
+  "You are not an interviewer": "You are not an interviewer.",
+  "Not a valid participant code": "Not a valid participant code.",
+  "Participant code is missing": "Participant code is missing.",
+  "You are not an investigator":
+    "You are not an investigator for this participant.",
+  "Interview design is not active": "Interview is not active.",
 };

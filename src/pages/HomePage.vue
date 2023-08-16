@@ -73,7 +73,7 @@
               <q-list :dark="settings.theme.dark" separator>
                 <template v-for="step in itwStore.design.steps" :key="step._id">
                   <q-item
-                    v-if="itwStore.rendering[step.name].visible"
+                    v-if="itwStore.rendering[step.name]?.visible"
                     :dark="settings.theme.dark"
                     class="q-pt-lg q-pb-lg"
                   >
@@ -86,7 +86,7 @@
 
                     <q-item-section side top>
                       <q-item-label v-if="step.time_estimate" caption>{{
-                        $t("main.time_estimate", [step.time_estimate])
+                        $t("main.time_estimate", { count: step.time_estimate })
                       }}</q-item-label>
                       <q-btn
                         v-if="itwStore.getRecordStatus(step.name) === null"
@@ -95,7 +95,7 @@
                           $q.lang.rtl ? 'chevron_left' : 'chevron_right'
                         "
                         :color="
-                          itwStore.rendering[step.name].disable
+                          itwStore.rendering[step.name]?.disable
                             ? 'secondary'
                             : 'primary'
                         "
@@ -103,7 +103,7 @@
                         no-caps
                         class="q-mt-sm q-mb-sm"
                         :to="`step/${step.name}`"
-                        :disable="itwStore.rendering[step.name].disable"
+                        :disable="itwStore.rendering[step.name]?.disable"
                       />
                       <q-btn
                         v-if="
@@ -112,7 +112,7 @@
                         :title="$t('main.start_record')"
                         icon-right="fas fa-ellipsis-h"
                         :color="
-                          itwStore.rendering[step.name].disable
+                          itwStore.rendering[step.name]?.disable
                             ? 'secondary'
                             : 'primary'
                         "
@@ -120,7 +120,7 @@
                         no-caps
                         class="q-mt-sm q-mb-sm"
                         :to="`step/${step.name}`"
-                        :disable="itwStore.rendering[step.name].disable"
+                        :disable="itwStore.rendering[step.name]?.disable"
                       />
                       <q-btn
                         v-if="
@@ -129,14 +129,14 @@
                         :title="$t('main.start_record')"
                         icon-right="check"
                         :color="
-                          itwStore.rendering[step.name].disable
+                          itwStore.rendering[step.name]?.disable
                             ? 'secondary'
                             : 'positive'
                         "
                         rounded
                         no-caps
                         class="q-mt-sm q-mb-sm"
-                        :disable="itwStore.rendering[step.name].disable"
+                        :disable="itwStore.rendering[step.name]?.disable"
                       />
                     </q-item-section>
                   </q-item>
@@ -311,7 +311,7 @@ export default defineComponent({
             this.$router.push("login");
           } else {
             Notify.create({
-              message: err.message,
+              message: this.$t(err.message),
               color: "negative",
             });
           }

@@ -15,7 +15,8 @@ export default {
     save_now: "Sauvegarder maintenant",
     interview_completed:
       "Vous avez complété l'entrevue, merci pour votre contribution !",
-    time_estimate: "{0} minutes",
+    time_estimate: "- | 1 minute | {count} minutes",
+    not_investigator: "Vous n'êtes pas un enquêteur.rice pour ce participant.",
   },
   login: {
     user_title: "",
@@ -41,4 +42,12 @@ export default {
   },
   cancel: "Annuler",
   start: "Commencer",
+  "Participant not found": "Participant non trouvé.",
+  "You are not an interviewer":
+    "Vous n'êtes pas autorisé à conduire des entrevues.",
+  "Not a valid participant code": "Le code du participant n'est pas valide.",
+  "Participant code is missing": "Le code du participant est manquant.",
+  "You are not an investigator":
+    "Vous n'êtes pas un enquêteur.rice pour ce participant.",
+  "Interview design is not active": "L'entrevue n'est pas active",
 };
