@@ -16,7 +16,7 @@ export default {
     interview_completed:
       "Vous avez complété l'entrevue, merci pour votre contribution !",
     time_estimate: "- | 1 minute | {count} minutes",
-    receive_participant: "Recevoir le participant",
+    receive_participant: "Recevoir un participant",
   },
   login: {
     user_title: "",
