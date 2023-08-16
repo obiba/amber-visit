@@ -34,7 +34,7 @@ module.exports = configure(function (ctx) {
     boot: ["i18n", "axios", "settings", "feathers-pinia"],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#css
-    css: ["app.scss"],
+    css: ["app.scss", "custom.scss"],
 
     // https://github.com/quasarframework/quasar/tree/dev/extras
     extras: [

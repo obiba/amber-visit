@@ -1,6 +1,10 @@
-# Amber Visit (amber-visit)
+# Amber Visit
 
-Interview data collection for Amber
+[Amber](https://github.com/obiba/amber) is the Electronic Data Capture server. Amber Visit is a web interface for collecting the data with interviews:
+
+- interview with interdependent steps
+- campaign investigators
+- self-administered or assisted interviews
 
 ## Install the dependencies
 
@@ -32,6 +36,18 @@ yarn format
 yarn quasar build
 ```
 
+Environment variable for building the app in production:
+
+- `AMBER_URL`, the url of the Amber server, exposing a REST API used by Amber Visit (make sure CORS policy is set correctly on the server)
+
 ### Customize the configuration
 
-See [Configuring quasar.config.js](https://v2.quasar.dev/quasar-cli-vite/quasar-config-js).
+- Modify the `settings.json` file for theming, configure build and overriding translations.
+- Override the `src/components/AppBanner.vue` file to apply your own banner in front pages (login and forgot password pages).
+- Override the `src/css/custom.scss` file to apply your own stylesheet rules.
+
+See also [Configuring quasar.conf.js](https://quasar.dev/quasar-cli/quasar-conf-js).
+
+## License
+
+[MIT](https://mit-license.org/)
