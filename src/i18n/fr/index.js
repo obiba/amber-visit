@@ -16,7 +16,7 @@ export default {
     interview_completed:
       "Vous avez complété l'entrevue, merci pour votre contribution !",
     time_estimate: "- | 1 minute | {count} minutes",
-    not_investigator: "Vous n'êtes pas un enquêteur.rice pour ce participant.",
+    receive_participant: "Recevoir le participant",
   },
   login: {
     user_title: "",
