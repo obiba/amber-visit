@@ -53,4 +53,17 @@ export default {
   "You are not an investigator":
     "You are not an investigator for this participant.",
   "Interview design is not active": "Interview is not active.",
+  close: "Close",
+  go_to: "Go to...",
+  pause: "Pause",
+  previous: "Previous",
+  next: "Next",
+  validate_save: "Validate and save",
+  validation_errors: "Validation errors: {errors}",
+  single_page: "Single page",
+  multi_steps: "Multiple steps",
+  final_step_label: "This is the end of the form, congratulations!",
+  required_field: "Field is required",
+  go_home: "Go Home",
+  nothing_here: "Oops. Nothing here...",
 };

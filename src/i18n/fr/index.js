@@ -54,4 +54,17 @@ export default {
   "You are not an investigator":
     "Vous n'êtes pas un enquêteur.rice pour ce participant.",
   "Interview design is not active": "L'entrevue n'est pas active",
+  close: "Fermer",
+  go_to: "Aller à...",
+  pause: "Pause",
+  previous: "Précédent",
+  next: "Suivant",
+  validate_save: "Valider et sauvegarder",
+  validation_errors: "Erreurs de validation: {errors}",
+  single_page: "Une seule page",
+  multi_steps: "Étapes multiples",
+  final_step_label: "Félicitations, le formulaire est complet !",
+  required_field: "Le champ est requis",
+  go_home: "Retour à l'accueil",
+  nothing_here: "Il n'y a rien ici...",
 };
