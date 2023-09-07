@@ -6,4 +6,4 @@ export const useAuthStore = defineStore("auth", () => {
   const auth = useAuth({ api, servicePath: "user" });
   auth.reAuthenticate();
   return { ...auth };
-});
+}, { persist: true });

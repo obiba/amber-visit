@@ -397,6 +397,7 @@ export const useInterviewStore = defineStore(
     return {
       user,
       code,
+      cred,
       design,
       record,
       itw,
