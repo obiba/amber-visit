@@ -26,6 +26,7 @@
                   </div>
                   <q-form @submit="onSubmit" class="q-gutter-md">
                     <q-input
+                      autofocus
                       dark
                       color="white"
                       v-model="email"
@@ -82,9 +83,10 @@
                     </template>
                   </q-input>
                 </q-card-section>
-                <q-card-section v-show="withToken">
+                <q-card-section v-if="withToken">
                   <q-form @submit="onSubmit" class="q-gutter-md">
                     <q-input
+                      autofocus
                       type="number"
                       dark
                       color="white"
@@ -127,7 +129,8 @@
                   autocomplete="off"
                 >
                   <q-input
-                    v-show="!withPassword"
+                    autofocus
+                    v-if="!withPassword"
                     autocomplete="new-password"
                     dark
                     color="white"
@@ -140,7 +143,8 @@
                     </template>
                   </q-input>
                   <q-input
-                    v-show="withPassword"
+                    :autofocus="withPassword"
+                    v-else
                     type="password"
                     autocomplete="new-password"
                     dark
