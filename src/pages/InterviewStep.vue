@@ -2,6 +2,7 @@
   <q-layout v-if="itwStore.isAuthenticated" v-cloak view="hHh lpR fFf">
     <q-header
       elevated
+      class="print-hide"
       :class="settings.theme.header"
       v-touch-swipe.mouse.left.right="handleSwipe"
     >
@@ -59,7 +60,7 @@
                 v-if="canPrevious()"
                 :name="$q.lang.rtl ? 'arrow_forward' : 'arrow_back'"
                 size="xl"
-                class=""
+                class="print-hide"
               />
             </div>
             <div class="col-md-4 col-sm-8 col-xs-12 q-mt-sm q-mb-sm">
@@ -103,6 +104,7 @@
                 v-if="canNext()"
                 :name="$q.lang.rtl ? 'arrow_back' : 'arrow_forward'"
                 size="xl"
+                class="print-hide"
               />
             </div>
           </div>
@@ -112,6 +114,7 @@
 
     <q-footer
       elevated
+      class="print-hide"
       :class="settings.theme.footer"
       v-touch-swipe.mouse.left.right="handleSwipe"
     >
