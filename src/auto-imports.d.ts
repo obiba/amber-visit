@@ -375,7 +375,6 @@ declare module 'vue' {
     readonly useAttrs: UnwrapRef<typeof import('vue')['useAttrs']>
     readonly useAuth: UnwrapRef<typeof import('feathers-pinia')['useAuth']>
     readonly useAuthStore: UnwrapRef<typeof import('./stores/auth')['useAuthStore']>
-    readonly useCounterStore: UnwrapRef<typeof import('./stores/example-store.js')['useCounterStore']>
     readonly useCssModule: UnwrapRef<typeof import('vue')['useCssModule']>
     readonly useCssVars: UnwrapRef<typeof import('vue')['useCssVars']>
     readonly useDataStore: UnwrapRef<typeof import('feathers-pinia')['useDataStore']>
@@ -457,7 +456,6 @@ declare module '@vue/runtime-core' {
     readonly useAttrs: UnwrapRef<typeof import('vue')['useAttrs']>
     readonly useAuth: UnwrapRef<typeof import('feathers-pinia')['useAuth']>
     readonly useAuthStore: UnwrapRef<typeof import('./stores/auth')['useAuthStore']>
-    readonly useCounterStore: UnwrapRef<typeof import('./stores/example-store.js')['useCounterStore']>
     readonly useCssModule: UnwrapRef<typeof import('vue')['useCssModule']>
     readonly useCssVars: UnwrapRef<typeof import('vue')['useCssVars']>
     readonly useDataStore: UnwrapRef<typeof import('feathers-pinia')['useDataStore']>
