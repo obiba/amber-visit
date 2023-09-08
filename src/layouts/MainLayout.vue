@@ -17,7 +17,7 @@
           <q-btn-dropdown
             v-show="hasLocales"
             flat
-            :label="$t('locales.' + locale)"
+            :label="getLocaleLabel(locale)"
           >
             <q-list>
               <q-item
@@ -153,10 +153,18 @@ export default defineComponent({
   },
   computed: {
     localeOptions() {
-      return locales.map((loc) => {
+      let allLocales = [...locales];
+      if (this.itwStore.design && this.itwStore.design.i18n) {
+        allLocales.push(Object.keys(this.itwStore.design.i18n));
+        allLocales = allLocales.flat();
+      }
+      allLocales = allLocales.filter(
+        (value, index, array) => array.indexOf(value) === index
+      );
+      return allLocales.map((loc) => {
         return {
           value: loc,
-          label: this.$t("locales." + loc),
+          label: this.getLocaleLabel(loc),
         };
       });
     },
@@ -165,6 +173,14 @@ export default defineComponent({
     },
   },
   methods: {
+    getLocaleLabel(loc) {
+      const key = `locales.${loc}`;
+      let label = this.$t(key);
+      if (label === key) {
+        label = loc.toUpperCase();
+      }
+      return label;
+    },
     onLocaleSelection(opt) {
       this.locale = opt.value;
       this.$q.lang.set(opt.value);
