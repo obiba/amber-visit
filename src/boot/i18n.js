@@ -5,7 +5,22 @@ import { settings } from "./settings";
 import { merge } from "merge-anything";
 import { Quasar } from "quasar";
 
-const locales = settings.i18n ? Object.keys(settings.i18n) : ["en", "fr"];
+const defaultLocales = [
+  "en",
+  "fr",
+  "da",
+  "sv",
+  "et",
+  "nl",
+  "pt",
+  "de",
+  "it",
+  "fi",
+  "ru",
+  "el",
+];
+
+const locales = settings.i18n ? Object.keys(settings.i18n) : defaultLocales;
 
 let detectedLocale = Quasar.lang.getLocale().split("-")[0];
 if (!locales.includes(detectedLocale)) {
