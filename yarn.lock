@@ -807,6 +807,20 @@
   resolved "https://registry.yarnpkg.com/@vue/shared/-/shared-3.3.4.tgz#06e83c5027f464eef861c329be81454bc8b70780"
   integrity sha512-7OjdcV8vQ74eiz1TZLzZP4JwqM5fA94K6yntPS5Z25r9HDuGNzaGdgvwKYq6S+MxwF0TFRwe50fIR/MYnakdkQ==
 
+"@vuelidate/core@^2.0.3":
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/@vuelidate/core/-/core-2.0.3.tgz#40468c5ed15b72bde880a026b0699c2f0f1ecede"
+  integrity sha512-AN6l7KF7+mEfyWG0doT96z+47ljwPpZfi9/JrNMkOGLFv27XVZvKzRLXlmDPQjPl/wOB1GNnHuc54jlCLRNqGA==
+  dependencies:
+    vue-demi "^0.13.11"
+
+"@vuelidate/validators@^2.0.4":
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/@vuelidate/validators/-/validators-2.0.4.tgz#0a88a7b2b18f15fd9c384095593f369a6f7384e9"
+  integrity sha512-odTxtUZ2JpwwiQ10t0QWYJkkYrfd0SyFYhdHH44QQ1jDatlZgTh/KRzrWVmn/ib9Gq7H4hFD4e8ahoo5YlUlDw==
+  dependencies:
+    vue-demi "^0.13.11"
+
 "@vueuse/core@^10.1.0":
   version "10.3.0"
   resolved "https://registry.yarnpkg.com/@vueuse/core/-/core-10.3.0.tgz#b2dab7821ef206811b925fc935163c38056fd82b"
@@ -3841,6 +3855,11 @@ readdirp@~3.6.0:
   dependencies:
     picomatch "^2.2.1"
 
+recaptcha-v3@^1.8.0:
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/recaptcha-v3/-/recaptcha-v3-1.10.0.tgz#f966b5a0d8021fd2ed85ac4be832f6acb6ec1ed1"
+  integrity sha512-aGTxYSk3FFNKnXeKDbLpgRDRyIHRZNBF5HyaXXAN1Aj4TSyyZvmoAn9CylvpqLV3pYpIQavwc+2rzhNFn5SsLQ==
+
 regenerator-runtime@^0.13.11, regenerator-runtime@^0.13.7:
   version "0.13.11"
   resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.13.11.tgz#f6dca3e7ceec20590d07ada785636a90cdca17f9"
@@ -4588,6 +4607,11 @@ vue-demi@>=0.14.5, vue-demi@latest:
   resolved "https://registry.yarnpkg.com/vue-demi/-/vue-demi-0.14.5.tgz#676d0463d1a1266d5ab5cba932e043d8f5f2fbd9"
   integrity sha512-o9NUVpl/YlsGJ7t+xuqJKx8EBGf1quRhCiT6D/J0pfwmk9zUwYkC7yrF4SZCe6fETvSM3UNL2edcbYrSyc4QHA==
 
+vue-demi@^0.13.11:
+  version "0.13.11"
+  resolved "https://registry.yarnpkg.com/vue-demi/-/vue-demi-0.13.11.tgz#7d90369bdae8974d87b1973564ad390182410d99"
+  integrity sha512-IR8HoEEGM65YY3ZJYAjMlKygDQn25D5ajNFNoKh9RSDMQtlzCxtfQjdQgv9jjK+m3377SsJXY8ysq8kLCZL25A==
+
 vue-eslint-parser@^9.3.1:
   version "9.3.1"
   resolved "https://registry.yarnpkg.com/vue-eslint-parser/-/vue-eslint-parser-9.3.1.tgz#429955e041ae5371df5f9e37ebc29ba046496182"
@@ -4610,6 +4634,13 @@ vue-i18n@^9.0.0:
     "@intlify/shared" "9.2.2"
     "@intlify/vue-devtools" "9.2.2"
     "@vue/devtools-api" "^6.2.1"
+
+vue-recaptcha-v3@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/vue-recaptcha-v3/-/vue-recaptcha-v3-2.0.1.tgz#10b07bbe07881734b9997111cfe3c9a9ca786bdb"
+  integrity sha512-isEDtOfHU4wWRrZZuxciAELtQmPOeEEdicPNa0f1AOyLPy3sCcBEcpFt+FOcO3RQv5unJ3Yn5NlsWtXv9rXqjg==
+  dependencies:
+    recaptcha-v3 "^1.8.0"
 
 vue-router@^4.0.0:
   version "4.2.4"

@@ -29,9 +29,9 @@ export default {
     participant_failed:
       "Ei õnnestunud sisse logida, palun kontrollige oma koodi või võtke ühendust uurijaga.",
     as_participant: "Ma olen osaleja",
+    forgot_password: "Unustasid parooli?",
+    register: "Registreeri",
     validate: "Kinnitage",
-    email: "E-post",
-    password: "Parool",
     token: "6-kohaline sümbol",
     totp: "Skaneerige see QR-kood mitmefaktorilise autentimise rakendusega (soovitatav on Microsofti autentifikaator) ja sisestage seejärel ajutine sümbol.",
     totp_secret:
@@ -40,6 +40,54 @@ export default {
     failed: "Vale e-posti ja salasõna kombinatsioon.",
     failed_token: "Vale sümbol.",
   },
+  register: {
+    title: "Registreeri uus liikmelisus",
+    submit: "Registreeri",
+    login: "Logi sisse",
+    success:
+      "Registreerimine lõpetatud! Registreerumise kinnitamiseks kontrollige oma meili.",
+    google_policy:
+      'Seda saiti kaitsevad reCAPTCHA ja Google\'i <a class="text-white" href="https://policies.google.com/privacy">privaatsuspoliitika</a> ja <a class="text-white" href="https://policies.google.com/terms">Teenusetingimused</a> kehtivad.',
+  },
+  forgot_password: {
+    title: "Lähtestage parool",
+    hint: "Parooli lähtestamiseks sisestage konto e-posti aadress.",
+    submit: "Lähtesta",
+    login: "Logi sisse",
+  },
+  reset: {
+    title: "Lähtestage parool",
+    submit: "Lähtesta",
+    bad_link:
+      "Pole kehtiv parooli lähtestamise link. Kontrollige oma meili parooli lähtestamise linki ja proovige uuesti.",
+    failure: "Parooli ei saa lähtestada. Võtke ühendust klienditoega.",
+    success: "Parooli muutmine õnnestus.",
+  },
+  verify: {
+    title: "Kinnitage e-posti aadress",
+    login: "Logi sisse",
+    bad_link:
+      "Pole kehtiv e-posti kinnituslink. Kontrollige oma meili kinnituslingi ja proovige uuesti.",
+    failure: "E-posti ei saa kinnitada. Võtke ühendust klienditoega.",
+    success: "Täname, teie e-posti aadress on kinnitatud.",
+    pending: "Konto kinnitamine... palun oota...",
+  },
+  validations: {
+    required: "Väärtus on vajalik",
+    minLength: "Minimaalne nõutav pikkus on {min}",
+    maxLength: "Maksimaalne lubatud pikkus on {max}",
+    email: "Väärtus ei ole kehtiv e-posti aadress",
+    strongPassword:
+      "Parool peab sisaldama vähemalt ühte neist: väiketäht, suurtäht, number, erimärk.",
+  },
+  email: "E-post",
+  password: "Parool",
+  email_hint: "Kontrollitav e-posti aadress.",
+  password_hint:
+    "Loo parool. Vähemalt 8 tähemärki koos väike- ja suurtähtedega, numbrite ja erimärkidega.",
+  firstname: "Eesnimi",
+  lastname: "Perekonnanimi",
+  preferred_language: "Eelistatud keel",
   cancel: "Tühista .",
   start: "Käivitage .",
   "Participant not found": "Osalejat ei leitud.",

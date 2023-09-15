@@ -30,9 +30,9 @@ export default {
     participant_failed:
       "Kan niet aanmelden, controleer uw code of neem contact op met een onderzoeker.",
     as_participant: "Ik ben een deelnemer",
+    forgot_password: "Wachtwoord vergeten?",
+    register: "Aanmelden",
     validate: "Valideer",
-    email: "E-mail",
-    password: "Wachtwoord",
     token: "6-cijferig token",
     totp: "Scan deze QR-code met een multifactor authenticatie app (Microsoft authenticator wordt aanbevolen), en voer dan het tijdelijke token in.",
     totp_secret:
@@ -41,6 +41,56 @@ export default {
     failed: "Onjuiste e-mail/wachtwoord combinatie.",
     failed_token: "Onjuist token.",
   },
+  register: {
+    title: "Registreer nieuw lidmaatschap",
+    submit: "Aanmelden",
+    login: "Aanmelden",
+    success:
+      "Registratie compleet! Controleer uw e-mail om uw registratie te bevestigen.",
+    google_policy:
+      'Deze site wordt beschermd door reCAPTCHA en het <a class="text-white" href="https://policies.google.com/privacy">Privacybeleid</a> en <a class="text-white" van Google href="https://policies.google.com/terms">Servicevoorwaarden</a> zijn van toepassing.',
+  },
+  forgot_password: {
+    title: "Wachtwoord opnieuw instellen",
+    hint: "Voer het e-mailadres van het account in om het wachtwoord opnieuw in te stellen.",
+    submit: "Opnieuw instellen",
+    login: "Aanmelden",
+  },
+  reset: {
+    title: "Wachtwoord opnieuw instellen",
+    submit: "Opnieuw instellen",
+    bad_link:
+      "Geen geldige link voor het opnieuw instellen van het wachtwoord. Controleer uw e-mail voor de link voor het opnieuw instellen van het wachtwoord en probeer het opnieuw.",
+    failure:
+      "Kan wachtwoord niet opnieuw instellen. Neem contact op met de ondersteuning.",
+    success: "Wachtwoord succesvol veranderd.",
+  },
+  verify: {
+    title: "Verifieer Email",
+    login: "Aanmelden",
+    bad_link:
+      "Geen geldige e-mailverificatielink. Controleer uw e-mail voor de verificatielink en probeer het opnieuw.",
+    failure:
+      "Kan e-mail niet verifiëren. Neem contact op met de ondersteuning.",
+    success: "Bedankt, uw e-mailadres is geverifieerd.",
+    pending: "Account verifiëren... even geduld a.u.b....",
+  },
+  validations: {
+    required: "Waarde is vereist",
+    minLength: "De minimaal vereiste lengte is {min}",
+    maxLength: "De maximaal toegestane lengte is {max}",
+    email: "Waarde is geen geldig e-mailadres",
+    strongPassword:
+      "Het wachtwoord moet ten minste één van elk bevatten: kleine letter, hoofdletter, cijfer, speciaal teken.",
+  },
+  email: "E-mail",
+  password: "Wachtwoord",
+  email_hint: "Verifieerbaar e-mailadres.",
+  password_hint:
+    "Creëer een wachtwoord. Minimaal 8 tekens met kleine en hoofdletters, cijfers en speciale tekens.",
+  firstname: "Voornaam",
+  lastname: "Achternaam",
+  preferred_language: "Voorkeurstaal",
   cancel: "Annuleren",
   start: "Start",
   "Participant not found": "Deelnemer niet gevonden.",

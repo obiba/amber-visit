@@ -30,9 +30,9 @@ export default {
     participant_failed:
       "Impossibile accedere, controllare il codice o contattare un ricercatore.",
     as_participant: "Sono un partecipante",
+    forgot_password: "Ha dimenticato la password?",
+    register: "Iscrizione",
     validate: "Convalidare",
-    email: "Email",
-    password: "Password",
     token: "Token a 6 cifre",
     totp: "Scansionare questo codice QR con un'app di autenticazione multifattoriale (si consiglia Microsoft Authenticator), quindi inserire il token temporaneo.",
     totp_secret:
@@ -41,6 +41,56 @@ export default {
     failed: "Combinazione e-mail/password errata.",
     failed_token: "Token errato.",
   },
+  register: {
+    title: "Registra una nuova iscrizione",
+    submit: "Iscrizione",
+    login: "Registrazione",
+    success:
+      "Registrazione completa! Controlla la tua email per confermare la registrazione.",
+    google_policy:
+      'Questo sito è protetto da reCAPTCHA e dall\'<a class="text-white" href="https://policies.google.com/privacy">Informativa sulla privacy</a> e dall\'<a class="text-white" di Google Si applicano href="https://policies.google.com/terms">Termini di servizio</a>.',
+  },
+  forgot_password: {
+    title: "Resetta la password",
+    hint: "Inserisci l'e-mail dell'account per reimpostare la password.",
+    submit: "Ripristina",
+    login: "Registrazione",
+  },
+  reset: {
+    title: "Resetta la password",
+    submit: "Ripristina",
+    bad_link:
+      "Non è un collegamento valido per la reimpostazione della password. Controlla la tua email per il collegamento per la reimpostazione della password e riprova.",
+    failure:
+      "Impossibile reimpostare la password. Si prega di contattare l'assistenza.",
+    success: "Password cambiata con successo.",
+  },
+  verify: {
+    title: "Verifica Email",
+    login: "Registrazione",
+    bad_link:
+      "Non è un collegamento di verifica e-mail valido. Controlla la tua email per il collegamento di verifica e riprova.",
+    failure:
+      "Impossibile verificare l'e-mail. Si prega di contattare l'assistenza.",
+    success: "Grazie, il tuo indirizzo email è verificato.",
+    pending: "Verifica dell'account... attendi prego...",
+  },
+  validations: {
+    required: "È necessario il valore",
+    minLength: "La durata minima richiesta è {min}",
+    maxLength: "La lunghezza massima consentita è {max}",
+    email: "Il valore non è un indirizzo email valido",
+    strongPassword:
+      "La password deve contenere almeno uno di ciascuno: lettera minuscola, lettera maiuscola, cifra, carattere speciale.",
+  },
+  email: "Email",
+  password: "Password",
+  email_hint: "Indirizzo email verificabile.",
+  password_hint:
+    "Crea una password. Minimo 8 caratteri con lettere minuscole e maiuscole, cifre e caratteri speciali.",
+  firstname: "Nome di battesimo",
+  lastname: "Cognome",
+  preferred_language: "Lingua preferita",
   cancel: "Annullamento",
   start: "Avvio",
   "Participant not found": "Partecipante non trovato.",

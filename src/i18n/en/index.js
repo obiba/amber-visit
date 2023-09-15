@@ -30,9 +30,9 @@ export default {
     participant_failed:
       "Could not sign-in, please check your code or contact an investigator.",
     as_participant: "I am a participant",
+    forgot_password: "Forgot password?",
+    register: "Sign up",
     validate: "Validate",
-    email: "Email",
-    password: "Password",
     token: "6-digits token",
     totp: "Scan this QR code with a multifactor authentication app (Microsoft authenticator is recommended), and then enter the temporary token.",
     totp_secret:
@@ -41,6 +41,54 @@ export default {
     failed: "Incorrect email/password combination.",
     failed_token: "Incorrect token.",
   },
+  register: {
+    title: "Register new membership",
+    submit: "Sign up",
+    login: "Sign in",
+    success:
+      "Registration complete! Please check your email to confirm your registration.",
+    google_policy:
+      'This site is protected by reCAPTCHA and the Google <a class="text-white" href="https://policies.google.com/privacy">Privacy Policy</a> and <a class="text-white" href="https://policies.google.com/terms">Terms of Service</a> apply.',
+  },
+  forgot_password: {
+    title: "Reset password",
+    hint: "Enter account's email to reset password.",
+    submit: "Reset",
+    login: "Sign in",
+  },
+  reset: {
+    title: "Reset password",
+    submit: "Reset",
+    bad_link:
+      "Not a valid password reset link. Please check your email for the password reset link and try again.",
+    failure: "Unable to reset password. Please contact support.",
+    success: "Password successfully changed.",
+  },
+  verify: {
+    title: "Verify email",
+    login: "Sign in",
+    bad_link:
+      "Not a valid email verification link. Please check your email for the verification link and try again.",
+    failure: "Unable to verify email. Please contact support.",
+    success: "Thanks, your email address is verified.",
+    pending: "Verifying account... please wait...",
+  },
+  validations: {
+    required: "Value is required",
+    minLength: "The minimum length required is {min}",
+    maxLength: "The maximum length allowed is {max}",
+    email: "Value is not a valid email address",
+    strongPassword:
+      "Password must contain at least one of each: lower case letter, upper case letter, digit, special character.",
+  },
+  email: "Email",
+  password: "Password",
+  email_hint: "Verifiable email address.",
+  password_hint:
+    "Create a password. 8 characters minimum with lower and upper case, digit and special character.",
+  firstname: "First Name",
+  lastname: "Last Name",
+  preferred_language: "Preferred Language",
   cancel: "Cancel",
   start: "Start",
   "Participant not found": "Participant not found.",

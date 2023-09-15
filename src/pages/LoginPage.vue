@@ -30,7 +30,7 @@
                       dark
                       color="white"
                       v-model="email"
-                      :label="$t('login.email')"
+                      :label="$t('email')"
                       lazy-rules
                     >
                       <template v-slot:prepend>
@@ -43,7 +43,7 @@
                       dark
                       color="white"
                       v-model="password"
-                      :label="$t('login.password')"
+                      :label="$t('password')"
                       lazy-rules
                     >
                       <template v-slot:prepend>
@@ -57,6 +57,14 @@
                         type="submit"
                         color="secondary"
                         :disable="disableSubmit"
+                      />
+                      <q-btn
+                        v-if="settings.register_enabled"
+                        :label="$t('login.register')"
+                        flat
+                        to="/register"
+                        stretch
+                        class="text-bold q-ml-md"
                       />
                     </div>
                   </q-form>
@@ -210,6 +218,16 @@
                     </q-item>
                   </q-list>
                 </q-btn-dropdown>
+                <q-btn
+                  v-if="strategy === 'local'"
+                  flat
+                  to="/forgot-password"
+                  dense
+                  no-caps
+                  class="text-bold float-right"
+                >
+                  {{ $t("login.forgot_password") }}
+                </q-btn>
               </q-card-section>
             </q-card>
           </div>

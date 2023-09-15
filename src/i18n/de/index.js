@@ -30,9 +30,9 @@ export default {
     participant_failed:
       "Ich konnte mich nicht anmelden, bitte überprüfen Sie Ihren Code oder kontaktieren Sie einen Prüfer.",
     as_participant: "Ich bin ein Teilnehmer",
+    forgot_password: "Passwort vergessen?",
+    register: "Melden Sie sich an",
     validate: "Bestätigen Sie",
-    email: "E-Mail",
-    password: "Kennwort",
     token: "6-stelliges Token",
     totp: "Scannen Sie diesen QR-Code mit einer Multifaktor-Authentifizierungs-App (Microsoft Authenticator wird empfohlen) und geben Sie dann den temporären Token ein.",
     totp_secret:
@@ -41,6 +41,56 @@ export default {
     failed: "Falsche E-Mail/Kennwort-Kombination.",
     failed_token: "Falsches Token.",
   },
+  register: {
+    title: "Registrieren Sie eine neue Mitgliedschaft",
+    submit: "Melden Sie sich an",
+    login: "anmelden",
+    success:
+      "Registrierung abgeschlossen! Bitte überprüfen Sie Ihre E-Mails, um Ihre Registrierung zu bestätigen.",
+    google_policy:
+      'Diese Website ist durch reCAPTCHA und die <a class="text-white" href="https://policies.google.com/privacy">Datenschutzerklärung</a> und <a class="text-white" von Google geschützt. Es gelten die href="https://policies.google.com/terms">Nutzungsbedingungen</a>.',
+  },
+  forgot_password: {
+    title: "Passwort zurücksetzen",
+    hint: "Geben Sie die E-Mail-Adresse des Kontos ein, um das Passwort zurückzusetzen.",
+    submit: "Zurücksetzen",
+    login: "anmelden",
+  },
+  reset: {
+    title: "Passwort zurücksetzen",
+    submit: "Zurücksetzen",
+    bad_link:
+      "Kein gültiger Link zum Zurücksetzen des Passworts. Bitte überprüfen Sie Ihre E-Mails auf den Link zum Zurücksetzen des Passworts und versuchen Sie es erneut.",
+    failure:
+      "Passwort kann nicht zurückgesetzt werden. Bitte wenden Sie sich an den Support.",
+    success: "Passwort erfolgreich geändert.",
+  },
+  verify: {
+    title: "E-Mail bestätigen",
+    login: "anmelden",
+    bad_link:
+      "Kein gültiger E-Mail-Bestätigungslink. Bitte überprüfen Sie Ihre E-Mails auf den Bestätigungslink und versuchen Sie es erneut.",
+    failure:
+      "E-Mail konnte nicht bestätigt werden. Bitte wenden Sie sich an den Support.",
+    success: "Vielen Dank, Ihre E-Mail-Adresse ist bestätigt.",
+    pending: "Konto wird überprüft... bitte warten...",
+  },
+  validations: {
+    required: "Wert erforderlich",
+    minLength: "Die erforderliche Mindestlänge beträgt {min}",
+    maxLength: "Die maximal zulässige Länge beträgt {max}",
+    email: "Der Wert ist keine gültige E-Mail-Adresse",
+    strongPassword:
+      "Das Passwort muss jeweils mindestens eines enthalten: Kleinbuchstaben, Großbuchstaben, Ziffer, Sonderzeichen.",
+  },
+  email: "E-Mail",
+  password: "Kennwort",
+  email_hint: "Überprüfbare E-Mail-Adresse.",
+  password_hint:
+    "Erstellen Sie ein Passwort. Mindestens 8 Zeichen mit Klein- und Großbuchstaben, Ziffern und Sonderzeichen.",
+  firstname: "Vorname",
+  lastname: "Familienname, Nachname",
+  preferred_language: "Bevorzugte Sprache",
   cancel: "Abbrechen",
   start: "Start",
   "Participant not found": "Teilnehmer nicht gefunden.",

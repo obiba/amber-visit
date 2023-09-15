@@ -29,9 +29,9 @@ export default {
     participant_failed:
       "Kunde inte logga in, vänligen kontrollera din kod eller kontakta en utredare.",
     as_participant: "Jag är en deltagare",
+    forgot_password: "Glömt ditt lösenord?",
+    register: "Bli Medlem",
     validate: "Bekräfta",
-    email: "E-post",
-    password: "Lösenord",
     token: "6-siffrig token",
     totp: "Skanna QR-koden med en app för multifaktorautentisering (Microsoft authenticator rekommenderas) och ange sedan den tillfälliga token.",
     totp_secret:
@@ -40,6 +40,54 @@ export default {
     failed: "Felaktig kombination av e-post och lösenord.",
     failed_token: "Felaktig token.",
   },
+  register: {
+    title: "Registrera nytt medlemskap",
+    submit: "Bli Medlem",
+    login: "Logga in",
+    success:
+      "Registrering klar! Kontrollera din e-post för att bekräfta din registrering.",
+    google_policy:
+      'Den här webbplatsen skyddas av reCAPTCHA och Googles <a class="text-white" href="https://policies.google.com/privacy">sekretesspolicy</a> och <a class="text-white" href="https://policies.google.com/terms">Användarvillkor</a> gäller.',
+  },
+  forgot_password: {
+    title: "Återställ lösenord",
+    hint: "Ange kontots e-postadress för att återställa lösenordet.",
+    submit: "Återställa",
+    login: "Logga in",
+  },
+  reset: {
+    title: "Återställ lösenord",
+    submit: "Återställa",
+    bad_link:
+      "Inte en giltig länk för återställning av lösenord. Kontrollera din e-post för länken för återställning av lösenord och försök igen.",
+    failure: "Det gick inte att återställa lösenordet. Kontakta supporten.",
+    success: "Lösenordet har ändrats.",
+  },
+  verify: {
+    title: "Verifiera Email",
+    login: "Logga in",
+    bad_link:
+      "Inte en giltig e-postverifieringslänk. Kontrollera din e-post för verifieringslänken och försök igen.",
+    failure: "Det gick inte att verifiera e-post. Kontakta supporten.",
+    success: "Tack, din e-postadress är verifierad.",
+    pending: "Verifierar konto... vänta...",
+  },
+  validations: {
+    required: "Värde behövs",
+    minLength: "Minsta längd som krävs är {min}",
+    maxLength: "Den maximala tillåtna längden är {max}",
+    email: "Värde är inte en giltig e-postadress",
+    strongPassword:
+      "Lösenordet måste innehålla minst ett av varje: liten bokstav, stor bokstav, siffra, specialtecken.",
+  },
+  email: "E-post",
+  password: "Lösenord",
+  email_hint: "Verifierbar e-postadress.",
+  password_hint:
+    "Skapa ett lösenord. Minst 8 tecken med gemener och versaler, siffra och specialtecken.",
+  firstname: "Förnamn",
+  lastname: "Efternamn",
+  preferred_language: "Önskat språk",
   cancel: "Avbryt",
   start: "Starta",
   "Participant not found": "Deltagaren hittades inte.",

@@ -39,6 +39,7 @@ yarn quasar build
 Environment variable for building the app in production:
 
 - `AMBER_URL`, the url of the Amber server, exposing a REST API used by Amber Visit (make sure CORS policy is set correctly on the server)
+- `RECAPTCHA_SITE_KEY`, the [reCAPTCHA v3](https://developers.google.com/recaptcha/docs/v3) site key for the Registration page. If not specified, user self-registration is disabled.
 
 ### Customize the configuration
 

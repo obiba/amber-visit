@@ -1,12 +1,13 @@
 <template>
-  <div class="fullscreen bg-blue text-white text-center q-pa-md flex flex-center">
+  <div
+    :class="settings.theme.front.bg"
+    class="fullscreen text-center q-pa-md flex flex-center"
+  >
     <div>
-      <div style="font-size: 30vh">
-        404
-      </div>
+      <div style="font-size: 30vh">404</div>
 
-      <div class="text-h2" style="opacity:.4">
-        Oops. Nothing here...
+      <div class="text-h2" style="opacity: 0.4">
+        {{ $t("nothing_here") }}
       </div>
 
       <q-btn
@@ -15,7 +16,7 @@
         text-color="blue"
         unelevated
         to="/"
-        label="Go Home"
+        :label="$t('go_home')"
         no-caps
       />
     </div>
@@ -23,9 +24,15 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue'
+import { defineComponent } from "vue";
+import { settings } from "../boot/settings";
 
 export default defineComponent({
-  name: 'ErrorNotFound'
-})
+  name: "ErrorNotFound",
+  setup() {
+    return {
+      settings: settings,
+    };
+  },
+});
 </script>

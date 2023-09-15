@@ -10,6 +10,8 @@
 
 const { configure } = require("quasar/wrappers");
 const fs = require("fs");
+const packageJson = fs.readFileSync("./package.json");
+const version = JSON.parse(packageJson).version || 0;
 const settingsJson = fs.readFileSync("./settings.json", "utf8");
 const path = require("path");
 const { feathersPiniaAutoImport } = require("feathers-pinia");
@@ -31,7 +33,14 @@ module.exports = configure(function (ctx) {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://v2.quasar.dev/quasar-cli/boot-files
-    boot: ["i18n", "axios", "settings", "feathers-pinia"],
+    boot: [
+      "i18n",
+      "axios",
+      "feathers-pinia",
+      "vuelidate",
+      "recaptcha",
+      "settings",
+    ],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#css
     css: ["app.scss", "custom.scss"],
@@ -68,11 +77,18 @@ module.exports = configure(function (ctx) {
       // analyze: true,
       env: {
         API: ctx.dev ? "http://localhost:3030" : process.env.AMBER_URL,
+        RECAPTCHA_SITE_KEY: ctx.dev
+          ? "6Lc3D34cAAAAANwhMFOH-yEB147CqspT-eBwF5-u"
+          : process.env.RECAPTCHA_SITE_KEY,
         SETTINGS: ctx.dev
           ? settingsJson
           : process.env.SETTINGS
           ? process.env.SETTINGS
           : settingsJson,
+        REGISTER_ENABLED: ctx.dev
+          ? true
+          : process.env.RECAPTCHA_SITE_KEY !== undefined,
+        VERSION: version,
       },
       // rawDefine: {}
       // ignorePublicFolder: true,

@@ -28,10 +28,10 @@ export default {
     enter: "Indtast",
     participant_failed:
       "Kunne ikke logge ind, tjek venligst din kode eller kontakt en efterforsker.",
+    forgot_password: "Glemt kodeord?",
+    register: "Tilmelde",
     as_participant: "Jeg er en deltager",
     validate: "Bekræft",
-    email: "E-mail",
-    password: "Adgangskode",
     token: "6-cifret token",
     totp: "Scan denne QR-kode med en app til multifaktorautentificering (Microsoft authenticator anbefales), og indtast derefter det midlertidige token.",
     totp_secret:
@@ -40,6 +40,54 @@ export default {
     failed: "Forkert kombination af e-mail/adgangskode.",
     failed_token: "Forkert token.",
   },
+  register: {
+    title: "Registrer nyt medlemskab",
+    submit: "Tilmelde",
+    login: "Log ind",
+    success:
+      "Tilmelding fuldført! Tjek venligst din e-mail for at bekræfte din tilmelding.",
+    google_policy:
+      'Dette websted er beskyttet af reCAPTCHA og Googles <a class="text-white" href="https://policies.google.com/privacy">privatlivspolitik</a> og <a class="text-white" href="https://policies.google.com/terms">Servicevilkår</a> gælder.',
+  },
+  forgot_password: {
+    title: "Nulstille kodeord",
+    hint: "Indtast kontoens e-mail for at nulstille adgangskoden.",
+    submit: "Nulstil",
+    login: "Log ind",
+  },
+  reset: {
+    title: "Nulstille kodeord",
+    submit: "Nulstil",
+    bad_link:
+      "Ikke et gyldigt link til nulstilling af adgangskode. Tjek venligst din e-mail for linket til nulstilling af adgangskode, og prøv igen.",
+    failure: "Kan ikke nulstille adgangskoden. Kontakt venligst support.",
+    success: "Adgangskoden er blevet ændret.",
+  },
+  verify: {
+    title: "Bekræft e-mail",
+    login: "Log ind",
+    bad_link:
+      "Ikke et gyldigt e-mailbekræftelseslink. Tjek venligst din e-mail for bekræftelseslinket, og prøv igen.",
+    failure: "E-mailen kunne ikke bekræftes. Kontakt venligst support.",
+    success: "Tak, din e-mailadresse er bekræftet.",
+    pending: "Bekræfter konto... vent venligst...",
+  },
+  validations: {
+    required: "Værdi er påkrævet",
+    minLength: "Minimumslængden er {min}",
+    maxLength: "Den maksimalt tilladte længde er {max}",
+    email: "Værdi er ikke en gyldig e-mailadresse",
+    strongPassword:
+      "Adgangskoden skal indeholde mindst én af hver: små bogstaver, store bogstaver, ciffer, specialtegn.",
+  },
+  email: "E-mail",
+  password: "Adgangskode",
+  email_hint: "Verificerbar e-mailadresse.",
+  password_hint:
+    "Lav et kodeord. Minimum 8 tegn med små og store bogstaver, ciffer og specialtegn.",
+  firstname: "Fornavn",
+  lastname: "Efternavn",
+  preferred_language: "Foretrukne sprog",
   cancel: "Annuller",
   start: "Start",
   "Participant not found": "Deltager ikke fundet.",
