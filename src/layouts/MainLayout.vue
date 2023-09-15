@@ -161,12 +161,18 @@ export default defineComponent({
       allLocales = allLocales.filter(
         (value, index, array) => array.indexOf(value) === index
       );
-      return allLocales.map((loc) => {
-        return {
-          value: loc,
-          label: this.getLocaleLabel(loc),
-        };
-      });
+      return allLocales
+        .map((loc) => {
+          return {
+            value: loc,
+            label: this.getLocaleLabel(loc),
+          };
+        })
+        .sort((loc1, loc2) => {
+          if (loc1.label > loc2.label) return 1;
+          if (loc1.label < loc2.label) return -1;
+          return 0;
+        });
     },
     hasLocales() {
       return locales.length > 1;

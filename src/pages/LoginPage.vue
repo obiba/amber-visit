@@ -278,12 +278,18 @@ export default defineComponent({
   },
   computed: {
     localeOptions() {
-      return locales.map((loc) => {
-        return {
-          value: loc,
-          label: this.$t("locales." + loc),
-        };
-      });
+      return locales
+        .map((loc) => {
+          return {
+            value: loc,
+            label: this.$t("locales." + loc),
+          };
+        })
+        .sort((loc1, loc2) => {
+          if (loc1.label > loc2.label) return 1;
+          if (loc1.label < loc2.label) return -1;
+          return 0;
+        });
     },
     hasLocales() {
       return locales.length > 1;
