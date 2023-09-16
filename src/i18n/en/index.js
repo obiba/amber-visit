@@ -25,7 +25,9 @@ export default {
     submit: "Submit",
     participant_title: "",
     code: "Your participant code",
-    participant_password: "Your participant secret",
+    participant_password: "Your personal password",
+    participant_password_hint:
+      "If it is your first connection, create a password to protect your data. If you have forgotten your password, please contact an investigator.",
     enter: "Enter",
     participant_failed:
       "Could not sign-in, please check your code or contact an investigator.",

@@ -25,7 +25,9 @@ export default {
     submit: "Senden Sie",
     participant_title: "",
     code: "Ihr Teilnehmercode",
-    participant_password: "Ihr Teilnehmergeheimnis",
+    participant_password: "Ihr persönliches Passwort",
+    participant_password_hint:
+      "Wenn es Ihre erste Verbindung ist, erstellen Sie ein Passwort, um Ihre Daten zu schützen. Wenn Sie Ihr Passwort vergessen haben, wenden Sie sich bitte an einen Ermittler.",
     enter: "eingeben",
     participant_failed:
       "Ich konnte mich nicht anmelden, bitte überprüfen Sie Ihren Code oder kontaktieren Sie einen Prüfer.",

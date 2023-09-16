@@ -124,6 +124,17 @@
                     </div>
                   </q-form>
                 </q-card-section>
+                <q-card-section v-if="!withToken" class="q-pt-none q-pb-none">
+                  <q-btn
+                    flat
+                    to="/forgot-password"
+                    dense
+                    no-caps
+                    class="text-bold"
+                  >
+                    {{ $t("login.forgot_password") }}
+                  </q-btn>
+                </q-card-section>
               </q-card-section>
               <q-card-section v-if="strategy === 'participant'">
                 <div class="text-center q-pt-sm">
@@ -136,34 +147,37 @@
                   class="q-gutter-md"
                   autocomplete="off"
                 >
-                  <q-input
-                    autofocus
-                    v-if="!withPassword"
-                    autocomplete="new-password"
-                    dark
-                    color="white"
-                    v-model="code"
-                    :label="$t('login.code')"
-                    mask="XXXXXX"
-                  >
-                    <template v-slot:prepend>
-                      <q-icon name="fas fa-mobile" size="xs" />
-                    </template>
-                  </q-input>
-                  <q-input
-                    :autofocus="withPassword"
-                    v-else
-                    type="password"
-                    autocomplete="new-password"
-                    dark
-                    color="white"
-                    v-model="password"
-                    :label="$t('login.participant_password')"
-                  >
-                    <template v-slot:prepend>
-                      <q-icon name="fas fa-key" size="xs" />
-                    </template>
-                  </q-input>
+                  <div v-if="!withPassword">
+                    <q-input
+                      autofocus
+                      autocomplete="new-password"
+                      dark
+                      color="white"
+                      v-model="code"
+                      :label="$t('login.code')"
+                      mask="XXXXXX"
+                    >
+                      <template v-slot:prepend>
+                        <q-icon name="fas fa-mobile" size="xs" />
+                      </template>
+                    </q-input>
+                  </div>
+                  <div v-else class="q-mb-xl">
+                    <q-input
+                      :autofocus="withPassword"
+                      type="password"
+                      autocomplete="new-password"
+                      dark
+                      color="white"
+                      v-model="password"
+                      :label="$t('login.participant_password')"
+                      :hint="$t('login.participant_password_hint')"
+                    >
+                      <template v-slot:prepend>
+                        <q-icon name="fas fa-key" size="xs" />
+                      </template>
+                    </q-input>
+                  </div>
                   <div>
                     <q-btn
                       :label="$t('login.enter')"
@@ -218,16 +232,6 @@
                     </q-item>
                   </q-list>
                 </q-btn-dropdown>
-                <q-btn
-                  v-if="strategy === 'local'"
-                  flat
-                  to="/forgot-password"
-                  dense
-                  no-caps
-                  class="text-bold float-right"
-                >
-                  {{ $t("login.forgot_password") }}
-                </q-btn>
               </q-card-section>
             </q-card>
           </div>
@@ -352,6 +356,9 @@ export default defineComponent({
     },
     onCancelToken() {
       this.withToken = false;
+      this.token = "";
+      this.password = "";
+      this.secret = "";
     },
     onCancelPassword() {
       this.withPassword = false;

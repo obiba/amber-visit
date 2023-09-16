@@ -24,7 +24,9 @@ export default {
     submit: "Send ind",
     participant_title: "",
     code: "Din deltagerkode",
-    participant_password: "Din deltagers hemmelighed",
+    participant_password: "Din personlige adgangskode",
+    participant_password_hint:
+      "Hvis det er din første forbindelse, skal du oprette en adgangskode for at beskytte dine data. Hvis du har glemt din adgangskode, bedes du kontakte en efterforsker.",
     enter: "Indtast",
     participant_failed:
       "Kunne ikke logge ind, tjek venligst din kode eller kontakt en efterforsker.",

@@ -24,7 +24,9 @@ export default {
     submit: "Saada",
     participant_title: "",
     code: "Teie osaleja kood",
-    participant_password: "Teie osaleja saladus",
+    participant_password: "Teie isiklik parool",
+    participant_password_hint:
+      "Kui see on teie esimene ühendus, looge oma andmete kaitsmiseks parool. Kui olete oma parooli unustanud, võtke ühendust uurijaga.",
     enter: "Sisestage",
     participant_failed:
       "Ei õnnestunud sisse logida, palun kontrollige oma koodi või võtke ühendust uurijaga.",

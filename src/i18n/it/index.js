@@ -25,7 +25,9 @@ export default {
     submit: "Invia",
     participant_title: "",
     code: "Il tuo codice partecipante",
-    participant_password: "Il tuo segreto di partecipante",
+    participant_password: "La tua password personale",
+    participant_password_hint:
+      "Se è la tua prima connessione, crea una password per proteggere i tuoi dati. Se hai dimenticato la password, contatta un investigatore.",
     enter: "Entrare",
     participant_failed:
       "Impossibile accedere, controllare il codice o contattare un ricercatore.",

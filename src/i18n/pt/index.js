@@ -25,7 +25,9 @@ export default {
     submit: "Submeter",
     participant_title: "",
     code: "O seu código de participante",
-    participant_password: "O seu segredo de participante",
+    participant_password: "Sua senha pessoal",
+    participant_password_hint:
+      "Caso seja sua primeira conexão, crie uma senha para proteger seus dados. Se você esqueceu sua senha, entre em contato com um investigador.",
     enter: "Entrar",
     participant_failed:
       "Não foi possível iniciar sessão, verifique o seu código ou contacte um investigador.",

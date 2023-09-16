@@ -25,7 +25,9 @@ export default {
     submit: "Verzenden",
     participant_title: "",
     code: "Uw deelnemerscode",
-    participant_password: "Uw deelnemersgeheim",
+    participant_password: "Uw persoonlijke wachtwoord",
+    participant_password_hint:
+      "Als het uw eerste verbinding is, maak dan een wachtwoord aan om uw gegevens te beschermen. Als u uw wachtwoord bent vergeten, neem dan contact op met een onderzoeker.",
     enter: "Voer  in",
     participant_failed:
       "Kan niet aanmelden, controleer uw code of neem contact op met een onderzoeker.",

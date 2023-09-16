@@ -25,7 +25,9 @@ export default {
     submit: "Lähetä",
     participant_title: "",
     code: "Osallistujan koodi",
-    participant_password: "Osallistujan salaisuutesi",
+    participant_password: "Henkilökohtainen salasanasi",
+    participant_password_hint:
+      "Jos kyseessä on ensimmäinen yhteytesi, luo salasana tietojesi suojaamiseksi. Jos olet unohtanut salasanasi, ota yhteyttä tutkijaan.",
     enter: "Kirjoita",
     participant_failed:
       "Kirjautuminen ei onnistunut, tarkista koodisi tai ota yhteyttä tutkijaan.",

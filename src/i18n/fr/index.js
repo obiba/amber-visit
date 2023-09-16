@@ -25,7 +25,9 @@ export default {
     submit: "Soumettre",
     participant_title: "",
     code: "Votre code de participant",
-    participant_password: "Votre mot de passe",
+    participant_password: "Votre mot de passe personnel",
+    participant_password_hint:
+      "S'il s'agit de votre première connexion, créez un mot de passe pour protéger vos données. Si vous avez oublié votre mot de passe, veuillez contacter un enquêteur.",
     enter: "Entrer",
     participant_failed:
       "Votre identification a échoué, merci de vérifier votre code ou de contacter un.e enquêteur.rice.",

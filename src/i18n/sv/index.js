@@ -24,7 +24,9 @@ export default {
     submit: "Skicka in",
     participant_title: "",
     code: "Din deltagarkod",
-    participant_password: "Din deltagares hemlighet",
+    participant_password: "Ditt personliga lösenord",
+    participant_password_hint:
+      "Om det är din första anslutning, skapa ett lösenord för att skydda dina data. Om du har glömt ditt lösenord, kontakta en utredare.",
     enter: "Gå in",
     participant_failed:
       "Kunde inte logga in, vänligen kontrollera din kod eller kontakta en utredare.",
