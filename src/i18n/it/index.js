@@ -100,6 +100,7 @@ export default {
   "You are not an investigator":
     "Non siete un ricercatore per questo partecipante.",
   "Interview design is not active": "L'intervista non è attiva.",
+  "Password too short": "La password è troppo corta.",
   close: "Chiudere",
   go_to: "Vai a...",
   pause: "Pausa",

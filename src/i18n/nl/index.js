@@ -99,6 +99,7 @@ export default {
   "Participant code is missing": "Deelnemerscode ontbreekt.",
   "You are not an investigator": "U bent geen onderzoeker voor deze deelnemer.",
   "Interview design is not active": "Interview is niet actief.",
+  "Password too short": "Het wachtwoord is te kort.",
   close: "Sluit",
   go_to: "Ga naar...",
   pause: "Pauze",

@@ -96,6 +96,7 @@ export default {
   "Participant code is missing": "Osaleja kood puudub.",
   "You are not an investigator": "Te ei ole selle osaleja uurija.",
   "Interview design is not active": "Intervjuu ei ole aktiivne.",
+  "Password too short": "Parool on liiga lühike.",
   close: "Sulge",
   go_to: "Mine...",
   pause: "Pausi",

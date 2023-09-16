@@ -97,6 +97,7 @@ export default {
   "Participant code is missing": "Osallistujakoodi puuttuu.",
   "You are not an investigator": "Et ole tämän osallistujan tutkija.",
   "Interview design is not active": "Haastattelu ei ole aktiivinen.",
+  "Password too short": "Salasana on liian lyhyt.",
   close: "Sulje",
   go_to: "Siirry...",
   pause: "Keskeytä",

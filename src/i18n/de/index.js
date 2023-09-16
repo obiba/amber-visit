@@ -99,6 +99,7 @@ export default {
   "Participant code is missing": "Teilnehmercode fehlt.",
   "You are not an investigator": "Sie sind kein Prüfer für diesen Teilnehmer.",
   "Interview design is not active": "Das Interview ist nicht aktiv.",
+  "Password too short": "Das Passwort ist zu kurz.",
   close: "Schließen Sie",
   go_to: "Weiter zu...",
   pause: "Pause",

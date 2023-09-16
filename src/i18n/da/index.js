@@ -96,6 +96,7 @@ export default {
   "Participant code is missing": "Deltagerkoden mangler.",
   "You are not an investigator": "Du er ikke undersøger for denne deltager.",
   "Interview design is not active": "Interviewet er ikke aktivt.",
+  "Password too short": "Adgangskoden er for kort.",
   close: "Luk",
   go_to: "Gå til...",
   pause: "Pause",

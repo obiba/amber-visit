@@ -101,6 +101,7 @@ export default {
   "You are not an investigator":
     "Δεν είστε ερευνητής για αυτόν τον συμμετέχοντα.",
   "Interview design is not active": "Η συνέντευξη δεν είναι ενεργή.",
+  "Password too short": "Ο κωδικός πρόσβασης είναι πολύ σύντομος.",
   close: "Κλείστε το",
   go_to: "Μετάβαση σε...",
   pause: "Παύση",

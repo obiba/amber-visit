@@ -51,6 +51,7 @@
                       :label="$t('forgot_password.submit')"
                       type="submit"
                       color="secondary"
+                      :disable="disableSubmit"
                     />
                     <q-btn
                       :label="$t('forgot_password.login')"
@@ -102,7 +103,7 @@ export default {
   },
   computed: {
     disableSubmit() {
-      return this.v$.formData.$invalid;
+      return this.v$.resetEmail.$invalid;
     },
   },
   methods: {

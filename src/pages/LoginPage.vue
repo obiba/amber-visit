@@ -274,7 +274,14 @@ export default defineComponent({
     };
   },
   mounted() {
-    this.authStore.logout();
+    if (this.authStore.isAuthenticated) {
+      this.authStore.logout();
+    }
+    if (this.$route.query.code) {
+      this.code = this.$route.query.code;
+      this.strategy = "participant";
+      this.onSubmit();
+    }
   },
   computed: {
     localeOptions() {
@@ -408,6 +415,11 @@ export default defineComponent({
               err.message.startsWith("A participant password is required")
             ) {
               this.withPassword = true;
+            } else if (type === "bad-request") {
+              Notify.create({
+                message: this.$t(err.message),
+                color: "negative",
+              });
             } else {
               console.error(err);
               Notify.create({
