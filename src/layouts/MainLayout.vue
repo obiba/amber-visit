@@ -149,6 +149,10 @@ export default defineComponent({
   mounted() {
     if (!this.itwStore.isAuthenticated) {
       this.onLogout();
+    } else if (!this.itwStore.user) {
+      this.authStore.reAuthenticate().then((response) => {
+        this.itwStore.setUser(response.user);
+      });
     }
   },
   computed: {
