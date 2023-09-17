@@ -10,10 +10,6 @@
     "page": "bg-black",
     "dark": true
   },
-  "lock": {
-    "enabled": true,
-    "shuffle": false
-  },
   "links": [
     {
       "title": "main.docs",
