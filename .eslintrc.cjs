@@ -1,5 +1,3 @@
-const globals = require("./.eslintrc-auto-import.json");
-
 module.exports = {
   // https://eslint.org/docs/user-guide/configuring#configuration-cascading-and-hierarchy
   // This option interrupts the configuration hierarchy at this file
@@ -44,7 +42,6 @@ module.exports = {
   ],
 
   globals: {
-    ...globals.globals,
     ga: "readonly", // Google Analytics
     cordova: "readonly",
     __statics: "readonly",
