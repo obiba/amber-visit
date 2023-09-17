@@ -101,6 +101,7 @@ export default {
   "Password too short": "Parool on liiga lühike.",
   close: "Sulge",
   go_to: "Mine...",
+  save: "Salvesta",
   pause: "Pausi",
   previous: "Eelmine",
   next: "Järgmine",

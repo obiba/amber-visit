@@ -104,6 +104,7 @@ export default {
   "Password too short": "Пароль слишком короткий.",
   close: "Закрыть",
   go_to: "Перейти к...",
+  save: "Сохранить",
   pause: "Пауза",
   previous: "Предыдущий",
   next: "Следующий",

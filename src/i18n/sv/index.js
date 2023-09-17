@@ -101,6 +101,7 @@ export default {
   "Password too short": "Lösenordet är för kort.",
   close: "Avsluta",
   go_to: "Gå till...",
+  save: "Spara",
   pause: "Pausa",
   previous: "Föregående",
   next: "Nästa",

@@ -105,6 +105,7 @@ export default {
   "Password too short": "Le mot de passe est trop court.",
   close: "Fermer",
   go_to: "Aller à...",
+  save: "Sauvegarder",
   pause: "Pause",
   previous: "Précédent",
   next: "Suivant",
