@@ -42,7 +42,11 @@
     <q-page-container>
       <q-page class="bg-grey-2">
         <div v-if="isMulti()">
-          <q-linear-progress :value="progress" animation-speed="100" />
+          <q-linear-progress
+            :value="progress"
+            animation-speed="100"
+            size="xl"
+          />
         </div>
         <div class="q-pa-md">
           <div class="row">
