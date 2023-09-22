@@ -11,6 +11,7 @@ export default {
     pending_save: "Afventer datalagring (er du offline?)",
     save_now: "Gem nu",
     interview_completed: "Du har gennemført interviewet, tak for dit bidrag!",
+    interval_estimate: "{count} minutter",
     time_estimate: "- 1 minut | {count} minutter",
     receive_participant: "Modtag en deltager",
     start_step: "Start",

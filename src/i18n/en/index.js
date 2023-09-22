@@ -12,6 +12,7 @@ export default {
     save_now: "Save now",
     interview_completed:
       "You have completed the interview, thanks for your contribution!",
+    interval_estimate: "{count} minutes",
     time_estimate: "- | 1 minute | {count} minutes",
     receive_participant: "Receive a participant",
     start_step: "Start",

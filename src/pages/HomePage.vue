@@ -86,7 +86,13 @@
 
                     <q-item-section side top>
                       <q-item-label v-if="step.time_estimate" caption>{{
-                        $t("main.time_estimate", { count: step.time_estimate })
+                        step.time_estimate_max
+                          ? $t("main.interval_estimate", {
+                              count: `${step.time_estimate} - ${step.time_estimate_max}`,
+                            })
+                          : $t("main.time_estimate", {
+                              count: step.time_estimate,
+                            })
                       }}</q-item-label>
                       <q-btn
                         v-if="itwStore.getRecordStatus(step.name) === null"

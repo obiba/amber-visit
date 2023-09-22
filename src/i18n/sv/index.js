@@ -11,6 +11,7 @@ export default {
     pending_save: "Inväntar datalagring (är du offline?)",
     save_now: "Spara nu",
     interview_completed: "Du har slutfört intervjun, tack för ditt bidrag!",
+    interval_estimate: "{count} minuter",
     time_estimate: "- 1 minut | {count} minuter",
     receive_participant: "Ta emot en deltagare",
     start_step: "Starta",
