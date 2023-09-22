@@ -3,7 +3,7 @@
 [Amber](https://github.com/obiba/amber) is the Electronic Data Capture server. Amber Visit is a web interface for collecting the data with interviews:
 
 - interview with interdependent steps
-- campaign investigators
+- campaign investigators and support interviewers
 - self-administered or assisted interviews
 
 ## Install the dependencies

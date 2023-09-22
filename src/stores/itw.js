@@ -24,7 +24,7 @@ export const useInterviewStore = defineStore(
       return cred.value !== null;
     });
     const participant = computed(() => design.value?.participant);
-    const investigators = computed(() => design.value?.investigators);
+    const supporters = computed(() => design.value?.supporters);
     const steps = computed(() => design.value?.steps);
     const pending = computed(() => tosave.value.length > 0); // has pending changes to be saved
     const completed = computed(() => {
@@ -407,7 +407,7 @@ export const useInterviewStore = defineStore(
       // computed
       isAuthenticated,
       participant,
-      investigators,
+      supporters,
       steps,
       pending,
       completed,

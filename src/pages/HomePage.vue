@@ -156,7 +156,13 @@
               </q-list>
             </q-card-section>
           </q-card>
-          <div v-if="!authStore.isAuthenticated">
+          <div
+            v-if="
+              !authStore.isAuthenticated &&
+              itwStore.supporters &&
+              itwStore.supporters.length > 0
+            "
+          >
             <q-card flat class="q-mb-md bg-grey-3">
               <q-card-section>
                 <q-list>
@@ -180,24 +186,24 @@
               <q-card-section v-show="showHelp">
                 <q-list>
                   <q-item
-                    v-for="investigator in itwStore.investigators"
-                    :key="investigator.email"
+                    v-for="supporter in itwStore.supporters"
+                    :key="supporter.email"
                     class="q-mb-md"
                   >
                     <q-item-section>
                       <q-item-label overline
-                        >{{ investigator.firstname }}
-                        {{ investigator.lastname }}</q-item-label
+                        >{{ supporter.firstname }}
+                        {{ supporter.lastname }}</q-item-label
                       >
-                      <q-item-label v-if="investigator.email">
+                      <q-item-label v-if="supporter.email">
                         <q-icon name="fas fa-envelope" class="q-mr-sm" />
-                        <a :href="`mailto:${investigator.email}`">{{
-                          investigator.email
+                        <a :href="`mailto:${supporter.email}`">{{
+                          supporter.email
                         }}</a></q-item-label
                       >
-                      <q-item-label v-if="investigator.phone">
+                      <q-item-label v-if="supporter.phone">
                         <q-icon name="fas fa-phone" class="q-mr-sm" />
-                        {{ investigator.phone }}</q-item-label
+                        {{ supporter.phone }}</q-item-label
                       >
                     </q-item-section>
                   </q-item>
