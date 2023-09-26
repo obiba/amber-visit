@@ -16,7 +16,10 @@
             <app-banner />
           </div>
           <div class="col">
-            <q-card color="white" :class="settings.theme.front.card">
+            <q-card
+              :color="settings.theme.dark ? 'white' : 'grey-10'"
+              :class="settings.theme.front.card"
+            >
               <q-card-section>
                 <div class="text-center q-pt-sm">
                   <div class="col text-subtitle">
@@ -27,8 +30,8 @@
               <q-card-section>
                 <q-form @submit="forgotPassword">
                   <q-input
-                    dark
-                    color="white"
+                    :dark="settings.theme.dark"
+                    :color="settings.theme.dark ? 'white' : 'grey-10'"
                     v-model="resetEmail"
                     :label="$t('email')"
                     type="email"

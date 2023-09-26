@@ -27,8 +27,8 @@
               <q-card-section>
                 <q-form @submit="resetPassword" class="q-gutter-md">
                   <q-input
-                    dark
-                    color="white"
+                    :dark="settings.theme.dark"
+                    :color="settings.theme.dark ? 'white' : 'grey-10'"
                     type="password"
                     v-model="formData.password"
                     :label="$t('password')"

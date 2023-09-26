@@ -27,8 +27,8 @@
                   <q-form @submit="onSubmit" class="q-gutter-md">
                     <q-input
                       autofocus
-                      dark
-                      color="white"
+                      :dark="settings.theme.dark"
+                      :color="settings.theme.dark ? 'white' : 'grey-10'"
                       v-model="email"
                       :label="$t('email')"
                       lazy-rules
@@ -40,8 +40,8 @@
 
                     <q-input
                       type="password"
-                      dark
-                      color="white"
+                      :dark="settings.theme.dark"
+                      :color="settings.theme.dark ? 'white' : 'grey-10'"
                       v-model="password"
                       :label="$t('password')"
                       lazy-rules
@@ -79,7 +79,13 @@
                   <div class="col text-subtitle q-mt-md">
                     {{ $t("login.totp_secret") }}
                   </div>
-                  <q-input dark dense color="white" v-model="secret" readonly>
+                  <q-input
+                    :dark="settings.theme.dark"
+                    dense
+                    :color="settings.theme.dark ? 'white' : 'grey-10'"
+                    v-model="secret"
+                    readonly
+                  >
                     <template v-slot:after>
                       <q-btn
                         round
@@ -96,8 +102,8 @@
                     <q-input
                       autofocus
                       type="number"
-                      dark
-                      color="white"
+                      :dark="settings.theme.dark"
+                      :color="settings.theme.dark ? 'white' : 'grey-10'"
                       v-model="token"
                       :label="$t('login.token')"
                       lazy-rules
@@ -151,8 +157,8 @@
                     <q-input
                       autofocus
                       autocomplete="new-password"
-                      dark
-                      color="white"
+                      :dark="settings.theme.dark"
+                      :color="settings.theme.dark ? 'white' : 'grey-10'"
                       v-model="code"
                       :label="$t('login.code')"
                       mask="XXXXXX"
@@ -167,8 +173,8 @@
                       :autofocus="withPassword"
                       type="password"
                       autocomplete="new-password"
-                      dark
-                      color="white"
+                      :dark="settings.theme.dark"
+                      :color="settings.theme.dark ? 'white' : 'grey-10'"
                       v-model="password"
                       :label="$t('login.participant_password')"
                       :hint="$t('login.participant_password_hint')"

@@ -28,8 +28,8 @@
                 <q-form @submit="onSubmit" class="q-gutter-md">
                   <q-input
                     autofocus
-                    dark
-                    color="white"
+                    :dark="settings.theme.dark"
+                    :color="settings.theme.dark ? 'white' : 'grey-10'"
                     v-model="formData.email"
                     :label="$t('email')"
                     :hint="$t('email_hint')"
@@ -52,8 +52,8 @@
                   </q-input>
 
                   <q-input
-                    dark
-                    color="white"
+                    :dark="settings.theme.dark"
+                    :color="settings.theme.dark ? 'white' : 'grey-10'"
                     v-model="formData.password"
                     :label="$t('password')"
                     :hint="$t('password_hint')"
@@ -76,8 +76,8 @@
                   </q-input>
 
                   <q-input
-                    dark
-                    color="white"
+                    :dark="settings.theme.dark"
+                    :color="settings.theme.dark ? 'white' : 'grey-10'"
                     v-model="formData.firstname"
                     :label="$t('firstname')"
                     :hint="$t('required')"
@@ -99,8 +99,8 @@
                   </q-input>
 
                   <q-input
-                    dark
-                    color="white"
+                    :dark="settings.theme.dark"
+                    :color="settings.theme.dark ? 'white' : 'grey-10'"
                     v-model="formData.lastname"
                     :label="$t('lastname')"
                     :hint="$t('required')"
@@ -122,8 +122,8 @@
                   </q-input>
 
                   <q-select
-                    dark
-                    color="white"
+                    :dark="settings.theme.dark"
+                    :color="settings.theme.dark ? 'white' : 'grey-10'"
                     v-show="hasLocales"
                     v-model="locale"
                     :options="localeOptions"
