@@ -11,23 +11,21 @@
           {{ tr(step.label) }}
         </q-toolbar-title>
         <q-toolbar-title>
-          <span class="text-subtitle2 float-right"
-            >{{ tr(step.schema.label) }}
-            <q-btn
-              v-if="
-                step.schema.description ||
-                step.schema.copyright ||
-                step.schema.license
-              "
-              size="12px"
-              flat
-              dense
-              round
-              icon="info"
-              @click="onShowFormDescription"
-            >
-            </q-btn
-          ></span>
+          <q-btn
+            v-if="
+              step.schema.description ||
+              step.schema.copyright ||
+              step.schema.license
+            "
+            size="12px"
+            flat
+            dense
+            round
+            icon="info"
+            class="text-subtitle2 float-right"
+            @click="onShowFormDescription"
+          >
+          </q-btn>
         </q-toolbar-title>
       </q-toolbar>
       <q-toolbar
@@ -205,11 +203,13 @@
 
     <q-dialog v-model="showFormDescription">
       <q-card style="min-width: 300px">
-        <q-card-section>
-          <div
-            v-if="step.schema.description"
-            v-html="md(tr(step.schema.description))"
-          />
+        <q-card-section v-if="step.schema.label">
+          <div class="text-h6">
+            {{ tr(step.schema.label) }}
+          </div>
+        </q-card-section>
+        <q-card-section v-if="step.schema.description">
+          <div v-html="md(tr(step.schema.description))" />
         </q-card-section>
         <q-card-section>
           <div
@@ -498,9 +498,16 @@ export default defineComponent({
       this.itwStore.pauseRecord().then(() => this.$router.push(".."));
     },
     tr(key) {
-      return makeSchemaFormTr(this.step.schema, { locale: this.currentLocale })(
-        key
-      );
+      let rval = makeSchemaFormTr(this.step.schema, {
+        locale: this.currentLocale,
+      })(key);
+      if (rval === key) {
+        // try with design translations
+        rval = makeSchemaFormTr(this.itwStore.design, {
+          locale: this.currentLocale,
+        })(key);
+      }
+      return rval;
     },
     md(text) {
       return text ? snarkdown(text) : text;
