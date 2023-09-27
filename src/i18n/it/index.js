@@ -13,7 +13,7 @@ export default {
     interview_completed:
       "Hai completato l'intervista, grazie per il tuo contributo!",
     interval_estimate: "{count} minuti",
-    time_estimate: "- 1 minuto | {count} minuti",
+    time_estimate: "- | 1 minuto | {count} minuti",
     receive_participant: "Ricevere un partecipante",
     start_step: "Iniziare",
     continue_step: "Continua",
@@ -85,6 +85,7 @@ export default {
     email: "Il valore non è un indirizzo email valido",
     strongPassword:
       "La password deve contenere almeno uno di ciascuno: lettera minuscola, lettera maiuscola, cifra, carattere speciale.",
+    more_errors: "- | 1 errore | {count} errori",
   },
   email: "Email",
   password: "Password",

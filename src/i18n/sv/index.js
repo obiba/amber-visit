@@ -12,7 +12,7 @@ export default {
     save_now: "Spara nu",
     interview_completed: "Du har slutfört intervjun, tack för ditt bidrag!",
     interval_estimate: "{count} minuter",
-    time_estimate: "- 1 minut | {count} minuter",
+    time_estimate: "- | 1 minut | {count} minuter",
     receive_participant: "Ta emot en deltagare",
     start_step: "Starta",
     continue_step: "Fortsätt",
@@ -82,6 +82,7 @@ export default {
     email: "Värde är inte en giltig e-postadress",
     strongPassword:
       "Lösenordet måste innehålla minst ett av varje: liten bokstav, stor bokstav, siffra, specialtecken.",
+    more_errors: "- | och ett till fel | och {count} fler fel",
   },
   email: "E-post",
   password: "Lösenord",

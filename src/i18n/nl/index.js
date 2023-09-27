@@ -85,6 +85,7 @@ export default {
     email: "Waarde is geen geldig e-mailadres",
     strongPassword:
       "Het wachtwoord moet ten minste één van elk bevatten: kleine letter, hoofdletter, cijfer, speciaal teken.",
+    more_errors: "- | en nog een fout | en {count} meer fouten",
   },
   email: "E-mail",
   password: "Wachtwoord",

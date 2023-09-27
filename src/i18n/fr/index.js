@@ -84,6 +84,7 @@ export default {
     email: "Adresse courriel non valide",
     strongPassword:
       "Le mot de passe de passe doit avoir au moins un caractère pour chaque type : minuscule, majuscule, chiffre, caractère spécial.",
+    more_errors: "- | et une autre erreur | et {count} autres erreurs",
   },
   email: "Courriel",
   password: "Mot de passe",

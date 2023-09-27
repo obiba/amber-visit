@@ -82,6 +82,7 @@ export default {
     email: "Väärtus ei ole kehtiv e-posti aadress",
     strongPassword:
       "Parool peab sisaldama vähemalt ühte neist: väiketäht, suurtäht, number, erimärk.",
+    more_errors: "- | ja veel üks viga | ja {count} veel vigu",
   },
   email: "E-post",
   password: "Parool",

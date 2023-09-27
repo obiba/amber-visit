@@ -402,17 +402,25 @@ export default defineComponent({
       }
     },
     formatErrorMessages() {
-      const errorMessages = this.errors
-        .map((err) => {
-          let errMessage =
-            err.message === "Field is required"
-              ? t("required_field")
-              : err.message;
-          errMessage = errMessage.charAt(0).toLowerCase() + errMessage.slice(1);
-          return `<li>${err.label}: ${errMessage}</li>`;
-        })
-        .join("");
-      return `<ul>${errorMessages}</ul>`;
+      const errorMessages = [];
+      for (let i = 0; i < Math.min(this.errors.length, 3); i++) {
+        const err = this.errors[i];
+        if (err.message === "Field is required") {
+          err.message = t("required_field");
+        }
+        err.message =
+          err.message.charAt(0).toLowerCase() + err.message.slice(1);
+        errorMessages.push(`<li>${err.label}: ${err.message}</li>`);
+      }
+      if (this.errors.length > 3) {
+        errorMessages.push(
+          `<li>${t("validations.more_errors", {
+            count: this.errors.length - 3,
+          })}</li>`
+        );
+      }
+      let rval = `<ul>${errorMessages.join("")}</ul>`;
+      return rval;
     },
     canPrevious() {
       return this.isMulti() && this.formData.__page > 0;

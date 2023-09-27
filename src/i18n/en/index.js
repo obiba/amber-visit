@@ -83,6 +83,7 @@ export default {
     email: "Value is not a valid email address",
     strongPassword:
       "Password must contain at least one of each: lower case letter, upper case letter, digit, special character.",
+    more_errors: "- | and one more error | and {count} more errors",
   },
   email: "Email",
   password: "Password",

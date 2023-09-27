@@ -12,7 +12,7 @@ export default {
     save_now: "Gem nu",
     interview_completed: "Du har gennemført interviewet, tak for dit bidrag!",
     interval_estimate: "{count} minutter",
-    time_estimate: "- 1 minut | {count} minutter",
+    time_estimate: "- | 1 minut | {count} minutter",
     receive_participant: "Modtag en deltager",
     start_step: "Start",
     continue_step: "Fortsæt",
@@ -82,6 +82,7 @@ export default {
     email: "Værdi er ikke en gyldig e-mailadresse",
     strongPassword:
       "Adgangskoden skal indeholde mindst én af hver: små bogstaver, store bogstaver, ciffer, specialtegn.",
+    more_errors: "- | og en anden fejl | og {count} andre fejl",
   },
   email: "E-mail",
   password: "Adgangskode",

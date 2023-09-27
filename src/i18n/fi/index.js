@@ -83,6 +83,7 @@ export default {
     email: "Arvo ei ole kelvollinen sähköpostiosoite",
     strongPassword:
       "Salasanan tulee sisältää vähintään yksi seuraavista: pieni kirjain, iso kirjain, numero, erikoismerkki.",
+    more_errors: "- | ja yksi lisää virhe | ja {count} lisää virheitä",
   },
   email: "Sähköpostiosoite",
   password: "Salasana",

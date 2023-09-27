@@ -85,6 +85,7 @@ export default {
     email: "Der Wert ist keine gültige E-Mail-Adresse",
     strongPassword:
       "Das Passwort muss jeweils mindestens eines enthalten: Kleinbuchstaben, Großbuchstaben, Ziffer, Sonderzeichen.",
+    more_errors: "- | und ein weiterer Fehler | und {count} weitere Fehler",
   },
   email: "E-Mail",
   password: "Kennwort",
