@@ -183,7 +183,9 @@
         <q-separator dark vertical v-if="mode === 'single'" />
         <q-btn
           v-if="mode === 'single'"
+          stretch
           flat
+          class="bg-primary"
           :title="$t('validate_save')"
           :label="$q.screen.lt.sm ? '' : $t('save')"
           icon="cloud_upload"
