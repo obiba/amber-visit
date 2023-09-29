@@ -139,7 +139,7 @@
         />
         <q-separator dark vertical v-if="mode === 'single'" />
         <q-btn-dropdown
-          v-if="mode === 'single' && toc.length > 0"
+          v-if="mode === 'single' && toc.length > 1"
           stretch
           flat
           icon="toc"
