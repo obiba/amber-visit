@@ -33,7 +33,7 @@
     </q-header>
 
     <q-page-container>
-      <q-page class="bg-grey-2" v-touch-swipe.mouse="handleSwipe">
+      <q-page class="bg-grey-2">
         <div v-if="isMulti()">
           <q-linear-progress
             :value="progress"
@@ -83,9 +83,14 @@
                   gridGap="32px"
                 />
               </div>
-              <!--div class="bg-black text-white q-mt-lg q-pa-md">
-                <pre>{{ JSON.stringify(formData, null, '  ') }}</pre>
-              </div-->
+              <div
+                v-if="isMulti()"
+                style="height: 200px"
+                v-touch-swipe.mouse="handleSwipe"
+              ></div>
+              <!-- <div class="bg-black text-white q-mt-lg q-pa-md">
+                <pre>{{ JSON.stringify(formData, null, "  ") }}</pre>
+              </div> -->
             </div>
             <div
               v-if="!$q.screen.lt.sm"
