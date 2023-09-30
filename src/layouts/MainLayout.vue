@@ -120,6 +120,7 @@ import { defineComponent, ref } from "vue";
 import EssentialLink from "components/EssentialLink.vue";
 import { locales } from "../boot/i18n";
 import { settings } from "../boot/settings";
+import { useCookies } from "vue3-cookies";
 
 export default defineComponent({
   name: "MainLayout",
@@ -133,8 +134,10 @@ export default defineComponent({
     const itwStore = useInterviewStore();
     const leftDrawerOpen = ref(false);
     const { locale } = useI18n({ useScope: "global" });
+    const { cookies } = useCookies();
 
     return {
+      cookies,
       locale,
       settings,
       leftDrawerOpen,
@@ -195,6 +198,7 @@ export default defineComponent({
       this.locale = opt.value;
       this.$q.lang.set(opt.value);
       this.$i18n.locale = opt.value;
+      this.cookies.set("locale", opt.value);
     },
     onLogout() {
       // TODO make sure no save is pending

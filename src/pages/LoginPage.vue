@@ -253,6 +253,7 @@ import AppBanner from "src/components/AppBanner.vue";
 import { locales } from "../boot/i18n";
 import { settings } from "../boot/settings";
 import { Notify, copyToClipboard } from "quasar";
+import { useCookies } from "vue3-cookies";
 
 export default defineComponent({
   name: "LoginPage",
@@ -265,8 +266,10 @@ export default defineComponent({
     const interviewDesignService = api.service("itwd");
     const itwStore = useInterviewStore();
     const { locale } = useI18n({ useScope: "global" });
+    const { cookies } = useCookies();
 
     return {
+      cookies,
       locale,
       settings,
       authStore,
@@ -327,6 +330,7 @@ export default defineComponent({
   methods: {
     onLocaleSelection(opt) {
       this.locale = opt.value;
+      this.cookies.set("locale", opt.value);
     },
     toStrategy(strategy) {
       this.strategy = strategy;
