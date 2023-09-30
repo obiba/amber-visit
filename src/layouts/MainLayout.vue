@@ -151,7 +151,7 @@ export default defineComponent({
       this.onLogout();
     } else if (!this.itwStore.user) {
       this.authStore.reAuthenticate().then((response) => {
-        this.itwStore.setUser(response.user);
+        if (response) this.itwStore.setUser(response.user);
       });
     }
   },

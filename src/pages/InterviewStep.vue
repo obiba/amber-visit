@@ -1,11 +1,6 @@
 <template>
   <q-layout v-if="itwStore.isAuthenticated" v-cloak view="hHh lpR fFf">
-    <q-header
-      elevated
-      class="print-hide"
-      :class="settings.theme.header"
-      v-touch-swipe.mouse.left.right="handleSwipe"
-    >
+    <q-header elevated class="print-hide" :class="settings.theme.header">
       <q-toolbar>
         <q-toolbar-title>
           {{ tr(step.label) }}
@@ -38,7 +33,7 @@
     </q-header>
 
     <q-page-container>
-      <q-page class="bg-grey-2">
+      <q-page class="bg-grey-2" v-touch-swipe.mouse="handleSwipe">
         <div v-if="isMulti()">
           <q-linear-progress
             :value="progress"
@@ -114,12 +109,7 @@
       </q-page>
     </q-page-container>
 
-    <q-footer
-      elevated
-      class="print-hide"
-      :class="settings.theme.footer"
-      v-touch-swipe.mouse.left.right="handleSwipe"
-    >
+    <q-footer elevated class="print-hide" :class="settings.theme.footer">
       <q-toolbar>
         <q-btn
           v-if="mode === 'single'"
@@ -165,7 +155,13 @@
           v-if="isMulti()"
           stretch
           flat
-          :icon="$q.lang.rtl ? 'chevron_right' : 'chevron_left'"
+          :icon="
+            $q.screen.lt.sm
+              ? 'expand_less'
+              : $q.lang.rtl
+              ? 'chevron_right'
+              : 'chevron_left'
+          "
           @click="previousStep"
           :label="$q.screen.lt.sm ? '' : $t('previous')"
           :disabled="!canPrevious()"
@@ -175,7 +171,13 @@
           v-if="isMulti()"
           stretch
           flat
-          :icon="$q.lang.rtl ? 'chevron_left' : 'chevron_right'"
+          :icon="
+            $q.screen.lt.sm
+              ? 'expand_more'
+              : $q.lang.rtl
+              ? 'chevron_left'
+              : 'chevron_right'
+          "
           @click="nextStep"
           :label="$q.screen.lt.sm ? '' : $t('next')"
           :disabled="!canNext()"
@@ -396,9 +398,12 @@ export default defineComponent({
     },
     handleSwipe({ evt, ...newInfo }) {
       if (this.isMulti()) {
-        if (newInfo.direction === "left") {
+        if (newInfo.direction === "up" || newInfo.direction === "left") {
           this.nextStep();
-        } else if (newInfo.direction === "right") {
+        } else if (
+          newInfo.direction === "down" ||
+          newInfo.direction === "right"
+        ) {
           this.previousStep();
         }
       }
