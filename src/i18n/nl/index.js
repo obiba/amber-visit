@@ -106,7 +106,7 @@ export default {
   "Password too short": "Het wachtwoord is te kort.",
   close: "Sluit",
   go_to: "Ga naar...",
-  save: "Opslaan",
+  save: "Voltooi",
   pause: "Pauze",
   previous: "Vorige",
   next: "Volgende",

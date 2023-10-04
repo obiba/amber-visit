@@ -104,7 +104,7 @@ export default {
   "Password too short": "Salasana on liian lyhyt.",
   close: "Sulje",
   go_to: "Siirry...",
-  save: "Tallenna",
+  save: "Viimeistele",
   pause: "Keskeytä",
   previous: "Edellinen",
   next: "Seuraava",

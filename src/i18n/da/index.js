@@ -103,7 +103,7 @@ export default {
   "Password too short": "Adgangskoden er for kort.",
   close: "Luk",
   go_to: "Gå til...",
-  save: "Gem",
+  save: "Afslut",
   pause: "Pause",
   previous: "Forrige",
   next: "Næste",
