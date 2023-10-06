@@ -24,12 +24,14 @@ const defaultLocales = [
 
 const locales = settings.i18n ? Object.keys(settings.i18n) : defaultLocales;
 
-let detectedLocale = Quasar.lang.getLocale().split("-")[0];
+let detectedLocale = cookies.get("locale")
+  ? cookies.get("locale") // previously selected
+  : Quasar.lang.getLocale(); // browser
 if (!locales.includes(detectedLocale)) {
-  detectedLocale = locales[0];
-}
-if (cookies.get("locale")) {
-  detectedLocale = cookies.get("locale");
+  detectedLocale = detectedLocale.split("-")[0];
+  if (!locales.includes(detectedLocale)) {
+    detectedLocale = locales[0];
+  }
 }
 
 const i18n = createI18n({
