@@ -112,7 +112,7 @@ export default {
   validation_errors: "Validointivirheet: {errors}",
   single_page: "Yksittäinen sivu",
   multi_steps: "Useita vaiheita",
-  final_step_label: "Tämä on lomakkeen loppu, onnittelut!",
+  final_step_label: "Tämä on lomakkeen loppu, kiitos panoksestasi!",
   required_field: "Kenttä on pakollinen",
   go_home: "Siirry kotiin",
   nothing_here: "Hups. Täällä ei ole mitään...",

@@ -115,7 +115,8 @@ export default {
   validation_errors: "Erros de validação: {errors}",
   single_page: "Página única",
   multi_steps: "Várias etapas",
-  final_step_label: "Este é o fim do formulário, parabéns!",
+  final_step_label:
+    "Este é o final do formulário, obrigado pela sua contribuição!",
   required_field: "O campo é obrigatório",
   go_home: "Ir para casa",
   nothing_here: "Ops. Não há nada aqui...",

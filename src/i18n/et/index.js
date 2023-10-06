@@ -111,7 +111,7 @@ export default {
   validation_errors: "Valideerimisvead: {errors}",
   single_page: "Üks lehekülg",
   multi_steps: "Mitu sammu",
-  final_step_label: "See on vormi lõpp, palju õnne!",
+  final_step_label: "See on vormi lõpp, täname panuse eest!",
   required_field: "Väli on kohustuslik",
   go_home: "Mine koju",
   nothing_here: "Oih. Siin pole midagi...",

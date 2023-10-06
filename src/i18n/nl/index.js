@@ -114,7 +114,8 @@ export default {
   validation_errors: "Validatiefouten: {errors}",
   single_page: "Enkele pagina",
   multi_steps: "Meerdere stappen",
-  final_step_label: "Dit is het einde van het formulier, gefeliciteerd!",
+  final_step_label:
+    "Dit is het einde van het formulier, bedankt voor uw bijdrage!",
   required_field: "Veld is verplicht",
   go_home: "Naar huis",
   nothing_here: "Oeps. Niets hier...",
