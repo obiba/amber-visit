@@ -114,7 +114,6 @@ export default {
   validation_errors: "Ошибки проверки: {errors}",
   single_page: "Одна страница",
   multi_steps: "Несколько шагов",
-  final_step_label: "Это конец формы, спасибо за ваш вклад!",
   required_field: "Поле является обязательным для заполнения",
   go_home: "Перейти домой",
   nothing_here: "Упс. Здесь ничего нет...",

@@ -111,7 +111,6 @@ export default {
   validation_errors: "Valideringsfel: {errors}",
   single_page: "En sida",
   multi_steps: "Flera steg",
-  final_step_label: "Detta är slutet på formuläret, tack för ditt bidrag!",
   required_field: "Fältet är obligatoriskt",
   go_home: "Gå hem",
   nothing_here: "Hoppsan. Ingenting här...",

@@ -115,8 +115,6 @@ export default {
   validation_errors: "Errori di convalida: {errors}",
   single_page: "Pagina singola",
   multi_steps: "Passi multipli",
-  final_step_label:
-    "Questa è la fine del modulo, grazie per il tuo contributo!",
   required_field: "Il campo è obbligatorio",
   go_home: "Vai a casa",
   nothing_here: "Oops. Non c'è niente qui...",

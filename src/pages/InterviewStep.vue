@@ -61,20 +61,7 @@
               />
             </div>
             <div class="col-md-4 col-sm-8 col-xs-12 q-mt-sm q-mb-sm">
-              <div v-if="isFinalStep">
-                <div class="text-subtitle1 q-mt-md q-mb-lg">
-                  {{ $t("final_step_label") }}
-                </div>
-                <div class="flex flex-center">
-                  <q-btn
-                    :label="$t('save')"
-                    icon="cloud_upload"
-                    color="primary"
-                    @click="onComplete"
-                  />
-                </div>
-              </div>
-              <div v-else>
+              <div>
                 <BlitzForm
                   :key="remountCounter"
                   :schema="schema"
@@ -157,39 +144,25 @@
 
         <q-separator dark vertical v-if="isMulti()" />
         <q-btn
-          v-if="isMulti()"
+          v-if="isMulti() && canPrevious()"
           stretch
           flat
-          :icon="
-            $q.screen.lt.sm
-              ? 'expand_less'
-              : $q.lang.rtl
-              ? 'chevron_right'
-              : 'chevron_left'
-          "
+          :icon="$q.lang.rtl ? 'chevron_right' : 'chevron_left'"
           @click="previousStep"
           :label="$q.screen.lt.sm ? '' : $t('previous')"
-          :disabled="!canPrevious()"
         />
         <q-separator dark vertical v-if="isMulti()" />
         <q-btn
-          v-if="isMulti()"
+          v-if="isMulti() && canNext()"
           stretch
           flat
-          :icon="
-            $q.screen.lt.sm
-              ? 'expand_more'
-              : $q.lang.rtl
-              ? 'chevron_left'
-              : 'chevron_right'
-          "
+          :icon="$q.lang.rtl ? 'chevron_left' : 'chevron_right'"
           @click="nextStep"
           :label="$q.screen.lt.sm ? '' : $t('next')"
-          :disabled="!canNext()"
         />
         <q-separator dark vertical v-if="mode === 'single'" />
         <q-btn
-          v-if="mode === 'single'"
+          v-if="mode === 'single' || isFinalStep"
           stretch
           flat
           class="bg-primary"
@@ -204,7 +177,6 @@
           flat
           :label="$q.screen.lt.sm ? '' : $t('pause')"
           icon="pause"
-          :disable="isFinalStep"
           @click="onPause"
         />
       </q-toolbar>
@@ -362,7 +334,8 @@ export default defineComponent({
     },
     isFinalStep() {
       return (
-        this.isMulti() && this.formData.__page === this.step.schema.items.length
+        this.isMulti() &&
+        this.formData.__page === this.step.schema.items.length - 1
       );
     },
     modeOptions() {
@@ -459,10 +432,12 @@ export default defineComponent({
         record.data[key] = payload.data[key];
       }
       this.itwStore.updateRecord(this.stepName, record.data);
+      this.itwStore.pauseRecord();
     },
     canNext() {
       return (
-        this.isMulti() && this.formData.__page < this.step.schema.items.length
+        this.isMulti() &&
+        this.formData.__page < this.step.schema.items.length - 1
       );
     },
     nextStep() {

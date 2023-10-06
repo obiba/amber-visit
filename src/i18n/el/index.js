@@ -116,8 +116,6 @@ export default {
   validation_errors: "Σφάλματα επικύρωσης: {errors}",
   single_page: "Μία σελίδα",
   multi_steps: "Πολλαπλά βήματα",
-  final_step_label:
-    "Αυτό είναι το τέλος της φόρμας, ευχαριστώ για τη συνεισφορά σας!",
   required_field: "Το πεδίο είναι υποχρεωτικό",
   go_home: "Πηγαίνετε στην αρχική σελίδα",
   nothing_here: "Ουπς. Τίποτα εδώ...",

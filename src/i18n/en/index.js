@@ -113,8 +113,6 @@ export default {
   validation_errors: "Validation errors: {errors}",
   single_page: "Single page",
   multi_steps: "Multiple steps",
-  final_step_label:
-    "This is the end of the form, thanks for your contribution!",
   required_field: "Field is required",
   go_home: "Go Home",
   nothing_here: "Oops. Nothing here...",
