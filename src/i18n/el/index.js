@@ -1,7 +1,6 @@
 export default {
   main: {
     brand: "Amber Visit",
-    brand_caption: "Σύστημα συνέντευξης των συμμετεχόντων",
     logout: "Υπογραφή",
     docs: "Έγγραφα",
     forum: "Φόρουμ",
@@ -21,6 +20,8 @@ export default {
     completed_step: "Ολοκληρώθηκε",
   },
   login: {
+    brand: "Amber Visit",
+    brand_caption: "Σύστημα συνέντευξης των συμμετεχόντων",
     user_title: "",
     as_user: "Είμαι ερευνητής",
     submit: "Υποβολή",

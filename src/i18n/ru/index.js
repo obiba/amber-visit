@@ -1,7 +1,6 @@
 export default {
   main: {
     brand: "Amber Visit",
-    brand_caption: "Система интервьюирования участников",
     logout: "Выписка",
     docs: "Документы",
     forum: "Форум",
@@ -20,6 +19,8 @@ export default {
     completed_step: "Завершено",
   },
   login: {
+    brand: "Amber Visit",
+    brand_caption: "Система интервьюирования участников",
     user_title: "",
     as_user: "Я следователь",
     submit: "Отправить",

@@ -1,7 +1,6 @@
 export default {
   main: {
     brand: "Amber Visit",
-    brand_caption: "Osallistujien haastattelujärjestelmä",
     logout: "Uloskirjautuminen",
     docs: "Asiakirjat",
     forum: "Foorumi",
@@ -21,6 +20,8 @@ export default {
     completed_step: "Valmis",
   },
   login: {
+    brand: "Amber Visit",
+    brand_caption: "Osallistujien haastattelujärjestelmä",
     user_title: "",
     as_user: "Olen tutkija",
     submit: "Lähetä",

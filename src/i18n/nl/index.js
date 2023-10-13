@@ -1,7 +1,6 @@
 export default {
   main: {
     brand: "Amber Visit",
-    brand_caption: "Deelnemers interview systeem",
     logout: "Afmelden",
     docs: "Documenten",
     forum: "Forum",
@@ -21,6 +20,8 @@ export default {
     completed_step: "Voltooid",
   },
   login: {
+    brand: "Amber Visit",
+    brand_caption: "Deelnemers interview systeem",
     user_title: "",
     as_user: "Ik ben een onderzoeker",
     submit: "Verzenden",

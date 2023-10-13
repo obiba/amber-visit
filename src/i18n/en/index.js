@@ -1,7 +1,6 @@
 export default {
   main: {
     brand: "Amber Visit",
-    brand_caption: "Participant interview system",
     logout: "Sign-out",
     docs: "Docs",
     forum: "Forum",
@@ -21,6 +20,8 @@ export default {
     completed_step: "Completed",
   },
   login: {
+    brand: "Amber Visit",
+    brand_caption: "Participant interview system",
     user_title: "",
     as_user: "I am an investigator",
     submit: "Submit",

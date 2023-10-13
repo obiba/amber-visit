@@ -1,7 +1,6 @@
 export default {
   main: {
     brand: "Amber Visit",
-    brand_caption: "System til interview af deltagere",
     logout: "Sign-out",
     docs: "Dokumenter",
     forum: "Forum",
@@ -20,6 +19,8 @@ export default {
     completed_step: "Afsluttet",
   },
   login: {
+    brand: "Amber Visit",
+    brand_caption: "System til interview af deltagere",
     user_title: "",
     as_user: "Jeg er en investigator",
     submit: "Send ind",
