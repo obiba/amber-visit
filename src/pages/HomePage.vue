@@ -252,7 +252,7 @@
 import { defineComponent } from "vue";
 import { Notify } from "quasar";
 import { settings } from "../boot/settings";
-import snarkdown from "snarkdown";
+import { marked } from "marked";
 import { makeSchemaFormTr } from "@obiba/quasar-ui-amber";
 
 export default defineComponent({
@@ -303,7 +303,9 @@ export default defineComponent({
       );
     },
     md(text) {
-      return text ? snarkdown(text) : text;
+      return text
+        ? marked.parse(this.tr(text), { headerIds: false, mangle: false })
+        : text;
     },
     onReceive(val) {
       this.receive = val;

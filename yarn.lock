@@ -31,12 +31,12 @@
   dependencies:
     regenerator-runtime "^0.13.11"
 
-"@blitzar/form@https://gitpkg.now.sh/obiba/blitzar/packages/form?v1.0.7-obiba":
-  version "1.0.7"
-  resolved "https://gitpkg.now.sh/obiba/blitzar/packages/form?v1.0.7-obiba#15c6153e04fb9ea7bc6f60b8c01ce4a2c068efef"
+"@blitzar/form@https://gitpkg.now.sh/obiba/blitzar/packages/form?v1.0.11-obiba":
+  version "1.0.11"
+  resolved "https://gitpkg.now.sh/obiba/blitzar/packages/form?v1.0.11-obiba#48ef33b501c9bb6b0a0386e000de2cc8b5fc485e"
   dependencies:
-    "@blitzar/types" "^1.0.7"
-    "@blitzar/utils" "^1.0.7"
+    "@blitzar/types" "^1.0.10"
+    "@blitzar/utils" "^1.0.10"
     case-anything "^2.1.2"
     copy-anything "^2.0.3"
     filter-anything "^2.2.1"
@@ -44,20 +44,19 @@
     map-anything "^1.0.4"
     merge-anything "^4.0.2"
     nestify-anything "^1.0.3"
-    snarkdown "^2.0.0"
 
-"@blitzar/types@^1.0.7", "@blitzar/types@^1.2.4":
+"@blitzar/types@^1.0.10", "@blitzar/types@^1.2.4":
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/@blitzar/types/-/types-1.2.4.tgz#dbe732e034510b7459acb26f9c8105f57e8adebe"
   integrity sha512-uLFfwxfvzl/2BbQfM9y66NyaGYtXbgxnQqUPMcUmyoimsz4pvTEuJ6hnIpnhYOLYhC8qPL845hq8HBrU33PfqA==
   dependencies:
     ts-toolbelt "^9.6.0"
 
-"@blitzar/types@https://gitpkg.now.sh/obiba/blitzar/packages/types?v1.0.7-obiba":
-  version "1.0.7"
-  resolved "https://gitpkg.now.sh/obiba/blitzar/packages/types?v1.0.7-obiba#80d3ff6a6c9b795bd39306cdb6f243d0f63f90c4"
+"@blitzar/types@https://gitpkg.now.sh/obiba/blitzar/packages/types?v1.0.11-obiba":
+  version "1.0.11"
+  resolved "https://gitpkg.now.sh/obiba/blitzar/packages/types?v1.0.11-obiba#50d89515d88f2b36fe4395ff8a0bb4bbd784dbd2"
 
-"@blitzar/utils@^1.0.7":
+"@blitzar/utils@^1.0.10":
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/@blitzar/utils/-/utils-1.2.4.tgz#c627b9c90d785c03aa6bfcce444a92d459515e2d"
   integrity sha512-NpO7Hvw08VsF/dYDFkWkwg2iUW4MjdOSGlaV9t+Ar1KE1RrU0AKSFNntzsQWTp6NcpbH0S+b4w2whNS0X567mQ==
@@ -67,9 +66,9 @@
     flatten-anything "^2.0.7"
     is-what "^4.1.7"
 
-"@blitzar/utils@https://gitpkg.now.sh/obiba/blitzar/packages/utils?v1.0.7-obiba":
-  version "1.0.7"
-  resolved "https://gitpkg.now.sh/obiba/blitzar/packages/utils?v1.0.7-obiba#5a1a54681cc8e2049d5fd7f3402d772bc15162c9"
+"@blitzar/utils@https://gitpkg.now.sh/obiba/blitzar/packages/utils?v1.0.11-obiba":
+  version "1.0.11"
+  resolved "https://gitpkg.now.sh/obiba/blitzar/packages/utils?v1.0.11-obiba#9ae15797028cb3ef0cdad212e840c6feb0e9a9fb"
   dependencies:
     commafy-anything "^2.1.0"
     flatten-anything "^2.0.4"
@@ -4187,11 +4186,6 @@ slice-ansi@^4.0.0:
     ansi-styles "^4.0.0"
     astral-regex "^2.0.0"
     is-fullwidth-code-point "^3.0.0"
-
-snarkdown@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/snarkdown/-/snarkdown-2.0.0.tgz#b1feb4db91b9f94a8ebbd7a50f3e99aee18b1e03"
-  integrity sha512-MgL/7k/AZdXCTJiNgrO7chgDqaB9FGM/1Tvlcenenb7div6obaDATzs16JhFyHHBGodHT3B7RzRc5qk8pFhg3A==
 
 sort-asc@^0.1.0:
   version "0.1.0"

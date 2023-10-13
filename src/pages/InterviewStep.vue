@@ -213,7 +213,7 @@
 
 <script>
 import { defineComponent, ref } from "vue";
-import snarkdown from "snarkdown";
+import { marked } from "marked";
 import {
   makeBlitzarQuasarSchemaForm,
   makeSchemaFormTr,
@@ -506,7 +506,9 @@ export default defineComponent({
       return rval;
     },
     md(text) {
-      return text ? snarkdown(text) : text;
+      return text
+        ? marked.parse(this.tr(text), { headerIds: false, mangle: false })
+        : text;
     },
     onLogout() {
       // TODO make sure no save is pending
