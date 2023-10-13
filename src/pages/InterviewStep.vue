@@ -369,7 +369,8 @@ export default defineComponent({
       }
     },
     updateProgress() {
-      this.progress = this.formData.__page / this.step.schema.items.length;
+      this.progress =
+        this.formData.__page / (this.step.schema.items.length - 1);
     },
     isMulti() {
       return this.mode === "multi";
