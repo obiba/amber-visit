@@ -43,24 +43,18 @@
         </div>
         <div class="q-pa-md">
           <div class="row">
-            <div
-              v-if="!$q.screen.lt.sm"
-              class="col-md-4 col-sm-2"
-              :class="
-                canPrevious() && isMulti()
-                  ? 'text-grey-5 text-center flex flex-center cursor-pointer'
-                  : ''
-              "
-              @click="previousStep"
-            >
+            <div v-if="!$q.screen.lt.sm" class="col-md-3 col-sm-2 text-center">
               <q-icon
                 v-if="canPrevious()"
                 :name="$q.lang.rtl ? 'arrow_forward' : 'arrow_back'"
                 size="xl"
-                class="print-hide"
+                color="secondary"
+                class="print-hide fixed q-mt-xl bg-warning q-pa-md cursor-pointer"
+                style="border-radius: 50%; margin-left: -50px"
+                @click="previousStep"
               />
             </div>
-            <div class="col-md-4 col-sm-8 col-xs-12 q-mt-sm q-mb-sm">
+            <div class="col-md-6 col-sm-8 col-xs-12 q-mt-sm q-mb-sm">
               <div>
                 <BlitzForm
                   :key="remountCounter"
@@ -79,21 +73,24 @@
                 <pre>{{ JSON.stringify(formData, null, "  ") }}</pre>
               </div> -->
             </div>
-            <div
-              v-if="!$q.screen.lt.sm"
-              class="col-md-4 col-sm-2"
-              :class="
-                canNext() && isMulti()
-                  ? 'text-grey-5 text-center flex flex-center cursor-pointer'
-                  : ''
-              "
-              @click="nextStep"
-            >
+            <div v-if="!$q.screen.lt.sm" class="col-md-3 col-sm-2 text-center">
               <q-icon
                 v-if="canNext()"
                 :name="$q.lang.rtl ? 'arrow_back' : 'arrow_forward'"
                 size="xl"
-                class="print-hide"
+                color="secondary"
+                class="print-hide fixed q-mt-xl bg-warning q-pa-md cursor-pointer"
+                style="border-radius: 50%; margin-left: -25px"
+                @click="nextStep"
+              />
+              <q-icon
+                v-else
+                name="cloud_upload"
+                size="xl"
+                color="white"
+                class="print-hide fixed q-mt-xl bg-primary q-pa-md cursor-pointer"
+                style="border-radius: 50%; margin-left: -25px"
+                @click="nextStep"
               />
             </div>
           </div>
@@ -149,7 +146,7 @@
           flat
           :icon="$q.lang.rtl ? 'chevron_right' : 'chevron_left'"
           @click="previousStep"
-          :label="$q.screen.lt.sm ? '' : $t('previous')"
+          :label="$t('previous')"
         />
         <q-separator dark vertical v-if="isMulti()" />
         <q-btn
@@ -158,7 +155,7 @@
           flat
           :icon="$q.lang.rtl ? 'chevron_left' : 'chevron_right'"
           @click="nextStep"
-          :label="$q.screen.lt.sm ? '' : $t('next')"
+          :label="$t('next')"
         />
         <q-separator dark vertical v-if="mode === 'single'" />
         <q-btn
