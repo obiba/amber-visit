@@ -291,8 +291,22 @@ export const useInterviewStore = defineStore(
       const itwState = evalRendering();
       itw.value.state = itwState;
 
+      const stepObjs = [stepObj];
+      const toReset = Object.keys(rendering.value).filter(
+        (name) => !rendering.value[name].visible
+      );
+      if (toReset.length > 0) {
+        itw.value.steps
+          .filter((step) => toReset.includes(step.name))
+          .forEach((step) => {
+            step.state = null;
+            step.data = null;
+            stepObjs.push(step);
+          });
+      }
+
       return itwService
-        .patch(itw.value._id, { state: itwState, steps: [stepObj] }, payload)
+        .patch(itw.value._id, { state: itwState, steps: stepObjs }, payload)
         .then((response) => {
           record.value = null;
           itw.value = response;
@@ -300,9 +314,11 @@ export const useInterviewStore = defineStore(
         })
         .catch((err) => {
           // handle save error
-          if (!tosave.value.includes(stepObj.name)) {
-            tosave.value.push(stepObj.name);
-          }
+          stepObjs.forEach((step) => {
+            if (!tosave.value.includes(step.name)) {
+              tosave.value.push(step.name);
+            }
+          });
         });
     }
 
