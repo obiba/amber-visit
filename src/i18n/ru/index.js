@@ -10,6 +10,7 @@ export default {
     pending_save: "Ожидается сохранение данных (вы не в сети?)",
     save_now: "Сохранить сейчас",
     interview_completed: "Вы завершили интервью, спасибо за ваш вклад!",
+    interview_completed_text: "",
     interval_estimate: "{count} минут",
     time_estimate: "- | 1 минута | {count} минут",
     receive_participant: "Принять участника",

@@ -11,6 +11,7 @@ export default {
     save_now: "Αποθήκευση τώρα",
     interview_completed:
       "Ολοκληρώσατε τη συνέντευξη, ευχαριστούμε για τη συμβολή σας!",
+    interview_completed_text: "",
     interval_estimate: "{count} λεπτά",
     time_estimate: "- | 1 λεπτό | {count} λεπτά",
     receive_participant: "Υποδοχή συμμετέχοντα",

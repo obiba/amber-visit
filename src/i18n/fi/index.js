@@ -11,6 +11,7 @@ export default {
     save_now: "Tallenna nyt",
     interview_completed:
       "Olet suorittanut haastattelun loppuun, kiitos osallistumisestasi!",
+    interview_completed_text: "",
     interval_estimate: "{count} minuuttia",
     time_estimate: "- | 1 minuutti | {count} minuuttia",
     receive_participant: "Vastaanota osallistuja",

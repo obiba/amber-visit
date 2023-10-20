@@ -11,6 +11,7 @@ export default {
     save_now: "Nu opslaan",
     interview_completed:
       "U hebt het interview afgerond, bedankt voor uw bijdrage!",
+    interview_completed_text: "",
     interval_estimate: "{count} minuten",
     time_estimate: "- | 1 minuut | {count} minuten",
     receive_participant: "Een deelnemer ontvangen",

@@ -10,6 +10,7 @@ export default {
     pending_save: "Ootab andmete salvestamist (kas olete võrguühenduseta?)",
     save_now: "Salvesta nüüd",
     interview_completed: "Olete intervjuu lõpetanud, täname teid panuse eest!",
+    interview_completed_text: "",
     interval_estimate: "{count} minutit",
     time_estimate: "- | 1 minut | {count} minutit",
     receive_participant: "Osaleja vastuvõtmine",

@@ -69,7 +69,15 @@
               </div>
             </q-card-section>
             <q-separator :dark="settings.theme.dark"></q-separator>
-            <q-card-section>
+            <q-card-section
+              v-if="itwStore.completed && $t('main.interview_completed_text')"
+            >
+              <div
+                class="marked"
+                v-html="md($t('main.interview_completed_text'))"
+              ></div>
+            </q-card-section>
+            <q-card-section v-else>
               <q-list :dark="settings.theme.dark" separator>
                 <template v-for="step in itwStore.design.steps" :key="step._id">
                   <q-item
