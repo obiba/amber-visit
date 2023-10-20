@@ -90,7 +90,7 @@
                 color="white"
                 class="print-hide fixed q-mt-xl bg-primary q-pa-md cursor-pointer"
                 style="border-radius: 50%; margin-left: -25px"
-                @click="nextStep"
+                @click="onComplete"
               />
             </div>
           </div>
