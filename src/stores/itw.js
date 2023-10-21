@@ -227,7 +227,7 @@ export const useInterviewStore = defineStore(
           .forEach((step) => {
             rec.data[step.name] = step.data;
           });
-        rec.data.participant = itw.value.data;
+        rec.data.participant = design.value.participant.data;
         record.value = rec;
       });
     }
