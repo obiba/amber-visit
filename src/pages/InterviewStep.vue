@@ -430,7 +430,7 @@ export default defineComponent({
         record.data[key] = payload.data[key];
       }
       this.itwStore.updateRecord(this.stepName, record.data);
-      this.itwStore.pauseRecord();
+      this.itwStore.intermediateRecord();
     },
     canNext() {
       return (

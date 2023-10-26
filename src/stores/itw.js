@@ -208,18 +208,12 @@ export const useInterviewStore = defineStore(
     async function setupRecord(name) {
       return initInterview().then(() => {
         const step = itw.value.steps?.find((step) => step.name === name);
-        let rec;
-        if (step) {
-          rec = {
-            name,
-            data: step.data,
-          };
-        } else {
-          // start the record of the step
-          rec = {
-            name,
-            data: { __page: 0 },
-          };
+        let rec = {
+          name,
+          data: { __page: 0 },
+        };
+        if (step && step.data) {
+          rec.data = step.data;
         }
         // add other steps data
         itw.value.steps
@@ -246,34 +240,51 @@ export const useInterviewStore = defineStore(
     }
 
     /**
+     * Intermediatesvae of the form: merge current record into the interview steps data with 'in_progress' state.
+     */
+    async function intermediateRecord() {
+      return saveRecord("in_progress", true);
+    }
+
+    /**
      * Pause form: merge current record into the interview steps data with 'in_progress' state and set record to null.
      */
     async function pauseRecord() {
-      return saveRecord("in_progress");
+      return saveRecord("in_progress", false);
     }
 
     /**
      * Complete form: merge current record into the interview steps data with 'completed' state and set record to null.
      */
     async function completeRecord() {
-      return saveRecord("completed");
+      return saveRecord("completed", false);
     }
 
     /**
      * Save the interview with the provided state.
      * @param {string} state
+     * @param {boolean} recording Keep on recording
      */
-    async function saveRecord(state) {
+    async function saveRecord(state, recording) {
       const payload = makePayload();
       const stepDesign = getStepDesign(record.value.name);
       const stepObj = {
+        name: record.value.name,
+        state: state,
         form: stepDesign.form,
         revision: stepDesign.revision,
-        ...record.value,
+        data: {},
       };
-      stepObj.state = state;
-      design.value.steps.forEach((step) => delete stepObj.data[step.name]);
-      delete stepObj.data.participant;
+      // exclude entries from other steps and participant data
+      const excludedKeys = design.value.steps
+        .filter((step) => step.name !== record.value.name)
+        .map((step) => step.name);
+      excludedKeys.push("participant");
+      Object.keys(record.value.data).forEach((key) => {
+        if (!excludedKeys.includes(key)) {
+          stepObj.data[key] = record.value.data[key];
+        }
+      });
 
       // include patch data to current itw, so that it works offline and saving can be postponed
       if (!itw.value.steps) {
@@ -288,38 +299,56 @@ export const useInterviewStore = defineStore(
           itw.value.steps.splice(idx, 1, stepObj);
         }
       }
-      const itwState = evalRendering();
-      itw.value.state = itwState;
-
       const stepObjs = [stepObj];
-      const toReset = Object.keys(rendering.value).filter(
-        (name) => !rendering.value[name].visible
-      );
-      if (toReset.length > 0) {
-        itw.value.steps
-          .filter((step) => toReset.includes(step.name))
-          .forEach((step) => {
-            step.state = null;
-            step.data = null;
-            stepObjs.push(step);
+
+      if (recording) {
+        return itwService
+          .patch(itw.value._id, { steps: stepObjs }, payload)
+          .then((response) => {
+            itw.value = response;
+          })
+          .catch((err) => {
+            // handle save error
+            stepObjs.forEach((step) => {
+              if (!tosave.value.includes(step.name)) {
+                tosave.value.push(step.name);
+              }
+            });
+          });
+      } else {
+        // update iterview and step states
+        const itwState = evalRendering();
+        itw.value.state = itwState;
+
+        const toReset = Object.keys(rendering.value).filter(
+          (name) => !rendering.value[name].visible
+        );
+        if (toReset.length > 0) {
+          itw.value.steps
+            .filter((step) => toReset.includes(step.name))
+            .forEach((step) => {
+              step.state = null;
+              step.data = null;
+              stepObjs.push(step);
+            });
+        }
+
+        return itwService
+          .patch(itw.value._id, { state: itwState, steps: stepObjs }, payload)
+          .then((response) => {
+            record.value = null;
+            itw.value = response;
+            evalRendering();
+          })
+          .catch((err) => {
+            // handle save error
+            stepObjs.forEach((step) => {
+              if (!tosave.value.includes(step.name)) {
+                tosave.value.push(step.name);
+              }
+            });
           });
       }
-
-      return itwService
-        .patch(itw.value._id, { state: itwState, steps: stepObjs }, payload)
-        .then((response) => {
-          record.value = null;
-          itw.value = response;
-          evalRendering();
-        })
-        .catch((err) => {
-          // handle save error
-          stepObjs.forEach((step) => {
-            if (!tosave.value.includes(step.name)) {
-              tosave.value.push(step.name);
-            }
-          });
-        });
     }
 
     /**
@@ -434,6 +463,7 @@ export const useInterviewStore = defineStore(
       getStepDesign,
       setupRecord,
       updateRecord,
+      intermediateRecord,
       pauseRecord,
       completeRecord,
       getRecordStatus,
