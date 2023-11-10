@@ -43,6 +43,8 @@ export default {
     totp_secret:
       "Oder kopieren Sie diesen Geheimcode, um ihn manuell in der Authenticator-App hinzuzufügen.",
     secret_copied: "Authenticator-Geheimcode kopiert.",
+    email_otp: "Oder senden Sie den temporären Token an Ihre E-Mail-Adresse.",
+    send_email_token: "Token senden",
     failed: "Falsche E-Mail/Kennwort-Kombination.",
     failed_token: "Falsches Token.",
   },

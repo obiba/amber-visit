@@ -43,6 +43,8 @@ export default {
     totp_secret:
       "Ou copie este código secreto para ser adicionado manualmente à aplicação do autenticador.",
     secret_copied: "Código secreto do autenticador copiado.",
+    email_otp: "Ou envie o token temporário para o seu endereço de e-mail.",
+    send_email_token: "Enviar token",
     failed: "Combinação incorrecta de e-mail/palavra-passe.",
     failed_token: "Token incorreto.",
   },

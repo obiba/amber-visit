@@ -43,6 +43,8 @@ export default {
     totp_secret:
       "Tai kopioi tämä salainen koodi lisättäväksi manuaalisesti autentikointisovellukseen.",
     secret_copied: "Autentikointisovelluksen salainen koodi kopioitu.",
+    email_otp: "Tai lähetä väliaikainen tunnus sähköpostiosoitteeseesi.",
+    send_email_token: "Lähetä tunnus",
     failed: "Väärä sähköpostiosoite/salasana-yhdistelmä.",
     failed_token: "Väärä tunniste.",
   },

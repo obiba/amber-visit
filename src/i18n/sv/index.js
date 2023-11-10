@@ -42,6 +42,8 @@ export default {
     totp_secret:
       "Eller kopiera den här hemliga koden för att lägga till den manuellt i autentiseringsappen.",
     secret_copied: "Autentiseringens hemliga kod kopierad.",
+    email_otp: "Eller skicka den tillfälliga token till din e-postadress.",
+    send_email_token: "Skicka token",
     failed: "Felaktig kombination av e-post och lösenord.",
     failed_token: "Felaktig token.",
   },

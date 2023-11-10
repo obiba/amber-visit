@@ -43,6 +43,8 @@ export default {
     totp_secret:
       "Of kopieer deze geheime code om deze handmatig toe te voegen aan de authenticator-app.",
     secret_copied: "Authenticator geheime code gekopieerd.",
+    email_otp: "Of stuur het tijdelijke token naar uw e-mailadres.",
+    send_email_token: "Token verzenden",
     failed: "Onjuiste e-mail/wachtwoord combinatie.",
     failed_token: "Onjuist token.",
   },

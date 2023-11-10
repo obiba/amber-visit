@@ -42,6 +42,8 @@ export default {
     totp_secret:
       "Eller kopier denne hemmelige kode, så den kan tilføjes manuelt til authenticator-appen.",
     secret_copied: "Hemmelig kode til autentificering kopieret.",
+    email_otp: "Eller send det midlertidige token til din e-mailadresse.",
+    send_email_token: "Send token",
     failed: "Forkert kombination af e-mail/adgangskode.",
     failed_token: "Forkert token.",
   },

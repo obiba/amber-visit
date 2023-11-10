@@ -42,6 +42,8 @@ export default {
     totp_secret:
       "Või kopeerige see salajane kood käsitsi autentimisrakendusse lisamiseks.",
     secret_copied: "Autentikaatori salajane kood kopeeritud.",
+    email_otp: "Või saatke ajutine märk oma e-posti aadressile.",
+    send_email_token: "Saada märk",
     failed: "Vale e-posti ja salasõna kombinatsioon.",
     failed_token: "Vale sümbol.",
   },
