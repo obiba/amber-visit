@@ -96,6 +96,18 @@
                       />
                     </template>
                   </q-input>
+                  <div class="col text-subtitle q-mt-md">
+                    {{ $t("login.email_otp") }}
+                  </div>
+                  <div class="q-mt-md">
+                    <q-btn
+                      :label="$t('login.send_email_token')"
+                      @click="onEmailToken"
+                      color="info"
+                      stretch
+                      class="text-bold q-ml-md"
+                    />
+                  </div>
                 </q-card-section>
                 <q-card-section v-if="withToken">
                   <q-form @submit="onSubmit" class="q-gutter-md">
@@ -281,6 +293,7 @@ export default defineComponent({
       password: ref(""),
       qr: ref(""),
       withToken: ref(false),
+      method: ref(""),
       strategy: ref("participant"),
       code: ref(""),
       withPassword: ref(false),
@@ -348,10 +361,13 @@ export default defineComponent({
       };
       payload.email = this.email;
       payload.password = this.password;
-      if (this.token && this.token.length > 0) {
+      if (this.method) {
+        payload.method = this.method;
+      }
+      if (this.token) {
         payload.token = this.token;
       }
-      if (this.secret && this.secret.length > 0) {
+      if (!this.method && this.secret) {
         payload.secret = this.secret;
       }
       return payload;
@@ -364,11 +380,16 @@ export default defineComponent({
         });
       });
     },
+    onEmailToken() {
+      this.method = "otp";
+      this.onSubmit();
+    },
     onCancelToken() {
       this.withToken = false;
       this.token = "";
       this.password = "";
       this.secret = "";
+      this.method = "otp";
     },
     onCancelPassword() {
       this.withPassword = false;
