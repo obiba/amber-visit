@@ -63,6 +63,7 @@
                   v-model="formData"
                   :columnCount="1"
                   :show-errors-on="errorMode"
+                  :lang="lang"
                   gridGap="32px"
                 />
               </div>
@@ -248,6 +249,7 @@ export default defineComponent({
       showFormDescription: ref(false),
       mode: ref("multi"),
       errorMode: ref("interaction"),
+      lang: ref({}),
     };
   },
 
@@ -265,6 +267,9 @@ export default defineComponent({
           stepId: "__page",
           debug: this.debug,
         });
+        this.lang = {
+          requiredField: this.$t("required_field"),
+        };
         // TODO reinstate previous data and other steps data + participant data (for skip conditions)
         const record = this.itwStore.record;
         const initForm = () => {
