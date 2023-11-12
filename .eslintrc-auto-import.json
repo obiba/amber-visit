@@ -305,6 +305,10 @@
     "whenever": true,
     "useFeathers": true,
     "useFeathersService": true,
-    "useInterviewStore": true
+    "useInterviewStore": true,
+    "ExtractDefaultPropTypes": true,
+    "ExtractPropTypes": true,
+    "ExtractPublicPropTypes": true,
+    "WritableComputedRef": true
   }
 }
