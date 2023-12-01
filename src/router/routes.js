@@ -14,6 +14,14 @@ const routes = [
     component: () => import("pages/LoginPage.vue"),
   },
   {
+    path: "/go",
+    redirect: "/login",
+  },
+  {
+    path: "/go/:code",
+    component: () => import("pages/LoginPage.vue"),
+  },
+  {
     path: "/forgot-password",
     component: () => import("pages/ForgotPasswordPage.vue"),
   },

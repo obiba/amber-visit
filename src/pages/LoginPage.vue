@@ -15,7 +15,10 @@
           <div class="col">
             <app-banner />
           </div>
-          <div class="col">
+          <div v-if="!showForm" class="col text-center q-mt-md">
+            <q-spinner color="primary" size="4em" :thickness="10" />
+          </div>
+          <div v-show="showForm" class="col">
             <q-card :class="settings.theme.front.card">
               <q-card-section v-if="strategy === 'local'">
                 <q-card-section v-show="!withToken">
@@ -297,16 +300,20 @@ export default defineComponent({
       strategy: ref("participant"),
       code: ref(""),
       withPassword: ref(false),
+      showForm: ref(false),
     };
   },
   mounted() {
+    console.log(this.$route);
     if (this.authStore.isAuthenticated) {
       this.authStore.logout();
     }
-    if (this.$route.query.code) {
-      this.code = this.$route.query.code;
+    if (this.$route.params.code) {
+      this.code = this.$route.params.code;
       this.strategy = "participant";
       this.onSubmit();
+    } else {
+      this.showForm = true;
     }
   },
   computed: {
@@ -412,6 +419,7 @@ export default defineComponent({
             }
           })
           .catch((err) => {
+            this.showForm = true;
             const type = err.className;
             if (
               type === "bad-request" &&
@@ -447,6 +455,7 @@ export default defineComponent({
             this.redirect();
           })
           .catch((err) => {
+            this.showForm = true;
             const type = err.className;
             if (
               type === "not-authenticated" &&
