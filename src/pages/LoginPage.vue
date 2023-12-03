@@ -304,7 +304,6 @@ export default defineComponent({
     };
   },
   mounted() {
-    console.log(this.$route);
     if (this.authStore.isAuthenticated) {
       this.authStore.logout();
     }

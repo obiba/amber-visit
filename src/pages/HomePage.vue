@@ -359,7 +359,7 @@ export default defineComponent({
         });
     },
     onStepStart(name) {
-      console.log(`Start step ${name}`);
+      // console.log(`Start step ${name}`);
     },
   },
 });
