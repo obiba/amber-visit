@@ -17,6 +17,7 @@
     "@blitzar/types": "https://gitpkg.now.sh/obiba/blitzar/packages/types?v1.0.13-obiba",
     "@blitzar/utils": "https://gitpkg.now.sh/obiba/blitzar/packages/utils?v1.0.13-obiba",
     "@feathersjs/client": "^5.0.8",
+    "@feathersjs/feathers": "5.0.11",
     "@quasar/cli": "^2.3.0",
     "@quasar/extras": "^1.16.9",
     "@vuelidate/core": "^2.0.3",

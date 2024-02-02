@@ -236,7 +236,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@feathersjs/feathers@npm:^5.0.11, @feathersjs/feathers@npm:^5.0.8":
+"@feathersjs/feathers@npm:5.0.11, @feathersjs/feathers@npm:^5.0.11, @feathersjs/feathers@npm:^5.0.8":
   version: 5.0.11
   resolution: "@feathersjs/feathers@npm:5.0.11"
   dependencies:
@@ -1307,6 +1307,7 @@ __metadata:
     "@blitzar/types": "https://gitpkg.now.sh/obiba/blitzar/packages/types?v1.0.13-obiba"
     "@blitzar/utils": "https://gitpkg.now.sh/obiba/blitzar/packages/utils?v1.0.13-obiba"
     "@feathersjs/client": "npm:^5.0.8"
+    "@feathersjs/feathers": "npm:5.0.11"
     "@intlify/vite-plugin-vue-i18n": "npm:^3.3.1"
     "@obiba/quasar-app-extension-amber": "npm:^1.1.5"
     "@quasar/app-vite": "npm:^1.7.3"
