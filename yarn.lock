@@ -24,9 +24,9 @@
   dependencies:
     regenerator-runtime "^0.14.0"
 
-"@blitzar/form@https://gitpkg.now.sh/obiba/blitzar/packages/form?v1.0.12-obiba":
-  version "1.0.11"
-  resolved "https://gitpkg.now.sh/obiba/blitzar/packages/form?v1.0.12-obiba#3959e8b9b5adb14aa792b361934e8cebfc7a530f"
+"@blitzar/form@https://gitpkg.now.sh/obiba/blitzar/packages/form?v1.0.13-obiba":
+  version "1.0.13"
+  resolved "https://gitpkg.now.sh/obiba/blitzar/packages/form?v1.0.13-obiba#c10080e51b97b14676e6318d87cfb334fae82171"
   dependencies:
     "@blitzar/types" "^1.0.10"
     "@blitzar/utils" "^1.0.10"
@@ -45,9 +45,9 @@
   dependencies:
     ts-toolbelt "^9.6.0"
 
-"@blitzar/types@https://gitpkg.now.sh/obiba/blitzar/packages/types?v1.0.12-obiba":
-  version "1.0.12"
-  resolved "https://gitpkg.now.sh/obiba/blitzar/packages/types?v1.0.12-obiba#3d609f8b3197d9d58aec2384b971a94973c6f6bc"
+"@blitzar/types@https://gitpkg.now.sh/obiba/blitzar/packages/types?v1.0.13-obiba":
+  version "1.0.13"
+  resolved "https://gitpkg.now.sh/obiba/blitzar/packages/types?v1.0.13-obiba#42aa64faf25336514f632b09b4604b891618ad8e"
 
 "@blitzar/utils@^1.0.10":
   version "1.2.4"
@@ -59,9 +59,9 @@
     flatten-anything "^2.0.7"
     is-what "^4.1.7"
 
-"@blitzar/utils@https://gitpkg.now.sh/obiba/blitzar/packages/utils?v1.0.12-obiba":
-  version "1.0.12"
-  resolved "https://gitpkg.now.sh/obiba/blitzar/packages/utils?v1.0.12-obiba#6414c5bfdf92faeb9a675bfd70d321b1b93e163c"
+"@blitzar/utils@https://gitpkg.now.sh/obiba/blitzar/packages/utils?v1.0.13-obiba":
+  version "1.0.13"
+  resolved "https://gitpkg.now.sh/obiba/blitzar/packages/utils?v1.0.13-obiba#a59abcd58bde579b97980dea8f96313098b89ec1"
   dependencies:
     commafy-anything "^2.1.0"
     flatten-anything "^2.0.4"
