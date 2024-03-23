@@ -160,15 +160,14 @@ export default defineComponent({
   },
   computed: {
     localeOptions() {
-      let allLocales = [...locales];
+      // intersection of locales and locales in design
+      let commonLocales = [];
       if (this.itwStore.design && this.itwStore.design.i18n) {
-        allLocales.push(Object.keys(this.itwStore.design.i18n));
-        allLocales = allLocales.flat();
+        commonLocales = Object.keys(this.itwStore.design.i18n).filter((loc) =>
+          locales.includes(loc)
+        );
       }
-      allLocales = allLocales.filter(
-        (value, index, array) => array.indexOf(value) === index
-      );
-      return allLocales
+      return commonLocales
         .map((loc) => {
           return {
             value: loc,
