@@ -121,4 +121,7 @@ export default {
   required_field: "Veld is verplicht",
   go_home: "Naar huis",
   nothing_here: "Oeps. Niets hier...",
+  interview_filling_date: "Vuldatum",
+  interview_filling_date_hint:
+    "Datum waarop de vragenlijst is ingevuld (bijvoorbeeld handmatig), indien verschillend van elektronische invoer.",
 };

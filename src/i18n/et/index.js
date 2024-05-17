@@ -118,4 +118,7 @@ export default {
   required_field: "Väli on kohustuslik",
   go_home: "Mine koju",
   nothing_here: "Oih. Siin pole midagi...",
+  interview_filling_date: "Täitmise kuupäev",
+  interview_filling_date_hint:
+    "Küsimustiku täitmise kuupäev (näiteks käsitsi), kui see erineb elektroonilisest sisestamisest.",
 };

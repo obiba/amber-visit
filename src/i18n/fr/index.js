@@ -122,4 +122,7 @@ export default {
   required_field: "Le champ est requis",
   go_home: "Retour à l'accueil",
   nothing_here: "Il n'y a rien ici...",
+  interview_filling_date: "Date de remplissage",
+  interview_filling_date_hint:
+    "Date à laquelle le questionnaire a été rempli (manuellement par exemple), si différent de la saisie électronique.",
 };

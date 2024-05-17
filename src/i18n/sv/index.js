@@ -118,4 +118,7 @@ export default {
   required_field: "Fältet är obligatoriskt",
   go_home: "Gå hem",
   nothing_here: "Hoppsan. Ingenting här...",
+  interview_filling_date: "Fyllningsdatum",
+  interview_filling_date_hint:
+    "Datum då frågeformuläret fylldes i (till exempel manuellt), om det skiljer sig från elektronisk inmatning.",
 };

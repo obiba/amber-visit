@@ -122,4 +122,7 @@ export default {
   required_field: "O campo é obrigatório",
   go_home: "Ir para casa",
   nothing_here: "Ops. Não há nada aqui...",
+  interview_filling_date: "Data de preenchimento",
+  interview_filling_date_hint:
+    "Data de preenchimento do questionário (por exemplo, manualmente), se for diferente do preenchimento eletrónico.",
 };

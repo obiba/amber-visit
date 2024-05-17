@@ -118,4 +118,7 @@ export default {
   required_field: "Feltet er påkrævet",
   go_home: "Gå hjem",
   nothing_here: "Ups. Der er ikke noget her...",
+  interview_filling_date: "Påfyldningsdato",
+  interview_filling_date_hint:
+    "Dato, hvor spørgeskemaet blev udfyldt (f.eks. manuelt), hvis det er forskelligt fra elektronisk indtastning.",
 };

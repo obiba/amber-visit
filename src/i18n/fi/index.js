@@ -119,4 +119,7 @@ export default {
   required_field: "Kenttä on pakollinen",
   go_home: "Siirry kotiin",
   nothing_here: "Hups. Täällä ei ole mitään...",
+  interview_filling_date: "Täyttöpäivämäärä",
+  interview_filling_date_hint:
+    "Kyselyn täyttöpäivämäärä (esimerkiksi manuaalisesti), jos eri kuin sähköinen täyttö.",
 };

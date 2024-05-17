@@ -121,4 +121,7 @@ export default {
   required_field: "Feld ist erforderlich",
   go_home: "Nach Hause gehen",
   nothing_here: "Ups. Hier ist nichts...",
+  interview_filling_date: "Abgabe Tag",
+  interview_filling_date_hint:
+    "Datum, an dem der Fragebogen ausgefüllt wurde (z. B. manuell), falls abweichend von der elektronischen Eingabe.",
 };
