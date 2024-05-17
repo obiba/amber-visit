@@ -120,4 +120,7 @@ export default {
   required_field: "Field is required",
   go_home: "Go Home",
   nothing_here: "Oops. Nothing here...",
+  interview_filling_date: "Filling date",
+  interview_filling_date_hint:
+    "Date on which the questionnaire was filled in (manually for example), if different from electronic entry.",
 };

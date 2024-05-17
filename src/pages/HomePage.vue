@@ -77,6 +77,7 @@
                 v-html="md($t('main.interview_completed_text'))"
               ></div>
             </q-card-section>
+
             <q-card-section v-else>
               <q-list :dark="settings.theme.dark" separator>
                 <template v-for="step in itwStore.design.steps" :key="step._id">
@@ -170,6 +171,47 @@
               </q-list>
             </q-card-section>
           </q-card>
+
+          <q-card
+            v-if="authStore.isAuthenticated && itwStore.completed && !receive"
+            class="bg-grey-3"
+          >
+            <q-card-section>
+              <q-input
+                filled
+                v-model="itwStore.fillingDate"
+                :label="$t('interview_filling_date')"
+                :hint="$t('interview_filling_date_hint')"
+                class="q-mb-md"
+              >
+                <template v-slot:append>
+                  <q-icon name="event" class="cursor-pointer">
+                    <q-popup-proxy
+                      cover
+                      transition-show="scale"
+                      transition-hide="scale"
+                    >
+                      <q-date
+                        v-model="itwStore.fillingDate"
+                        mask="YYYY-MM-DD"
+                        @update:model-value="onFillingDateUpdated"
+                      >
+                        <div class="row items-center justify-end">
+                          <q-btn
+                            v-close-popup
+                            :label="$t('close')"
+                            color="primary"
+                            flat
+                          />
+                        </div>
+                      </q-date>
+                    </q-popup-proxy>
+                  </q-icon>
+                </template>
+              </q-input>
+            </q-card-section>
+          </q-card>
+
           <div
             v-if="
               !authStore.isAuthenticated &&
@@ -327,6 +369,9 @@ export default defineComponent({
       } else if (typeof done === "function") {
         done();
       }
+    },
+    onFillingDateUpdated() {
+      this.itwStore.saveFillingDate();
     },
     onLoad(code, done) {
       const promise = this.itwStore.user

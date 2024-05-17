@@ -7,6 +7,7 @@ export const useInterviewStore = defineStore(
     const { api } = useFeathers();
     const itwdService = api.service("itwd");
     const itwService = api.service("itw");
+    const interviewService = api.service("interview");
     const authStore = useAuthStore();
 
     const user = ref(null);
@@ -18,6 +19,7 @@ export const useInterviewStore = defineStore(
     const tosave = ref([]); // mark steps which changes are to be saved
     const instructed = ref(false); // instructions were shown
     const rendering = ref({}); // the visibility/enability of the steps
+    const fillingDate = ref(null); // the interview filling date
 
     const isAuthenticated = computed(() => {
       if (authStore.isAuthenticated) return true;
@@ -136,10 +138,23 @@ export const useInterviewStore = defineStore(
         })
         .then((response) => {
           design.value = response.data[0];
-          itw.value = null;
+          setInterview(null);
           rendering.value = {};
         })
         .then(() => initInterview());
+    }
+
+    /**
+     * Set the interview object and associated filling date (for latter modification).
+     * @param {Interview | null} interview
+     */
+    function setInterview(interview) {
+      itw.value = interview;
+      fillingDate.value = interview
+        ? interview.fillingDate
+          ? interview.fillingDate.split("T")[0]
+          : null
+        : null;
     }
 
     /**
@@ -155,7 +170,7 @@ export const useInterviewStore = defineStore(
         })
         .then((response) => {
           design.value = response.data[0];
-          itw.value = null;
+          setInterview(null);
           rendering.value = {};
         })
         .then(() => initInterview());
@@ -184,7 +199,7 @@ export const useInterviewStore = defineStore(
         // get the interview data if we do not have it already
         const payload = makePayload();
         return itwService.find(payload).then((response) => {
-          itw.value = response.data[0];
+          setInterview(response.data[0]);
           evalRendering();
         });
       } else {
@@ -305,7 +320,7 @@ export const useInterviewStore = defineStore(
         return itwService
           .patch(itw.value._id, { steps: stepObjs }, payload)
           .then((response) => {
-            itw.value = response;
+            setInterview(response);
           })
           .catch((err) => {
             // handle save error
@@ -337,7 +352,7 @@ export const useInterviewStore = defineStore(
           .patch(itw.value._id, { state: itwState, steps: stepObjs }, payload)
           .then((response) => {
             record.value = null;
-            itw.value = response;
+            setInterview(response);
             evalRendering();
           })
           .catch((err) => {
@@ -349,6 +364,23 @@ export const useInterviewStore = defineStore(
             });
           });
       }
+    }
+
+    /**
+     * Save the associated filling date through interview service.
+     * @returns
+     */
+    async function saveFillingDate() {
+      // const payload = makePayload();
+      return interviewService
+        .patch(itw.value._id, { fillingDate: fillingDate.value })
+        .then((response) => {
+          // for consistency
+          itw.value.fillingDate = response.fillingDate;
+        })
+        .catch((err) => {
+          console.error(err);
+        });
     }
 
     /**
@@ -378,7 +410,7 @@ export const useInterviewStore = defineStore(
             payload
           )
           .then((response) => {
-            itw.value = response;
+            setInterview(response);
             evalRendering();
             tosave.value = [];
           });
@@ -422,6 +454,7 @@ export const useInterviewStore = defineStore(
         record.value = null;
         cred.value = null;
         itw.value = null;
+        fillingDate.value = null;
         tosave.value = [];
         instructed.value = false;
         rendering.value = {};
@@ -446,6 +479,7 @@ export const useInterviewStore = defineStore(
       design,
       record,
       itw,
+      fillingDate,
       tosave,
       instructed,
       rendering,
@@ -471,6 +505,7 @@ export const useInterviewStore = defineStore(
       reset,
       instructionsShown,
       setUser,
+      saveFillingDate,
     };
   },
   {

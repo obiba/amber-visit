@@ -181,7 +181,7 @@ export default defineComponent({
         });
     },
     hasLocales() {
-      return locales.length > 1;
+      return locales.length > 1 && this.localeOptions.length > 1;
     },
   },
   methods: {
