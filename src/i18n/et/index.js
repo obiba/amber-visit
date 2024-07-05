@@ -108,7 +108,7 @@ export default {
   close: "Sulge",
   go_to: "Mine...",
   save: "Lõpeta",
-  pause: "Pausi",
+  pause: "Paus",
   previous: "Eelmine",
   next: "Järgmine",
   validate_save: "Kinnitage ja salvestage",
