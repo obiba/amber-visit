@@ -1,6 +1,6 @@
 {
   "name": "amber-visit",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Interview data collection for Amber",
   "productName": "Amber Visit",
   "author": "Yannick Marcon <yannick.marcon@obiba.org>",
@@ -40,7 +40,7 @@
   },
   "devDependencies": {
     "@intlify/vite-plugin-vue-i18n": "^3.3.1",
-    "@obiba/quasar-app-extension-amber": "^1.1.5",
+    "@obiba/quasar-app-extension-amber": "1.1.6",
     "@quasar/app-vite": "^1.7.3",
     "autoprefixer": "^10.4.2",
     "eslint": "^8.10.0",

@@ -75,7 +75,9 @@ export const useInterviewStore = defineStore(
           };
           if (step.condition && step.condition !== "") {
             const script = `try {
-              return (${variableRefRewrite(step.condition)});
+              const compute = (${variableRefRewrite(step.condition)});
+              const rval = typeof compute === 'function' ? compute(data) : compute;
+              return (rval);
             } catch(err) {
               console.error(err);
               return true;
@@ -85,7 +87,9 @@ export const useInterviewStore = defineStore(
           }
           if (step.disable && step.disable !== "") {
             const script = `try {
-              return (${variableRefRewrite(step.disable)});
+              const compute = (${variableRefRewrite(step.disable)});
+              const rval = typeof compute === 'function' ? compute(data) : compute;
+              return (rval);
             } catch(err) {
               console.error(err);
               return false;
