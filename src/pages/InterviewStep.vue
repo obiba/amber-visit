@@ -6,28 +6,15 @@
           {{ tr(step.label) }}
         </q-toolbar-title>
         <q-toolbar-title>
-          <q-btn
-            v-if="
-              step.schema.description ||
-              step.schema.copyright ||
-              step.schema.license
-            "
-            size="12px"
-            flat
-            dense
-            round
-            icon="info"
-            class="text-subtitle2 float-right"
-            @click="onShowFormDescription"
-          >
+          <q-btn v-if="
+            step.schema.description ||
+            step.schema.copyright ||
+            step.schema.license
+          " size="12px" flat dense round icon="info" class="text-subtitle2 float-right" @click="onShowFormDescription">
           </q-btn>
         </q-toolbar-title>
       </q-toolbar>
-      <q-toolbar
-        v-if="hasIdLabel()"
-        class="bg-secondary q-pt-sm q-pb-sm"
-        style="min-height: 20px"
-      >
+      <q-toolbar v-if="hasIdLabel()" class="bg-secondary q-pt-sm q-pb-sm" style="min-height: 20px">
         <div>{{ idLabel }}: {{ formData._id }}</div>
       </q-toolbar>
     </q-header>
@@ -35,66 +22,32 @@
     <q-page-container>
       <q-page class="bg-grey-2">
         <div v-if="isMulti()">
-          <q-linear-progress
-            :value="progress"
-            animation-speed="100"
-            size="xl"
-          />
+          <q-linear-progress :value="progress" animation-speed="100" size="xl" />
         </div>
         <div class="q-pa-md">
           <div class="row">
             <div v-if="!$q.screen.lt.sm" class="col-md-3 col-sm-2 text-center">
-              <q-icon
-                v-if="canPrevious()"
-                :name="$q.lang.rtl ? 'arrow_forward' : 'arrow_back'"
-                size="xl"
-                color="secondary"
-                class="print-hide fixed q-mt-xl bg-warning q-pa-md cursor-pointer"
-                style="border-radius: 50%; margin-left: -50px"
-                @click="previousStep"
-              />
+              <q-icon v-if="canPrevious()" :name="$q.lang.rtl ? 'arrow_forward' : 'arrow_back'" size="xl"
+                color="secondary" class="print-hide fixed q-mt-xl bg-warning q-pa-md cursor-pointer"
+                style="border-radius: 50%; margin-left: -50px" @click="previousStep" />
             </div>
             <div class="col-md-6 col-sm-8 col-xs-12 q-mt-sm q-mb-sm">
               <div>
-                <BlitzForm
-                  ref="form"
-                  :key="remountCounter"
-                  :schema="schema"
-                  v-model="formData"
-                  :columnCount="1"
-                  :show-errors-on="errorMode"
-                  :lang="lang"
-                  gridGap="32px"
-                />
+                <BlitzForm ref="form" :key="remountCounter" :schema="schema" v-model="formData" :columnCount="1"
+                  :show-errors-on="errorMode" :lang="lang" gridGap="32px" />
               </div>
-              <div
-                v-if="isMulti()"
-                style="height: 200px"
-                v-touch-swipe.mouse="handleSwipe"
-              ></div>
+              <div v-if="isMulti()" style="height: 200px" v-touch-swipe.mouse="handleSwipe"></div>
               <!-- <div class="bg-black text-white q-mt-lg q-pa-md">
                 <pre>{{ JSON.stringify(formData, null, "  ") }}</pre>
               </div> -->
             </div>
             <div v-if="!$q.screen.lt.sm" class="col-md-3 col-sm-2 text-center">
-              <q-icon
-                v-if="canNext()"
-                :name="$q.lang.rtl ? 'arrow_back' : 'arrow_forward'"
-                size="xl"
-                color="secondary"
+              <q-icon v-if="canNext()" :name="$q.lang.rtl ? 'arrow_back' : 'arrow_forward'" size="xl" color="secondary"
                 class="print-hide fixed q-mt-xl bg-warning q-pa-md cursor-pointer"
-                style="border-radius: 50%; margin-left: -25px"
-                @click="nextStep"
-              />
-              <q-icon
-                v-else
-                name="cloud_upload"
-                size="xl"
-                color="white"
+                style="border-radius: 50%; margin-left: -25px" @click="nextStep" />
+              <q-icon v-else name="cloud_upload" size="xl" color="white"
                 class="print-hide fixed q-mt-xl bg-primary q-pa-md cursor-pointer"
-                style="border-radius: 50%; margin-left: -25px"
-                @click="onComplete"
-              />
+                style="border-radius: 50%; margin-left: -25px" @click="onComplete" />
             </div>
           </div>
         </div>
@@ -103,39 +56,12 @@
 
     <q-footer elevated class="print-hide" :class="settings.theme.footer">
       <q-toolbar>
-        <q-btn
-          v-if="mode === 'single'"
-          stretch
-          flat
-          icon="dynamic_feed"
-          @click="toggleMode('multi')"
-          :title="$t('multi_steps')"
-        />
-        <q-btn
-          v-if="mode === 'multi'"
-          stretch
-          flat
-          icon="grading"
-          @click="toggleMode('single')"
-          :title="$t('single_page')"
-        />
-        <q-separator dark vertical v-if="mode === 'single'" />
-        <q-btn-dropdown
-          v-if="mode === 'single' && toc.length > 1"
-          stretch
-          flat
-          icon="toc"
-          :label="$q.screen.lt.sm ? '' : $t('go_to')"
-        >
+        <q-separator dark vertical v-if="mode === 'single' && toc.length > 1" />
+        <q-btn-dropdown v-if="mode === 'single' && toc.length > 1" stretch flat icon="toc"
+          :label="$q.screen.lt.sm ? '' : $t('go_to')">
           <q-list>
-            <q-item-label
-              v-for="entry in toc"
-              :key="entry.id"
-              header
-              clickable
-              v-close-popup
-              @click="onScroll(entry.id)"
-            >
+            <q-item-label v-for="entry in toc" :key="entry.id" header clickable v-close-popup
+              @click="onScroll(entry.id)">
               {{ entry.label }}
             </q-item-label>
           </q-list>
@@ -143,42 +69,16 @@
         <q-space />
 
         <q-separator dark vertical v-if="isMulti()" />
-        <q-btn
-          v-if="isMulti() && canPrevious()"
-          stretch
-          flat
-          :icon="$q.lang.rtl ? 'chevron_right' : 'chevron_left'"
-          @click="previousStep"
-          :label="$t('previous')"
-        />
+        <q-btn v-if="isMulti() && canPrevious()" stretch flat :icon="$q.lang.rtl ? 'chevron_right' : 'chevron_left'"
+          @click="previousStep" :label="$t('previous')" />
         <q-separator dark vertical v-if="isMulti()" />
-        <q-btn
-          v-if="isMulti() && canNext()"
-          stretch
-          flat
-          :icon="$q.lang.rtl ? 'chevron_left' : 'chevron_right'"
-          @click="nextStep"
-          :label="$t('next')"
-        />
+        <q-btn v-if="isMulti() && canNext()" stretch flat :icon="$q.lang.rtl ? 'chevron_left' : 'chevron_right'"
+          @click="nextStep" :label="$t('next')" />
         <q-separator dark vertical v-if="mode === 'single'" />
-        <q-btn
-          v-if="mode === 'single' || isFinalStep"
-          stretch
-          flat
-          class="bg-primary"
-          :title="$t('validate_save')"
-          :label="$t('save')"
-          icon="cloud_upload"
-          @click="onComplete"
-        />
+        <q-btn v-if="mode === 'single' || isFinalStep" stretch flat class="bg-primary" :title="$t('validate_save')"
+          :label="$t('save')" icon="cloud_upload" @click="onComplete" />
         <q-separator dark vertical />
-        <q-btn
-          stretch
-          flat
-          :label="$q.screen.lt.sm ? '' : $t('pause')"
-          icon="pause"
-          @click="onPause"
-        />
+        <q-btn stretch flat :label="$q.screen.lt.sm ? '' : $t('pause')" icon="pause" @click="onPause" />
       </q-toolbar>
     </q-footer>
 
@@ -193,15 +93,8 @@
           <div v-html="md(tr(step.schema.description))" />
         </q-card-section>
         <q-card-section>
-          <div
-            v-if="step.schema.copyright"
-            v-html="'&#169; ' + md(tr(step.schema.copyright))"
-          />
-          <div
-            v-if="caseReportLicense"
-            class="q-mt-sm"
-            v-html="md($t(caseReportLicense))"
-          />
+          <div v-if="step.schema.copyright" v-html="'&#169; ' + md(tr(step.schema.copyright))" />
+          <div v-if="caseReportLicense" class="q-mt-sm" v-html="md($t(caseReportLicense))" />
         </q-card-section>
         <q-card-actions align="right">
           <q-btn flat label="OK" color="primary" v-close-popup />
