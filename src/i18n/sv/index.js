@@ -11,6 +11,8 @@ export default {
     save_now: "Spara nu",
     interview_completed: "Du har slutfört intervjun, tack för ditt bidrag!",
     interview_completed_text: "",
+    interview_completed_redirect:
+      "Du kommer att omdirigeras om några sekunder... {count}",
     interval_estimate: "{count} minuter",
     time_estimate: "- | 1 minut | {count} minuter",
     receive_participant: "Ta emot en deltagare",

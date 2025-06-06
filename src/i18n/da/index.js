@@ -11,6 +11,8 @@ export default {
     save_now: "Gem nu",
     interview_completed: "Du har gennemført interviewet, tak for dit bidrag!",
     interview_completed_text: "",
+    interview_completed_redirect:
+      "Du vil blive omdirigeret om et par sekunder... {count}",
     interval_estimate: "{count} minutter",
     time_estimate: "- | 1 minut | {count} minutter",
     receive_participant: "Modtag en deltager",

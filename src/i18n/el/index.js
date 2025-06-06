@@ -12,6 +12,8 @@ export default {
     interview_completed:
       "Ολοκληρώσατε τη συνέντευξη, ευχαριστούμε για τη συμβολή σας!",
     interview_completed_text: "",
+    interview_completed_redirect:
+      "Θα ανακατευθυνθείτε σε λίγα δευτερόλεπτα... {count}",
     interval_estimate: "{count} λεπτά",
     time_estimate: "- | 1 λεπτό | {count} λεπτά",
     receive_participant: "Υποδοχή συμμετέχοντα",

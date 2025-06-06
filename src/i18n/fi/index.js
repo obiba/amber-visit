@@ -12,6 +12,8 @@ export default {
     interview_completed:
       "Olet suorittanut haastattelun loppuun, kiitos osallistumisestasi!",
     interview_completed_text: "",
+    interview_completed_redirect:
+      "Sinut ohjataan muutaman sekunnin kuluttua... {count}",
     interval_estimate: "{count} minuuttia",
     time_estimate: "- | 1 minuutti | {count} minuuttia",
     receive_participant: "Vastaanota osallistuja",

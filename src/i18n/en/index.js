@@ -12,6 +12,8 @@ export default {
     interview_completed:
       "You have completed the interview, thanks for your contribution!",
     interview_completed_text: "",
+    interview_completed_redirect:
+      "You will be redirected in a few seconds... {count}",
     interval_estimate: "{count} minutes",
     time_estimate: "- | 1 minute | {count} minutes",
     receive_participant: "Receive a participant",

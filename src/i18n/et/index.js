@@ -11,6 +11,8 @@ export default {
     save_now: "Salvesta nüüd",
     interview_completed: "Olete intervjuu lõpetanud, täname teid panuse eest!",
     interview_completed_text: "",
+    interview_completed_redirect: 
+      "Teid suunatakse mõne sekundi pärast... {count}",
     interval_estimate: "{count} minutit",
     time_estimate: "- | 1 minut | {count} minutit",
     receive_participant: "Osaleja vastuvõtmine",
