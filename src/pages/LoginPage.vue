@@ -2,16 +2,12 @@
   <q-layout>
     <q-page-container>
       <q-page class="flex flex-center" :class="settings.theme.front.bg">
-        <div
-          class="column"
-          :style="
-            $q.screen.lt.sm
-              ? { width: '80%' }
-              : $q.screen.lt.md
-              ? { width: '50%' }
-              : { width: '30%' }
-          "
-        >
+        <div class="column" :style="$q.screen.lt.sm
+          ? { width: '80%' }
+          : $q.screen.lt.md
+            ? { width: '50%' }
+            : { width: '30%' }
+          ">
           <div class="col">
             <app-banner />
           </div>
@@ -28,47 +24,29 @@
                     </div>
                   </div>
                   <q-form @submit="onSubmit" class="q-gutter-md">
-                    <q-input
-                      autofocus
-                      :dark="settings.theme.dark"
-                      :color="settings.theme.dark ? 'white' : 'grey-10'"
-                      v-model="email"
-                      :label="$t('email')"
-                      lazy-rules
-                    >
+                    <q-input autofocus :dark="settings.theme.dark" :color="settings.theme.dark ? 'white' : 'grey-10'"
+                      v-model="email" :label="$t('email')" lazy-rules>
                       <template v-slot:prepend>
                         <q-icon name="fas fa-envelope" size="xs" />
                       </template>
                     </q-input>
 
-                    <q-input
-                      type="password"
-                      :dark="settings.theme.dark"
-                      :color="settings.theme.dark ? 'white' : 'grey-10'"
-                      v-model="password"
-                      :label="$t('password')"
-                      lazy-rules
-                    >
+                    <q-input :type="showPassword ? 'text' : 'password'" :dark="settings.theme.dark"
+                      :color="settings.theme.dark ? 'white' : 'grey-10'" v-model="password" :label="$t('password')"
+                      lazy-rules>
                       <template v-slot:prepend>
                         <q-icon name="fas fa-lock" size="xs" />
+                      </template>
+                      <template v-slot:append>
+                        <q-btn round dense flat :icon="showPassword ? 'visibility_off' : 'visibility'"
+                          @click="showPassword = !showPassword" />
                       </template>
                     </q-input>
 
                     <div>
-                      <q-btn
-                        :label="$t('login.submit')"
-                        type="submit"
-                        color="secondary"
-                        :disable="disableSubmit"
-                      />
-                      <q-btn
-                        v-if="settings.register_enabled"
-                        :label="$t('login.register')"
-                        flat
-                        to="/register"
-                        stretch
-                        class="text-bold q-ml-md"
-                      />
+                      <q-btn :label="$t('login.submit')" type="submit" color="secondary" :disable="disableSubmit" />
+                      <q-btn v-if="settings.register_enabled" :label="$t('login.register')" flat to="/register" stretch
+                        class="text-bold q-ml-md" />
                     </div>
                   </q-form>
                 </q-card-section>
@@ -82,77 +60,37 @@
                   <div class="col text-subtitle q-mt-md">
                     {{ $t("login.totp_secret") }}
                   </div>
-                  <q-input
-                    :dark="settings.theme.dark"
-                    dense
-                    :color="settings.theme.dark ? 'white' : 'grey-10'"
-                    v-model="secret"
-                    readonly
-                  >
+                  <q-input :dark="settings.theme.dark" dense :color="settings.theme.dark ? 'white' : 'grey-10'"
+                    v-model="secret" readonly>
                     <template v-slot:after>
-                      <q-btn
-                        round
-                        dense
-                        flat
-                        icon="content_copy"
-                        @click="onCopySecret"
-                      />
+                      <q-btn round dense flat icon="content_copy" @click="onCopySecret" />
                     </template>
                   </q-input>
                   <div class="col text-subtitle q-mt-md">
                     {{ $t("login.email_otp") }}
                   </div>
                   <div class="q-mt-md">
-                    <q-btn
-                      :label="$t('login.send_email_token')"
-                      @click="onEmailToken"
-                      color="info"
-                      stretch
-                      class="text-bold"
-                    />
+                    <q-btn :label="$t('login.send_email_token')" @click="onEmailToken" color="info" stretch
+                      class="text-bold" />
                   </div>
                 </q-card-section>
                 <q-card-section v-if="withToken">
                   <q-form @submit="onSubmit" class="q-gutter-md">
-                    <q-input
-                      autofocus
-                      type="number"
-                      :dark="settings.theme.dark"
-                      :color="settings.theme.dark ? 'white' : 'grey-10'"
-                      v-model="token"
-                      :label="$t('login.token')"
-                      lazy-rules
-                      class="no-spinner"
-                    >
+                    <q-input autofocus type="number" :dark="settings.theme.dark"
+                      :color="settings.theme.dark ? 'white' : 'grey-10'" v-model="token" :label="$t('login.token')"
+                      lazy-rules class="no-spinner">
                       <template v-slot:prepend>
                         <q-icon name="fas fa-mobile" size="xs" />
                       </template>
                     </q-input>
                     <div>
-                      <q-btn
-                        :label="$t('login.validate')"
-                        type="submit"
-                        color="secondary"
-                        :disable="disableValidate"
-                      />
-                      <q-btn
-                        :label="$t('cancel')"
-                        @click="onCancelToken"
-                        flat
-                        stretch
-                        class="text-bold q-ml-md"
-                      />
+                      <q-btn :label="$t('login.validate')" type="submit" color="secondary" :disable="disableValidate" />
+                      <q-btn :label="$t('cancel')" @click="onCancelToken" flat stretch class="text-bold q-ml-md" />
                     </div>
                   </q-form>
                 </q-card-section>
                 <q-card-section v-if="!withToken" class="q-pt-none q-pb-none">
-                  <q-btn
-                    flat
-                    to="/forgot-password"
-                    dense
-                    no-caps
-                    class="text-bold"
-                  >
+                  <q-btn flat to="/forgot-password" dense no-caps class="text-bold">
                     {{ $t("login.forgot_password") }}
                   </q-btn>
                 </q-card-section>
@@ -163,87 +101,48 @@
                     {{ $t("login.participant_title") }}
                   </div>
                 </div>
-                <q-form
-                  @submit="onSubmit"
-                  class="q-gutter-md"
-                  autocomplete="off"
-                >
+                <q-form @submit="onSubmit" class="q-gutter-md" autocomplete="off">
                   <div v-if="!withPassword">
-                    <q-input
-                      autofocus
-                      autocomplete="new-password"
-                      :dark="settings.theme.dark"
-                      :color="settings.theme.dark ? 'white' : 'grey-10'"
-                      v-model="code"
-                      :label="$t('login.code')"
-                      mask="XXXXXX"
-                    >
+                    <q-input autofocus autocomplete="new-password" :dark="settings.theme.dark"
+                      :color="settings.theme.dark ? 'white' : 'grey-10'" v-model="code" :label="$t('login.code')"
+                      mask="XXXXXX">
                       <template v-slot:prepend>
                         <q-icon name="fas fa-mobile" size="xs" />
                       </template>
                     </q-input>
                   </div>
                   <div v-else class="q-mb-xl">
-                    <q-input
-                      :autofocus="withPassword"
-                      type="password"
-                      autocomplete="new-password"
-                      :dark="settings.theme.dark"
-                      :color="settings.theme.dark ? 'white' : 'grey-10'"
-                      v-model="password"
-                      :label="$t('login.participant_password')"
-                      :hint="$t('login.participant_password_hint')"
-                    >
+                    <q-input :autofocus="withPassword" :type="showPassword ? 'text' : 'password'"
+                      autocomplete="new-password" :dark="settings.theme.dark"
+                      :color="settings.theme.dark ? 'white' : 'grey-10'" v-model="password"
+                      :label="$t('login.participant_password')" :hint="$t('login.participant_password_hint')">
                       <template v-slot:prepend>
                         <q-icon name="fas fa-key" size="xs" />
+                      </template>
+                      <template v-slot:append>
+                        <q-btn round dense flat :icon="showPassword ? 'visibility_off' : 'visibility'"
+                          @click="showPassword = !showPassword" />
                       </template>
                     </q-input>
                   </div>
                   <div>
-                    <q-btn
-                      :label="$t('login.enter')"
-                      type="submit"
-                      color="secondary"
-                      :disable="disableEnter"
-                    />
+                    <q-btn :label="$t('login.enter')" type="submit" color="secondary" :disable="disableEnter" />
                   </div>
                 </q-form>
               </q-card-section>
               <q-card-section>
-                <q-btn
-                  v-if="strategy === 'participant'"
-                  flat
-                  dense
-                  no-caps
-                  class="text-bold"
-                  @click="toStrategy('local')"
-                >
+                <q-btn v-if="strategy === 'participant'" flat dense no-caps class="text-bold"
+                  @click="toStrategy('local')">
                   {{ $t("login.as_user") }}
                 </q-btn>
-                <q-btn
-                  v-if="strategy === 'local'"
-                  flat
-                  dense
-                  no-caps
-                  class="text-bold"
-                  @click="toStrategy('participant')"
-                >
+                <q-btn v-if="strategy === 'local'" flat dense no-caps class="text-bold"
+                  @click="toStrategy('participant')">
                   {{ $t("login.as_participant") }}
                 </q-btn>
-                <q-btn-dropdown
-                  v-show="hasLocales"
-                  flat
-                  :label="$t('locales.' + locale)"
-                  class="float-right"
-                >
+                <q-btn-dropdown v-show="hasLocales" flat :label="$t('locales.' + locale)" class="float-right">
                   <q-list>
-                    <q-item
-                      clickable
-                      v-close-popup
-                      @click="onLocaleSelection(localeOpt)"
-                      v-for="localeOpt in localeOptions"
-                      :key="localeOpt.value"
-                    >
+                    <q-item clickable v-close-popup @click="onLocaleSelection(localeOpt)"
+                      v-for="localeOpt in localeOptions" :key="localeOpt.value">
                       <q-item-section>
                         <q-item-label>{{ localeOpt.label }}</q-item-label>
                       </q-item-section>
@@ -301,6 +200,7 @@ export default defineComponent({
       code: ref(""),
       withPassword: ref(false),
       showForm: ref(false),
+      showPassword: ref(false)
     };
   },
   mounted() {
@@ -314,6 +214,7 @@ export default defineComponent({
     } else {
       this.showForm = true;
     }
+    this.showPassword = false;
   },
   computed: {
     localeOptions() {
