@@ -167,6 +167,11 @@ export const useInterviewStore = defineStore(
         })
         .then((response) => {
           design.value = response.data[0];
+          const participant = design.value.participant;
+          if (participant && participant.code) {
+            cred.value = btoa(participant.code);
+            scheme.value = "participant";
+          }
           setInterview(null);
           rendering.value = {};
         })
