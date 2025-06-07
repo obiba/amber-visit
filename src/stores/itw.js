@@ -14,6 +14,7 @@ export const useInterviewStore = defineStore(
     const code = ref(null); // the current participant's code
     const design = ref(null); // the interview design
     const record = ref(null); // the current step form record
+    const scheme = ref(null); // the authentication scheme
     const cred = ref(null); // the participant credentials if self-administered
     const itw = ref(null); // the interview collected data, to be saved
     const tosave = ref([]); // mark steps which changes are to be saved
@@ -132,13 +133,37 @@ export const useInterviewStore = defineStore(
      * @returns
      */
     async function initByParticipant(code, password) {
+      scheme.value = "participant";
       if (code) {
         cred.value = btoa(password ? `${code}:${password}` : code);
       }
       return itwdService
         .find({
           query: {},
-          headers: { Authorization: `Participant ${cred.value}` },
+          headers: { Authorization: `${scheme.value} ${cred.value}` },
+        })
+        .then((response) => {
+          design.value = response.data[0];
+          setInterview(null);
+          rendering.value = {};
+        })
+        .then(() => initInterview());
+    }
+
+    /**
+     * Initialize design and interview data; to be called by the participant.
+     * @param {Object} query
+     * @returns
+     */
+    async function initByWalkInParticipant(query) {
+      scheme.value = "campaign";
+      if (query) {
+        cred.value = btoa(JSON.stringify(query));
+      }
+      return itwdService
+        .find({
+          query: {},
+          headers: { Authorization: `${scheme.value} ${cred.value}` },
         })
         .then((response) => {
           design.value = response.data[0];
@@ -188,7 +213,7 @@ export const useInterviewStore = defineStore(
       const payload = {};
       if (cred.value) {
         payload.query = {};
-        payload.headers = { Authorization: `Participant ${cred.value}` };
+        payload.headers = { Authorization: `${scheme.value} ${cred.value}` };
       } else {
         payload.query = { code: code.value };
       }
@@ -497,6 +522,7 @@ export const useInterviewStore = defineStore(
       // methods
       initByInterviewer,
       initByParticipant,
+      initByWalkInParticipant,
       initInterview,
       getStepDesign,
       setupRecord,

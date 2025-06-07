@@ -95,7 +95,7 @@
                   </q-btn>
                 </q-card-section>
               </q-card-section>
-              <q-card-section v-if="strategy === 'participant'">
+              <q-card-section v-if="strategy !== 'local'">
                 <div class="text-center q-pt-sm">
                   <div class="col text-subtitle">
                     {{ $t("login.participant_title") }}
@@ -131,8 +131,7 @@
                 </q-form>
               </q-card-section>
               <q-card-section>
-                <q-btn v-if="strategy === 'participant'" flat dense no-caps class="text-bold"
-                  @click="toStrategy('local')">
+                <q-btn v-if="strategy !== 'local'" flat dense no-caps class="text-bold" @click="toStrategy('local')">
                   {{ $t("login.as_user") }}
                 </q-btn>
                 <q-btn v-if="strategy === 'local'" flat dense no-caps class="text-bold"
@@ -198,6 +197,7 @@ export default defineComponent({
       method: ref(""),
       strategy: ref("participant"),
       code: ref(""),
+      payload: ref({}),
       withPassword: ref(false),
       showForm: ref(false),
       showPassword: ref(false)
@@ -207,7 +207,10 @@ export default defineComponent({
     if (this.authStore.isAuthenticated) {
       this.authStore.logout();
     }
-    if (this.$route.params.code) {
+    if (this.$route.query.campaign) {
+      this.strategy = "campaign";
+      this.onSubmit();
+    } else if (this.$route.params.code) {
       this.code = this.$route.params.code;
       this.strategy = "participant";
       this.onSubmit();
@@ -302,7 +305,36 @@ export default defineComponent({
       this.withPassword = false;
     },
     onSubmit() {
-      if (this.strategy === "local") {
+      if (this.strategy === "campaign") {
+        this.itwStore
+          .initByWalkInParticipant(
+            this.$route.query
+          )
+          .then(() => {
+            this.redirect();
+          })
+          .catch((err) => {
+            this.showForm = true;
+            const type = err.className;
+            if (
+              type === "not-authenticated" &&
+              err.message.startsWith("A participant password is required")
+            ) {
+              this.withPassword = true;
+            } else if (type === "bad-request") {
+              Notify.create({
+                message: this.$t(err.message),
+                color: "negative",
+              });
+            } else {
+              console.error(err);
+              Notify.create({
+                message: this.$t("login.participant_failed"),
+                color: "negative",
+              });
+            }
+          });
+      } else if (this.strategy === "local") {
         const payload = this.makePayload();
         this.authStore.clearError();
         this.authStore
@@ -342,10 +374,7 @@ export default defineComponent({
               });
             }
           });
-      } else {
-        const credentials = btoa(
-          this.withPassword ? `${this.code}:${this.password}` : this.code
-        );
+      } else if (this.strategy === "participant") {
         this.itwStore
           .initByParticipant(
             this.code,
