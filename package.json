@@ -1,6 +1,6 @@
 {
   "name": "amber-visit",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Interview data collection for Amber",
   "productName": "Amber Visit",
   "author": "Yannick Marcon <yannick.marcon@obiba.org>",
@@ -13,9 +13,9 @@
     "build": "quasar build"
   },
   "dependencies": {
-    "@blitzar/form": "https://gitpkg.now.sh/obiba/blitzar/packages/form?v1.0.13-obiba",
-    "@blitzar/types": "https://gitpkg.now.sh/obiba/blitzar/packages/types?v1.0.13-obiba",
-    "@blitzar/utils": "https://gitpkg.now.sh/obiba/blitzar/packages/utils?v1.0.13-obiba",
+    "@blitzar/form": "git+https://github.com/obiba/blitzar.git#tag=v1.0.13-obiba&workspace=packages/form",
+    "@blitzar/types": "git+https://github.com/obiba/blitzar.git#tag=v1.0.13-obiba&workspace=packages/types",
+    "@blitzar/utils": "git+https://github.com/obiba/blitzar.git#tag=v1.0.13-obiba&workspace=packages/utils",
     "@feathersjs/client": "^5.0.8",
     "@feathersjs/feathers": "5.0.11",
     "@quasar/cli": "^2.3.0",
