@@ -218,7 +218,7 @@ export const useInterviewStore = defineStore(
       const payload = {};
       if (cred.value) {
         payload.query = {};
-        payload.headers = { Authorization: `${scheme.value} ${cred.value}` };
+        payload.headers = { Authorization: `${scheme.value || "participant"} ${cred.value}` };
       } else {
         payload.query = { code: code.value };
       }
