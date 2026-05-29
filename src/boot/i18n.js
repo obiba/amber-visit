@@ -35,6 +35,7 @@ if (!locales.includes(detectedLocale)) {
 }
 
 const i18n = createI18n({
+  legacy: false, // Use Composition API mode
   locale: detectedLocale,
   fallbackLocale: locales[0],
   globalInjection: true,
