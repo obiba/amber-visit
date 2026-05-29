@@ -8,15 +8,17 @@
 // Configuration for your app
 // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js
 
-const { configure } = require("quasar/wrappers");
-const fs = require("fs");
-const packageJson = fs.readFileSync("./package.json");
-const version = JSON.parse(packageJson).version || 0;
-const settingsJson = fs.readFileSync("./settings.json", "utf8");
-const path = require("path");
-const { feathersPiniaAutoImport } = require("feathers-pinia");
+import { configure } from "quasar/wrappers";
+import { readFileSync } from "fs";
+import { resolve } from "path";
+import { feathersPiniaAutoImport } from "feathers-pinia";
+import AutoImport from "unplugin-auto-import/vite";
 
-module.exports = configure(function (ctx) {
+const packageJson = readFileSync("./package.json");
+const version = JSON.parse(packageJson).version || 0;
+const settingsJson = readFileSync("./settings.json", "utf8");
+
+export default configure(function (ctx) {
   return {
     eslint: {
       // fix: true,
@@ -97,43 +99,40 @@ module.exports = configure(function (ctx) {
       // distDir
 
       // extendViteConf (viteConf) {},
+      // NOTE: @intlify/vite-plugin-vue-i18n has compatibility issues with Node v24 and Vite 8
+      // The i18n messages will still work via runtime imports in boot/i18n.ts
+      // extendViteConf(viteConf) {
+      //   // Dynamically import and configure the i18n plugin
+      //   viteConf.plugins.push(
+      //     (async () => {
+      //       const { default: VueI18nPlugin } = await import("@intlify/vite-plugin-vue-i18n");
+      //       return VueI18nPlugin({
+      //         runtimeOnly: false,
+      //         include: resolve(import.meta.dirname, "./src/i18n/**"),
+      //       });
+      //     })()
+      //   );
+      // },
       // viteVuePluginOptions: {},
 
       vitePlugins: [
-        [
-          "unplugin-auto-import/vite",
-          {
-            imports: [
-              "vue",
-              "vue-router",
-              "vue-i18n",
-              "vue/macros",
-              feathersPiniaAutoImport,
-            ],
-            dts: "src/auto-imports.d.ts",
-            dirs: ["src/composables", "src/models", "src/stores"],
-            vueTemplate: true,
-            eslintrc: {
-              enabled: true, // Default `false`
-              filepath: "./.eslintrc-auto-import.json", // Default `./.eslintrc-auto-import.json`
-              globalsPropValue: true, // Default `true`, (true | false | 'readonly' | 'readable' | 'writable' | 'writeable')
-            },
+        AutoImport({
+          imports: [
+            "vue",
+            "vue-router",
+            "vue-i18n",
+            "vue/macros",
+            feathersPiniaAutoImport,
+          ],
+          dts: "src/auto-imports.d.ts",
+          dirs: ["src/composables", "src/models", "src/stores"],
+          vueTemplate: true,
+          eslintrc: {
+            enabled: true, // Default `false`
+            filepath: "./.eslintrc-auto-import.json", // Default `./.eslintrc-auto-import.json`
+            globalsPropValue: true, // Default `true`, (true | false | 'readonly' | 'readable' | 'writable' | 'writeable')
           },
-        ],
-        [
-          "@intlify/vite-plugin-vue-i18n",
-          {
-            // if you want to use Vue I18n Legacy API, you need to set `compositionOnly: false`
-            // compositionOnly: false,
-
-            // if you want to use named tokens in your Vue I18n messages, such as 'Hello {name}',
-            // you need to set `runtimeOnly: false`
-            runtimeOnly: false,
-
-            // you need to set i18n resource including paths !
-            include: path.resolve(__dirname, "./src/i18n/**"),
-          },
-        ],
+        }),
       ],
     },
 

@@ -354,6 +354,7 @@ export const useInterviewStore = defineStore(
         return itwService
           .patch(itw.value._id, { steps: stepObjs }, payload)
           .then((response) => {
+            tosave.value = [];
             setInterview(response);
           })
           .catch((err) => {
@@ -386,6 +387,7 @@ export const useInterviewStore = defineStore(
           .patch(itw.value._id, { state: itwState, steps: stepObjs }, payload)
           .then((response) => {
             record.value = null;
+            tosave.value = [];
             setInterview(response);
             evalRendering();
           })
