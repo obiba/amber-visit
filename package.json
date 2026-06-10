@@ -22,7 +22,7 @@
     "@quasar/extras": "^1.16.13",
     "@vuelidate/core": "^2.0.3",
     "@vuelidate/validators": "^2.0.4",
-    "axios": "^1.2.1",
+    "axios": "^1.17.0",
     "feathers-hooks-common": "^8.0.0",
     "feathers-pinia": "^3.0.4",
     "marked": "^9.1.1",
