@@ -20,4 +20,8 @@ FROM nginx:alpine as production-stage
 COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
 COPY --from=build-stage /app/dist/spa /usr/share/nginx/html
 EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+
+RUN apk add --no-cache bash
+COPY entrypoint.sh /app/entrypoint.sh
+ENTRYPOINT ["/app/entrypoint.sh"]
+
