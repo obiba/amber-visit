@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="col text-center">
+    <div v-if="settings.theme.logo" class="col text-center">
       <img :src="settings.theme.logo" />
     </div>
     <div class="col text-center q-mb-lg">
@@ -13,6 +13,7 @@
     </div>
   </div>
 </template>
+
 <script>
 import { settings } from "../boot/settings";
 import { defineComponent } from "vue";

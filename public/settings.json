@@ -1,6 +1,5 @@
 {
   "theme": {
-    "logo": "/icons/apple-icon-72x72.png",
     "front": {
       "bg": "bg-brand text-white",
       "card": "bg-dark no-shadow"

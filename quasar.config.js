@@ -9,7 +9,9 @@
 // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js
 
 import { configure } from "quasar/wrappers";
-import { readFileSync } from "fs";
+import { fileURLToPath } from 'node:url'
+import { readFileSync } from 'node:fs'
+import path from 'node:path'
 import { feathersPiniaAutoImport } from "feathers-pinia";
 import AutoImport from "unplugin-auto-import/vite";
 
@@ -84,21 +86,20 @@ export default configure(function (ctx) {
       // polyfillModulePreload: true,
       // distDir
 
-      // extendViteConf (viteConf) {},
-      // NOTE: @intlify/vite-plugin-vue-i18n has compatibility issues with Node v24 and Vite 8
-      // The i18n messages will still work via runtime imports in boot/i18n.ts
-      // extendViteConf(viteConf) {
-      //   // Dynamically import and configure the i18n plugin
-      //   viteConf.plugins.push(
-      //     (async () => {
-      //       const { default: VueI18nPlugin } = await import("@intlify/vite-plugin-vue-i18n");
-      //       return VueI18nPlugin({
-      //         runtimeOnly: false,
-      //         include: resolve(import.meta.dirname, "./src/i18n/**"),
-      //       });
-      //     })()
-      //   );
-      // },
+      // https://v2.quasar.dev/quasar-cli-vite/handling-vite
+      extendViteConf (viteConf) {
+        const __dirname = fileURLToPath(new URL('.', import.meta.url))
+
+        viteConf.base = './'
+
+        if (!viteConf.resolve) {
+          viteConf.resolve = {}
+        }
+        if (!viteConf.resolve.alias) {
+          viteConf.resolve.alias = {}
+        }
+        viteConf.resolve.alias.vue = path.resolve(__dirname, './node_modules/vue')
+      },
       // viteVuePluginOptions: {},
 
       vitePlugins: [
