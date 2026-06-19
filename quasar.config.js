@@ -9,14 +9,14 @@
 // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js
 
 import { configure } from "quasar/wrappers";
-import { readFileSync } from "fs";
-import { resolve } from "path";
+import { fileURLToPath } from 'node:url'
+import { readFileSync } from 'node:fs'
+import path from 'node:path'
 import { feathersPiniaAutoImport } from "feathers-pinia";
 import AutoImport from "unplugin-auto-import/vite";
 
 const packageJson = readFileSync("./package.json");
 const version = JSON.parse(packageJson).version || 0;
-const settingsJson = readFileSync("./settings.json", "utf8");
 
 export default configure(function (ctx) {
   return {
@@ -36,16 +36,16 @@ export default configure(function (ctx) {
     // --> boot files are part of "main.js"
     // https://v2.quasar.dev/quasar-cli/boot-files
     boot: [
+      "settings",
       "i18n",
       "axios",
       "feathers-pinia",
       "vuelidate",
       "recaptcha",
-      "settings",
     ],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#css
-    css: ["app.scss", "custom.scss"],
+    css: ["app.scss"],
 
     // https://github.com/quasarframework/quasar/tree/dev/extras
     extras: [
@@ -75,21 +75,9 @@ export default configure(function (ctx) {
 
       // rebuildCache: true, // rebuilds Vite/linter/etc cache on startup
 
-      publicPath: process.env.PATH_PREFIX ? process.env.PATH_PREFIX : "/",
+      publicPath: "/",
       // analyze: true,
       env: {
-        API: ctx.dev ? "http://localhost:3030" : process.env.AMBER_URL,
-        RECAPTCHA_SITE_KEY: ctx.dev
-          ? "6Lc3D34cAAAAANwhMFOH-yEB147CqspT-eBwF5-u"
-          : process.env.RECAPTCHA_SITE_KEY,
-        SETTINGS: ctx.dev
-          ? settingsJson
-          : process.env.SETTINGS
-          ? process.env.SETTINGS
-          : settingsJson,
-        REGISTER_ENABLED: ctx.dev
-          ? true
-          : process.env.RECAPTCHA_SITE_KEY !== undefined,
         VERSION: version,
       },
       // rawDefine: {}
@@ -98,21 +86,20 @@ export default configure(function (ctx) {
       // polyfillModulePreload: true,
       // distDir
 
-      // extendViteConf (viteConf) {},
-      // NOTE: @intlify/vite-plugin-vue-i18n has compatibility issues with Node v24 and Vite 8
-      // The i18n messages will still work via runtime imports in boot/i18n.ts
-      // extendViteConf(viteConf) {
-      //   // Dynamically import and configure the i18n plugin
-      //   viteConf.plugins.push(
-      //     (async () => {
-      //       const { default: VueI18nPlugin } = await import("@intlify/vite-plugin-vue-i18n");
-      //       return VueI18nPlugin({
-      //         runtimeOnly: false,
-      //         include: resolve(import.meta.dirname, "./src/i18n/**"),
-      //       });
-      //     })()
-      //   );
-      // },
+      // https://v2.quasar.dev/quasar-cli-vite/handling-vite
+      extendViteConf (viteConf) {
+        const __dirname = fileURLToPath(new URL('.', import.meta.url))
+
+        viteConf.base = './'
+
+        if (!viteConf.resolve) {
+          viteConf.resolve = {}
+        }
+        if (!viteConf.resolve.alias) {
+          viteConf.resolve.alias = {}
+        }
+        viteConf.resolve.alias.vue = path.resolve(__dirname, './node_modules/vue')
+      },
       // viteVuePluginOptions: {},
 
       vitePlugins: [
