@@ -54,61 +54,37 @@
   </q-layout>
 </template>
 
-<script>
-import { defineComponent, ref } from "vue";
-import { Notify } from "quasar";
-import { settings } from "../boot/settings";
-import AppBanner from "src/components/AppBanner.vue";
+<script setup lang="ts">
+import AppBanner from 'src/components/AppBanner.vue'
+import { Notify } from 'quasar'
+import { settings as _settings } from '../boot/settings'
 
-export default defineComponent({
-  components: { AppBanner },
-  setup() {
-    const { client } = useFeathers();
-    const authManagementService = client.service("authManagement");
+const settings = _settings as Record<string, any>
+const { client } = useFeathers()
+const authManagementService = client.service('authManagement')
+const route = useRoute()
+const { t } = useI18n()
 
-    return {
-      authManagementService,
-      settings,
-      success: ref(),
-    };
-  },
-  mounted() {
-    this.verifyAccount();
-  },
-  methods: {
-    async verifyAccount() {
-      const token = this.$route.query.token;
-      if (token) {
-        this.authManagementService
-          .create({
-            action: "verifySignupLong",
-            value: token,
-          })
-          .then(() => {
-            this.success = true;
-            Notify.create({
-              message: this.$t("verify.success"),
-              color: "positive",
-              icon: "fas fa-check",
-            });
-          })
-          .catch((err) => {
-            this.success = false;
-            Notify.create({
-              message: this.$t("verify.failure"),
-              color: "negative",
-              icon: "fas fa-times",
-            });
-          });
-      } else {
-        this.success = false;
-        Notify.create({
-          message: this.$t("verify.bad_link"),
-          color: "negative",
-          icon: "fas fa-times",
-        });
-      }
-    },
-  },
-});
+const success = ref<boolean | undefined>(undefined)
+
+onMounted(() => verifyAccount())
+
+async function verifyAccount() {
+  const token = route.query.token
+  if (token) {
+    authManagementService
+      .create({ action: 'verifySignupLong', value: token })
+      .then(() => {
+        success.value = true
+        Notify.create({ message: t('verify.success'), color: 'positive', icon: 'fas fa-check' })
+      })
+      .catch(() => {
+        success.value = false
+        Notify.create({ message: t('verify.failure'), color: 'negative', icon: 'fas fa-times' })
+      })
+  } else {
+    success.value = false
+    Notify.create({ message: t('verify.bad_link'), color: 'negative', icon: 'fas fa-times' })
+  }
+}
 </script>

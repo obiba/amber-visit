@@ -104,323 +104,235 @@
   </q-layout>
 </template>
 
-<script>
-import { defineComponent, ref } from "vue";
-import { marked } from "marked";
-import {
-  makeBlitzarQuasarSchemaForm,
-  makeSchemaFormTr,
-  getBlitzarErrors,
-} from "@obiba/quasar-ui-amber";
-import { Notify, scroll } from "quasar";
-import { BlitzForm, validateFormPerSchema } from "@blitzar/form";
-import { t } from "../boot/i18n";
-import { settings } from "../boot/settings";
+<script setup lang="ts">
+import { marked } from 'marked'
+import { makeBlitzarQuasarSchemaForm, makeSchemaFormTr, getBlitzarErrors } from '@obiba/quasar-ui-amber'
+import { Notify, scroll } from 'quasar'
+import { BlitzForm, validateFormPerSchema } from '@blitzar/form'
+import { settings as _settings } from '../boot/settings'
 
-const { getScrollTarget, setVerticalScrollPosition } = scroll;
+const { getScrollTarget, setVerticalScrollPosition } = scroll
 
-export default defineComponent({
-  name: "InterviewStep",
-  components: {
-    BlitzForm,
-  },
-  setup() {
-    const authStore = useAuthStore();
-    const itwStore = useInterviewStore();
-    return {
-      authStore,
-      itwStore,
-      errorsRemain: ref(false),
-      errors: ref([]),
-      settings,
-      debug: ref(false),
-      remountCounter: ref(0),
-      progress: ref(0),
-      formData: ref({}),
-      schema: ref([]),
-      step: ref({ schema: { items: [] } }),
-      showFormDescription: ref(false),
-      mode: ref("multi"),
-      errorMode: ref("interaction"),
-      lang: ref({}),
-    };
-  },
+const settings = _settings as Record<string, any>
+const authStore = useAuthStore()
+const itwStore = useInterviewStore()
+const { locale, t } = useI18n({ useScope: 'global' })
+const router = useRouter()
+const route = useRoute()
 
-  mounted() {
-    if (!this.itwStore.isAuthenticated) {
-      this.onLogout();
-    } else {
-      this.step = this.itwStore.getStepDesign(this.stepName);
-      if (this.step) {
-        if (this.step.schema.layout) {
-          this.mode = this.step.schema.layout;
-        }
-        this.schema = makeBlitzarQuasarSchemaForm(this.step.schema, {
-          locale: this.currentLocale,
-          stepId: "__page",
-          debug: this.debug,
-        });
-        this.lang = {
-          requiredField: this.$t("required_field"),
-        };
-        // TODO reinstate previous data and other steps data + participant data (for skip conditions)
-        const record = this.itwStore.record;
-        const initForm = () => {
-          this.formData = this.itwStore.record.data;
-          this.updateProgress();
-          this.remountCounter++;
-        };
-        if (!record || record.id !== this.stepName || !record.data) {
-          this.itwStore.setupRecord(this.stepName).then(() => {
-            initForm();
-          });
-        } else {
-          initForm();
-        }
-      } else {
-        console.error("No such interview step with id: " + this.stepName);
-        this.$router.push("..");
-      }
+const form = ref()
+const errorsRemain = ref(false)
+const errors = ref<any[]>([])
+const debug = ref(false)
+const remountCounter = ref(0)
+const progress = ref(0)
+const formData = ref<Record<string, any>>({})
+const schema = ref<any[]>([])
+const step = ref<any>({ schema: { items: [] } })
+const showFormDescription = ref(false)
+const mode = ref('multi')
+const errorMode = ref('interaction')
+const lang = ref<Record<string, string>>({})
+
+const stepName = computed(() => route.params.name as string)
+const caseReportLicense = computed(() => step.value.schema?.license as string | undefined)
+
+const toc = computed(() => {
+  const result: { id: string; label: string }[] = []
+  if (step.value.schema?.items) {
+    step.value.schema.items
+      .filter((item: any) => ['group', 'section'].includes(item.type))
+      .forEach((item: any) =>
+        result.push({ id: item.name.replaceAll('.', '_').toLowerCase(), label: tr(item.label) })
+      )
+  }
+  return result.filter((entry) => entry.label)
+})
+
+const idLabel = computed(() => (step.value.schema.idLabel ? tr(step.value.schema.idLabel) : 'ID'))
+
+const isFinalStep = computed(
+  () => isMulti() && formData.value.__page === step.value.schema.items.length - 1
+)
+
+const modeOptions = computed(() => [
+  { value: 'single', label: t('single_page') },
+  { value: 'multi', label: t('multi_steps') },
+])
+
+watch(mode, (newValue) => {
+  updateFormData()
+  schema.value = makeBlitzarQuasarSchemaForm(step.value.schema, {
+    locale: locale.value,
+    ...(newValue !== 'single' ? { stepId: '__page' } : {}),
+    debug: debug.value,
+  })
+  updateProgress()
+  remountCounter.value++
+})
+
+onMounted(() => {
+  if (!itwStore.isAuthenticated) {
+    onLogout()
+    return
+  }
+  step.value = itwStore.getStepDesign(stepName.value)
+  if (step.value) {
+    if (step.value.schema.layout) mode.value = step.value.schema.layout
+    schema.value = makeBlitzarQuasarSchemaForm(step.value.schema, {
+      locale: locale.value,
+      stepId: '__page',
+      debug: debug.value,
+    })
+    lang.value = { requiredField: t('required_field') }
+    const record = itwStore.record
+    const initForm = () => {
+      formData.value = itwStore.record.data
+      updateProgress()
+      remountCounter.value++
     }
-  },
+    if (!record || record.id !== stepName.value || !record.data) {
+      itwStore.setupRecord(stepName.value).then(() => initForm())
+    } else {
+      initForm()
+    }
+  } else {
+    console.error('No such interview step with id: ' + stepName.value)
+    router.push('..')
+  }
+})
 
-  watch: {
-    mode(newValue, oldValue) {
-      this.updateFormData();
-      if (newValue === "single") {
-        this.schema = makeBlitzarQuasarSchemaForm(this.step.schema, {
-          locale: this.currentLocale,
-          debug: this.debug,
-        });
-      } else {
-        this.schema = makeBlitzarQuasarSchemaForm(this.step.schema, {
-          locale: this.currentLocale,
-          stepId: "__page",
-          debug: this.debug,
-        });
-      }
-      this.updateProgress();
-      this.remountCounter++;
-    },
-  },
+function tr(key: string) {
+  let rval = makeSchemaFormTr(step.value.schema, { locale: locale.value })(key)
+  if (rval === key) {
+    rval = makeSchemaFormTr(itwStore.design, { locale: locale.value })(key)
+  }
+  return rval
+}
 
-  computed: {
-    currentLocale() {
-      return this.$root.$i18n.locale;
-    },
-    stepName() {
-      return this.$route.params.name;
-    },
-    toc() {
-      const toc = [];
-      if (this.step.schema && this.step.schema.items) {
-        this.step.schema.items
-          .filter((item) => ["group", "section"].includes(item.type))
-          .forEach((item) =>
-            toc.push({
-              id: item.name.replaceAll(".", "_").toLowerCase(),
-              label: this.tr(item.label),
-            })
-          );
-      }
-      return toc.filter((entry) => entry.label);
-    },
-    idLabel() {
-      return this.step.schema.idLabel
-        ? this.tr(this.step.schema.idLabel)
-        : "ID";
-    },
-    isFinalStep() {
-      return (
-        this.isMulti() &&
-        this.formData.__page === this.step.schema.items.length - 1
-      );
-    },
-    modeOptions() {
-      return [
-        {
-          value: "single",
-          label: t("single_page"),
-        },
-        {
-          value: "multi",
-          label: t("multi_steps"),
-        },
-      ];
-    },
-  },
+function md(text: string | undefined) {
+  return text ? (marked.parse(tr(text), { headerIds: false, mangle: false }) as string) : text
+}
 
-  methods: {
-    hasIdLabel() {
-      return this.step.schema.idLabel;
-    },
-    onShowFormDescription() {
-      this.showFormDescription = true;
-    },
-    onScroll(id) {
-      const ele = document.getElementById(id);
-      if (ele) {
-        const target = getScrollTarget(ele);
-        const offset = ele.offsetTop;
-        const duration = 200;
-        setVerticalScrollPosition(target, offset, duration);
-      }
-    },
-    updateProgress() {
-      this.progress =
-        this.formData.__page / (this.step.schema.items.length - 1);
-    },
-    isMulti() {
-      return this.mode === "multi";
-    },
-    handleSwipe({ evt, ...newInfo }) {
-      if (this.isMulti()) {
-        if (newInfo.direction === "up" || newInfo.direction === "left") {
-          this.nextStep();
-        } else if (
-          newInfo.direction === "down" ||
-          newInfo.direction === "right"
-        ) {
-          this.previousStep();
-        }
-      }
-    },
-    formatErrorMessages() {
-      const errorMessages = [];
-      for (let i = 0; i < Math.min(this.errors.length, 3); i++) {
-        const err = this.errors[i];
-        if (err.message === "Field is required") {
-          err.message = t("required_field");
-        }
-        err.message =
-          err.message.charAt(0).toLowerCase() + err.message.slice(1);
-        errorMessages.push(`<li>${err.label}: ${err.message}</li>`);
-      }
-      if (this.errors.length > 3) {
-        errorMessages.push(
-          `<li>${t("validations.more_errors", {
-            count: this.errors.length - 3,
-          })}</li>`
-        );
-      }
-      let rval = `<ul>${errorMessages.join("")}</ul>`;
-      return rval;
-    },
-    canPrevious() {
-      return this.isMulti() && this.formData.__page > 0;
-    },
-    toggleMode(value) {
-      this.mode = value;
-    },
-    previousStep() {
-      if (!this.canPrevious()) return;
+function hasIdLabel() {
+  return step.value.schema.idLabel
+}
 
-      this.updateFormData();
-      this.mergeStepData({
-        data: { __page: this.formData.__page - 1 },
-      });
-      this.updateProgress();
-      this.remountCounter++;
-      this.errorsRemain = false;
-      this.errors = undefined;
-      window.scrollTo(0, 0);
-    },
-    mergeStepData(payload) {
-      const record = this.itwStore.record;
-      for (const key in payload.data) {
-        record.data[key] = payload.data[key];
-      }
-      this.itwStore.updateRecord(this.stepName, record.data);
-      this.itwStore.intermediateRecord();
-    },
-    canNext() {
-      return (
-        this.isMulti() &&
-        this.formData.__page < this.step.schema.items.length - 1
-      );
-    },
-    nextStep() {
-      if (!this.canNext()) return;
+function onShowFormDescription() {
+  showFormDescription.value = true
+}
 
-      this.updateFormData();
-      this.onValidate();
-      // if no error in the step, continue
-      if (this.errorsRemain) {
-        Notify.create({
-          message: this.$t("validation_errors", {
-            errors: this.formatErrorMessages(),
-          }),
-          html: true,
-          color: "negative",
-        });
-      } else {
-        this.errorMode = "interaction";
-        this.mergeStepData({
-          data: { __page: this.formData.__page + 1 },
-        });
-        this.updateProgress();
-        this.remountCounter++;
-        window.scrollTo(0, 0);
-      }
-    },
-    updateFormData() {
-      this.itwStore.updateRecord(this.stepName, this.formData);
-    },
-    onValidate() {
-      this.errorMode = "always";
-      this.errors = getBlitzarErrors(
-        this.schema,
-        validateFormPerSchema(this.formData, this.schema)
-      );
-      this.errorsRemain = this.errors.length > 0;
-    },
-    onComplete() {
-      this.updateFormData();
-      this.onValidate();
-      if (this.errorsRemain) {
-        Notify.create({
-          message: this.$t("validation_errors", {
-            errors: this.formatErrorMessages(),
-          }),
-          html: true,
-          color: "negative",
-        });
-      } else {
-        this.itwStore.completeRecord().then(() => this.$router.push(".."));
-      }
-    },
-    onPause() {
-      this.updateFormData();
-      this.itwStore.pauseRecord().then(() => this.$router.push(".."));
-    },
-    tr(key) {
-      let rval = makeSchemaFormTr(this.step.schema, {
-        locale: this.currentLocale,
-      })(key);
-      if (rval === key) {
-        // try with design translations
-        rval = makeSchemaFormTr(this.itwStore.design, {
-          locale: this.currentLocale,
-        })(key);
-      }
-      return rval;
-    },
-    md(text) {
-      return text
-        ? marked.parse(this.tr(text), { headerIds: false, mangle: false })
-        : text;
-    },
-    onLogout() {
-      // TODO make sure no save is pending
-      this.itwStore.reset(true);
-      if (this.authStore.isAuthenticated) {
-        this.authStore.logout().then(() => {
-          this.$router.push("../login");
-        });
-      } else {
-        this.$router.push("../login");
-      }
-    },
-  },
-});
+function onScroll(id: string) {
+  const ele = document.getElementById(id)
+  if (ele) {
+    setVerticalScrollPosition(getScrollTarget(ele), ele.offsetTop, 200)
+  }
+}
+
+function updateProgress() {
+  progress.value = formData.value.__page / (step.value.schema.items.length - 1)
+}
+
+function isMulti() {
+  return mode.value === 'multi'
+}
+
+function handleSwipe({ ...newInfo }: any) {
+  if (!isMulti()) return
+  if (newInfo.direction === 'up' || newInfo.direction === 'left') nextStep()
+  else if (newInfo.direction === 'down' || newInfo.direction === 'right') previousStep()
+}
+
+function formatErrorMessages() {
+  const msgs: string[] = []
+  for (let i = 0; i < Math.min(errors.value.length, 3); i++) {
+    const err = errors.value[i]
+    if (err.message === 'Field is required') err.message = t('required_field')
+    err.message = err.message.charAt(0).toLowerCase() + err.message.slice(1)
+    msgs.push(`<li>${err.label}: ${err.message}</li>`)
+  }
+  if (errors.value.length > 3) {
+    msgs.push(`<li>${t('validations.more_errors', { count: errors.value.length - 3 })}</li>`)
+  }
+  return `<ul>${msgs.join('')}</ul>`
+}
+
+function canPrevious() {
+  return isMulti() && formData.value.__page > 0
+}
+
+function canNext() {
+  return isMulti() && formData.value.__page < step.value.schema.items.length - 1
+}
+
+function toggleMode(value: string) {
+  mode.value = value
+}
+
+function updateFormData() {
+  itwStore.updateRecord(stepName.value, formData.value)
+}
+
+function mergeStepData(payload: { data: Record<string, any> }) {
+  const record = itwStore.record
+  for (const key in payload.data) record.data[key] = payload.data[key]
+  itwStore.updateRecord(stepName.value, record.data)
+  itwStore.intermediateRecord()
+}
+
+function onValidate() {
+  errorMode.value = 'always'
+  errors.value = getBlitzarErrors(schema.value, validateFormPerSchema(formData.value, schema.value))
+  errorsRemain.value = errors.value.length > 0
+}
+
+function previousStep() {
+  if (!canPrevious()) return
+  updateFormData()
+  mergeStepData({ data: { __page: formData.value.__page - 1 } })
+  updateProgress()
+  remountCounter.value++
+  errorsRemain.value = false
+  errors.value = []
+  window.scrollTo(0, 0)
+}
+
+function nextStep() {
+  if (!canNext()) return
+  updateFormData()
+  onValidate()
+  if (errorsRemain.value) {
+    Notify.create({ message: t('validation_errors', { errors: formatErrorMessages() }), html: true, color: 'negative' })
+  } else {
+    errorMode.value = 'interaction'
+    mergeStepData({ data: { __page: formData.value.__page + 1 } })
+    updateProgress()
+    remountCounter.value++
+    window.scrollTo(0, 0)
+  }
+}
+
+function onComplete() {
+  updateFormData()
+  onValidate()
+  if (errorsRemain.value) {
+    Notify.create({ message: t('validation_errors', { errors: formatErrorMessages() }), html: true, color: 'negative' })
+  } else {
+    itwStore.completeRecord().then(() => router.push('..'))
+  }
+}
+
+function onPause() {
+  updateFormData()
+  itwStore.pauseRecord().then(() => router.push('..'))
+}
+
+function onLogout() {
+  itwStore.reset(true)
+  if (authStore.isAuthenticated) {
+    authStore.logout().then(() => router.push('../login'))
+  } else {
+    router.push('../login')
+  }
+}
 </script>

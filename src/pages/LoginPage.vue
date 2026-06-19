@@ -167,288 +167,200 @@
   </q-layout>
 </template>
 
-<script>
-import { defineComponent, ref } from "vue";
-import AppBanner from "src/components/AppBanner.vue";
-import { locales } from "../boot/i18n";
-import { settings } from "../boot/settings";
-import { baseURL } from "../boot/axios";
-import { Notify, copyToClipboard } from "quasar";
-import { useCookies } from "vue3-cookies";
-import { useRouter } from 'vue-router'
+<script setup lang="ts">
+import AppBanner from 'src/components/AppBanner.vue'
+import { locales } from '../boot/i18n'
+import { settings as _settings } from '../boot/settings'
+const settings = _settings as Record<string, any>
+import { baseURL } from '../boot/axios'
+import { Notify, copyToClipboard } from 'quasar'
+import { useCookies } from 'vue3-cookies'
 
-export default defineComponent({
-  name: "LoginPage",
-  components: {
-    AppBanner,
-  },
-  setup() {
-    const authStore = useAuthStore();
-    const { client } = useFeathers();
-    const interviewDesignService = client.service("itwd");
-    const itwStore = useInterviewStore();
-    const { locale } = useI18n({ useScope: "global" });
-    const { cookies } = useCookies();
-    const router = useRouter()
+const authStore = useAuthStore()
+const itwStore = useInterviewStore()
+const { t, locale } = useI18n({ useScope: 'global' })
+const { cookies } = useCookies()
+const router = useRouter()
+const route = useRoute()
 
-    return {
-      cookies,
-      locale,
-      settings,
-      baseURL,
-      authStore,
-      router,
-      Notify,
-      interviewDesignService,
-      itwStore,
-      email: ref(""),
-      token: ref(""),
-      secret: ref(""),
-      password: ref(""),
-      qr: ref(""),
-      withToken: ref(false),
-      method: ref(""),
-      strategy: ref("participant"),
-      code: ref(""),
-      payload: ref({}),
-      withPassword: ref(false),
-      showForm: ref(false),
-      showPassword: ref(false),
-      authProviders: ref([]),
-    };
-  },
-  async mounted() {
-    const hash = new URLSearchParams(window.location.hash.substring(1))
-    const oauthToken = hash.get('access_token')
-    const oauthError = hash.get('error')
+const email = ref('')
+const token = ref('')
+const secret = ref('')
+const password = ref('')
+const qr = ref('')
+const withToken = ref(false)
+const method = ref('')
+const strategy = ref('participant')
+const code = ref('')
+const withPassword = ref(false)
+const showForm = ref(false)
+const showPassword = ref(false)
+const authProviders = ref<string[]>([])
 
-    if (oauthToken || oauthError) {
-      window.history.replaceState(null, '', window.location.pathname)
+const localeOptions = computed(() =>
+  locales
+    .map((loc) => ({ value: loc, label: t('locales.' + loc) }))
+    .sort((a, b) => (a.label > b.label ? 1 : a.label < b.label ? -1 : 0))
+)
+const hasLocales = computed(() => locales.length > 1)
+const disableEnter = computed(() => code.value.length !== 6 || (withPassword.value && password.value.length < 8))
+const disableSubmit = computed(() => email.value.length === 0 || password.value.length === 0)
+const disableValidate = computed(() => token.value.length < 6)
+
+onMounted(async () => {
+  const hash = new URLSearchParams(window.location.hash.substring(1))
+  const oauthToken = hash.get('access_token')
+  const oauthError = hash.get('error')
+
+  if (oauthToken || oauthError) {
+    window.history.replaceState(null, '', window.location.pathname)
+  }
+
+  if (oauthToken) {
+    try {
+      await authStore.authenticate({ strategy: 'jwt', accessToken: oauthToken })
+      router.push('/')
+    } catch {
+      Notify.create({ message: t('login.failed'), color: 'negative' })
     }
+    return
+  } else if (oauthError) {
+    Notify.create({ message: t('login.failed'), color: 'negative' })
+    return
+  }
 
-    if (oauthToken) {
-      try {
-        await this.authStore.authenticate({ strategy: 'jwt', accessToken: oauthToken })
-        this.router.push('/')
-      } catch (err) {
-        this.Notify.create({ message: this.$t('login.failed'), color: 'negative' })
-      }
-      return
-    } else if (oauthError) {
-      this.Notify.create({ message: this.$t('login.failed'), color: 'negative' })
-      return
-    }
+  if (authStore.isAuthenticated) {
+    authStore.logout()
+  }
+  if (route.query.campaign) {
+    strategy.value = 'campaign'
+    onSubmit()
+  } else if (route.params.code) {
+    code.value = route.params.code as string
+    strategy.value = 'participant'
+    onSubmit()
+  } else {
+    showForm.value = true
+  }
+  showPassword.value = false
+  authStore.getOAuthProviders().then((resp: { providers?: string[] }) => {
+    authProviders.value = resp.providers || []
+  })
+})
 
-    if (this.authStore.isAuthenticated) {
-      this.authStore.logout();
-    }
-    if (this.$route.query.campaign) {
-      this.strategy = "campaign";
-      this.onSubmit();
-    } else if (this.$route.params.code) {
-      this.code = this.$route.params.code;
-      this.strategy = "participant";
-      this.onSubmit();
-    } else {
-      this.showForm = true;
-    }
-    this.showPassword = false;
-    this.authStore.getOAuthProviders().then(resp => {
-      this.authProviders = resp.providers || []
-    })
-  },
-  computed: {
-    localeOptions() {
-      return locales
-        .map((loc) => {
-          return {
-            value: loc,
-            label: this.$t("locales." + loc),
-          };
-        })
-        .sort((loc1, loc2) => {
-          if (loc1.label > loc2.label) return 1;
-          if (loc1.label < loc2.label) return -1;
-          return 0;
-        });
-    },
-    hasLocales() {
-      return locales.length > 1;
-    },
-    disableEnter() {
-      return (
-        this.code.length !== 6 ||
-        (this.withPassword && this.password.length < 8)
-      );
-    },
-    disableSubmit() {
-      return this.email.length === 0 || this.password.length === 0;
-    },
-    disableValidate() {
-      return this.token.length < 6;
-    },
-  },
-  methods: {
-    onLocaleSelection(opt) {
-      this.locale = opt.value;
-      this.cookies.set("locale", opt.value);
-    },
-    toStrategy(strategy) {
-      this.strategy = strategy;
-      this.withPassword = false;
-      this.withToken = false;
-      this.code = "";
-      this.password = "";
-      this.email = "";
-      this.secret = "";
-      this.token = "";
-    },
-    makePayload() {
-      const payload = {
-        strategy: "local",
-      };
-      payload.email = this.email;
-      payload.password = this.password;
-      if (this.method) {
-        payload.method = this.method;
-      }
-      if (this.token) {
-        payload.token = this.token;
-      }
-      if (!this.method && this.secret) {
-        payload.secret = this.secret;
-      }
-      return payload;
-    },
-    onCopySecret() {
-      copyToClipboard(this.secret).then(() => {
-        Notify.create({
-          message: this.$t("login.secret_copied"),
-          color: "positive",
-        });
-      });
-    },
-    onEmailToken() {
-      this.method = "otp";
-      this.onSubmit();
-    },
-    onCancelToken() {
-      this.withToken = false;
-      this.token = "";
-      this.password = "";
-      this.secret = "";
-      this.method = "otp";
-    },
-    onCancelPassword() {
-      this.withPassword = false;
-    },
-    onSubmit() {
-      if (this.strategy === "campaign") {
-        this.itwStore
-          .initByWalkInParticipant(
-            this.$route.query
-          )
-          .then(() => {
-            this.redirect();
-          })
-          .catch((err) => {
-            this.showForm = true;
-            const type = err.className;
-            if (
-              type === "not-authenticated" &&
-              err.message.startsWith("A participant password is required")
-            ) {
-              this.withPassword = true;
-            } else if (type === "bad-request") {
-              Notify.create({
-                message: this.$t(err.message),
-                color: "negative",
-              });
-            } else {
-              console.error(err);
-              Notify.create({
-                message: this.$t("login.participant_failed"),
-                color: "negative",
-              });
-            }
-          });
-      } else if (this.strategy === "local") {
-        const payload = this.makePayload();
-        this.authStore.clearError();
-        this.authStore
-          .authenticate(payload)
-          .then((response) => {
-            if (response.data && response.data.qr && response.data.secret) {
-              // 2FA is enabled for that user
-              this.qr = response.data.qr;
-              this.secret = response.data.secret;
-              this.withToken = true;
-            } else {
-              this.itwStore.setUser(response.user);
-              this.redirect();
-            }
-          })
-          .catch((err) => {
-            this.showForm = true;
-            const type = err.className;
-            if (
-              type === "bad-request" &&
-              err.message.startsWith("Token required")
-            ) {
-              this.withToken = true;
-            } else if (
-              type === "bad-request" &&
-              err.message.startsWith("Invalid token")
-            ) {
-              Notify.create({
-                message: this.$t("login.failed_token"),
-                color: "negative",
-              });
-              this.token = "";
-            } else {
-              Notify.create({
-                message: this.$t("login.failed"),
-                color: "negative",
-              });
-            }
-          });
-      } else if (this.strategy === "participant") {
-        this.itwStore
-          .initByParticipant(
-            this.code,
-            this.withPassword ? this.password : undefined
-          )
-          .then(() => {
-            this.redirect();
-          })
-          .catch((err) => {
-            this.showForm = true;
-            const type = err.className;
-            if (
-              type === "not-authenticated" &&
-              err.message.startsWith("A participant password is required")
-            ) {
-              this.withPassword = true;
-            } else if (type === "bad-request") {
-              Notify.create({
-                message: this.$t(err.message),
-                color: "negative",
-              });
-            } else {
-              console.error(err);
-              Notify.create({
-                message: this.$t("login.participant_failed"),
-                color: "negative",
-              });
-            }
-          });
-      }
-    },
-    redirect() {
-      const redirectTo = this.authStore.loginRedirect || "..";
-      this.authStore.loginRedirect = null;
-      this.$router.push(redirectTo);
-    },
-  },
-});
+function onLocaleSelection(opt: { value: string }) {
+  locale.value = opt.value
+  cookies.set('locale', opt.value)
+}
+
+function toStrategy(s: string) {
+  strategy.value = s
+  withPassword.value = false
+  withToken.value = false
+  code.value = ''
+  password.value = ''
+  email.value = ''
+  secret.value = ''
+  token.value = ''
+}
+
+function makePayload() {
+  const payload: Record<string, string> = {
+    strategy: 'local',
+    email: email.value,
+    password: password.value,
+  }
+  if (method.value) payload.method = method.value
+  if (token.value) payload.token = token.value
+  if (!method.value && secret.value) payload.secret = secret.value
+  return payload
+}
+
+function onCopySecret() {
+  copyToClipboard(secret.value).then(() => {
+    Notify.create({ message: t('login.secret_copied'), color: 'positive' })
+  })
+}
+
+function onEmailToken() {
+  method.value = 'otp'
+  onSubmit()
+}
+
+function onCancelToken() {
+  withToken.value = false
+  token.value = ''
+  password.value = ''
+  secret.value = ''
+  method.value = 'otp'
+}
+
+function redirect() {
+  const redirectTo = authStore.loginRedirect || '..'
+  authStore.loginRedirect = null
+  router.push(redirectTo)
+}
+
+function onSubmit() {
+  if (strategy.value === 'campaign') {
+    itwStore
+      .initByWalkInParticipant(route.query)
+      .then(() => redirect())
+      .catch((err: { className: string; message: string }) => {
+        showForm.value = true
+        const type = err.className
+        if (type === 'not-authenticated' && err.message.startsWith('A participant password is required')) {
+          withPassword.value = true
+        } else if (type === 'bad-request') {
+          Notify.create({ message: t(err.message), color: 'negative' })
+        } else {
+          console.error(err)
+          Notify.create({ message: t('login.participant_failed'), color: 'negative' })
+        }
+      })
+  } else if (strategy.value === 'local') {
+    const payload = makePayload()
+    authStore.clearError()
+    authStore
+      .authenticate(payload as any)
+      .then((response: Record<string, any>) => {
+        if (response.data?.qr && response.data?.secret) {
+          qr.value = response.data.qr
+          secret.value = response.data.secret
+          withToken.value = true
+        } else {
+          itwStore.setUser(response.user)
+          redirect()
+        }
+      })
+      .catch((err: { className: string; message: string }) => {
+        showForm.value = true
+        const type = err.className
+        if (type === 'bad-request' && err.message.startsWith('Token required')) {
+          withToken.value = true
+        } else if (type === 'bad-request' && err.message.startsWith('Invalid token')) {
+          Notify.create({ message: t('login.failed_token'), color: 'negative' })
+          token.value = ''
+        } else {
+          Notify.create({ message: t('login.failed'), color: 'negative' })
+        }
+      })
+  } else if (strategy.value === 'participant') {
+    itwStore
+      .initByParticipant(code.value, withPassword.value ? password.value : undefined)
+      .then(() => redirect())
+      .catch((err: { className: string; message: string }) => {
+        showForm.value = true
+        const type = err.className
+        if (type === 'not-authenticated' && err.message.startsWith('A participant password is required')) {
+          withPassword.value = true
+        } else if (type === 'bad-request') {
+          Notify.create({ message: t(err.message), color: 'negative' })
+        } else {
+          console.error(err)
+          Notify.create({ message: t('login.participant_failed'), color: 'negative' })
+        }
+      })
+  }
+}
 </script>

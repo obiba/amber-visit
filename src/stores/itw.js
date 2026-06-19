@@ -129,7 +129,7 @@ export const useInterviewStore = defineStore(
     /**
      * Initialize design and interview data; to be called by the participant.
      * @param {string} code
-     * @param {string} password
+     * @param {string} [password]
      * @returns
      */
     async function initByParticipant(code, password) {

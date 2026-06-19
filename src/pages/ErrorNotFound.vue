@@ -23,16 +23,7 @@
   </div>
 </template>
 
-<script>
-import { defineComponent } from "vue";
-import { settings } from "../boot/settings";
-
-export default defineComponent({
-  name: "ErrorNotFound",
-  setup() {
-    return {
-      settings: settings,
-    };
-  },
-});
+<script setup lang="ts">
+import { settings as _settings } from '../boot/settings'
+const settings = _settings as Record<string, any>
 </script>

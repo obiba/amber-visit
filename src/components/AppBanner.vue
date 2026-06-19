@@ -14,16 +14,7 @@
   </div>
 </template>
 
-<script>
-import { settings } from "../boot/settings";
-import { defineComponent } from "vue";
-
-export default defineComponent({
-  name: "AppBanner",
-  setup() {
-    return {
-      settings,
-    };
-  },
-});
+<script setup lang="ts">
+import { settings as _settings } from '../boot/settings'
+const settings = _settings as Record<string, any>
 </script>

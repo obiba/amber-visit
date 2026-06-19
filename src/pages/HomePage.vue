@@ -188,130 +188,95 @@
   </q-page>
 </template>
 
-<script>
-import { defineComponent } from "vue";
-import { Notify } from "quasar";
-import { settings } from "../boot/settings";
-import { marked } from "marked";
-import { makeSchemaFormTr } from "@obiba/quasar-ui-amber";
+<script setup lang="ts">
+import { Notify } from 'quasar'
+import { settings as _settings } from '../boot/settings'
+import { marked } from 'marked'
+import { makeSchemaFormTr } from '@obiba/quasar-ui-amber'
 
-export default defineComponent({
-  name: "HomePage",
-  setup() {
-    const authStore = useAuthStore();
-    const { client } = useFeathers();
-    const interviewDesignService = client.service("itwd");
-    const itwStore = useInterviewStore();
-    const { locale } = useI18n({ useScope: "global" });
-    return {
-      locale,
-      authStore,
-      settings,
-      interviewDesignService,
-      code: ref(""),
-      receive: ref(false),
-      showHelp: ref(false),
-      showInstructions: ref(false),
-      itwStore,
-      countDown: ref(10), // Countdown for redirect after interview completion
-    };
-  },
-  mounted() {
-    this.doShowInstructions();
-    if (this.itwStore.completed && this.itwStore.design?.completionUrl && !this.itwStore.user) {
-      const interval = setInterval(() => {
-        if (this.countDown > 0) {
-          this.countDown--;
-        } else {
-          clearInterval(interval);
-          this.onRedirect(this.itwStore.design.completionUrl);
-        }
-      }, 1000);
-    }
-  },
-  methods: {
-    doShowInstructions() {
-      if (this.itwStore.instructed) return;
+const settings = _settings as Record<string, any>
+const authStore = useAuthStore()
+const itwStore = useInterviewStore()
+const { locale, t } = useI18n({ useScope: 'global' })
+const router = useRouter()
 
-      if (
-        !this.itwStore.user &&
-        this.itwStore.design?.participant_instructions
-      ) {
-        this.showInstructions = true;
+const code = ref('')
+const receive = ref(false)
+const showHelp = ref(false)
+const showInstructions = ref(false)
+const countDown = ref(10)
+
+onMounted(() => {
+  doShowInstructions()
+  if (itwStore.completed && itwStore.design?.completionUrl && !itwStore.user) {
+    const interval = setInterval(() => {
+      if (countDown.value > 0) {
+        countDown.value--
+      } else {
+        clearInterval(interval)
+        onRedirect(itwStore.design.completionUrl)
       }
-    },
-    tr(key) {
-      return makeSchemaFormTr(this.itwStore.design, { locale: this.locale })(
-        key
-      );
-    },
-    truncate(text) {
-      if (!text) return text;
-      const sentences = text.split(".");
-      return (
-        sentences[0] +
-        (sentences.length > 1 && sentences[1] !== "" ? "..." : ".")
-      );
-    },
-    md(text) {
-      return text
-        ? marked.parse(this.tr(text), { headerIds: false, mangle: false })
-        : text;
-    },
-    onRedirect(url) {
-      if (url) {
-        window.location.href = url;
+    }, 1000)
+  }
+})
+
+function doShowInstructions() {
+  if (itwStore.instructed) return
+  if (!itwStore.user && itwStore.design?.participant_instructions) {
+    showInstructions.value = true
+  }
+}
+
+function tr(key: string) {
+  return makeSchemaFormTr(itwStore.design, { locale: locale.value })(key)
+}
+
+function md(text: string | undefined) {
+  return text ? (marked.parse(tr(text), { headerIds: false, mangle: false }) as string) : text
+}
+
+function onRedirect(url: string) {
+  if (url) window.location.href = url
+}
+
+function onReceive(val: boolean) {
+  receive.value = val
+  if (val) code.value = ''
+}
+
+function onRefresh(done: () => void) {
+  if (itwStore.participant) {
+    onLoad(itwStore.participant.code, done)
+  } else {
+    done()
+  }
+}
+
+function onFillingDateUpdated() {
+  itwStore.saveFillingDate()
+}
+
+function onLoad(loadCode: string, done?: () => void) {
+  const promise = itwStore.user
+    ? itwStore.initByInterviewer(loadCode)
+    : itwStore.initByParticipant()
+  promise
+    .then(() => {
+      if (typeof done === 'function') {
+        done()
+      } else {
+        showInstructions.value =
+          itwStore.user && !itwStore.instructed && itwStore.design.interviewer_instructions !== undefined
       }
-    },
-    onReceive(val) {
-      this.receive = val;
-      if (val) {
-        this.code = "";
+      receive.value = false
+    })
+    .catch((err: { name: string; message: string }) => {
+      if (typeof done === 'function') done()
+      if (err.name === 'NotAuthenticated') {
+        router.push('login')
+      } else {
+        Notify.create({ message: t(err.message), color: 'negative' })
       }
-    },
-    onRefresh(done) {
-      if (this.itwStore.participant) {
-        this.onLoad(this.itwStore.participant.code, done);
-      } else if (typeof done === "function") {
-        done();
-      }
-    },
-    onFillingDateUpdated() {
-      this.itwStore.saveFillingDate();
-    },
-    onLoad(code, done) {
-      const promise = this.itwStore.user
-        ? this.itwStore.initByInterviewer(code)
-        : this.itwStore.initByParticipant();
-      promise
-        .then((response) => {
-          if (typeof done === "function") {
-            done();
-          } else {
-            this.showInstructions =
-              this.itwStore.user &&
-              !this.itwStore.instructed &&
-              this.itwStore.design.interviewer_instructions !== undefined;
-          }
-          this.receive = false;
-        })
-        .catch((err) => {
-          if (typeof done === "function") {
-            done();
-          }
-          if (err.name === "NotAuthenticated") {
-            this.$router.push("login");
-          } else {
-            Notify.create({
-              message: this.$t(err.message),
-              color: "negative",
-            });
-          }
-        });
-    },
-    onStepStart(name) {
-      // console.log(`Start step ${name}`);
-    },
-  },
-});
+    })
+}
 </script>

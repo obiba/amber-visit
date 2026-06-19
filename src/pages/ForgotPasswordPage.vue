@@ -44,7 +44,7 @@
                       <q-icon name="fas fa-envelope" size="xs" />
                     </template>
                     <template v-slot:error>
-                      <div v-for="error in v$.resetEmail.$errors" :key="error">
+                      <div v-for="error in v$.resetEmail.$errors" :key="error.$uid">
                         {{ error.$message }}
                       </div>
                     </template>
@@ -74,59 +74,31 @@
   </q-layout>
 </template>
 
-<script>
-import { required, email } from "../boot/vuelidate";
-import useVuelidate from "@vuelidate/core";
-import { settings } from "../boot/settings";
-import { Notify } from "quasar";
-import AppBanner from "src/components/AppBanner.vue";
+<script setup lang="ts">
+import AppBanner from 'src/components/AppBanner.vue'
+import { required, email } from '../boot/vuelidate'
+import useVuelidate from '@vuelidate/core'
+import { settings as _settings } from '../boot/settings'
+import { Notify } from 'quasar'
 
-export default {
-  components: { AppBanner },
-  setup() {
-    const { client } = useFeathers();
-    const authManagementService = client.service("authManagement");
+const settings = _settings as Record<string, any>
+const { client } = useFeathers()
+const authManagementService = client.service('authManagement')
+const router = useRouter()
+const { t } = useI18n()
 
-    return {
-      authManagementService,
-      settings,
-    };
-  },
-  data() {
-    return {
-      v$: useVuelidate(),
-      resetEmail: "",
-    };
-  },
-  validations: {
-    resetEmail: {
-      required,
-      email,
-    },
-  },
-  computed: {
-    disableSubmit() {
-      return this.v$.resetEmail.$invalid;
-    },
-  },
-  methods: {
-    forgotPassword() {
-      this.authManagementService
-        .create({
-          action: "sendResetPwd",
-          value: { email: this.resetEmail },
-        })
-        .then(() => {
-          this.$router.push("/login");
-        })
-        .catch((err) => {
-          console.error(err);
-          Notify.create({
-            message: this.$t(err.message),
-            color: "negative",
-          });
-        });
-    },
-  },
-};
+const resetEmail = ref('')
+const v$ = useVuelidate({ resetEmail: { required, email } }, { resetEmail })
+
+const disableSubmit = computed(() => v$.value.resetEmail.$invalid)
+
+function forgotPassword() {
+  authManagementService
+    .create({ action: 'sendResetPwd', value: { email: resetEmail.value } })
+    .then(() => router.push('/login'))
+    .catch((err: { message: string }) => {
+      console.error(err)
+      Notify.create({ message: t(err.message), color: 'negative' })
+    })
+}
 </script>

@@ -44,7 +44,7 @@
                     <template v-slot:error>
                       <div
                         v-for="error in v$.formData.email.$errors"
-                        :key="error"
+                        :key="error.$uid"
                       >
                         {{ error.$message }}
                       </div>
@@ -68,7 +68,7 @@
                     <template v-slot:error>
                       <div
                         v-for="error in v$.formData.password.$errors"
-                        :key="error"
+                        :key="error.$uid"
                       >
                         {{ error.$message }}
                       </div>
@@ -91,7 +91,7 @@
                     <template v-slot:error>
                       <div
                         v-for="error in v$.formData.firstname.$errors"
-                        :key="error"
+                        :key="error.$uid"
                       >
                         {{ error.$message }}
                       </div>
@@ -114,7 +114,7 @@
                     <template v-slot:error>
                       <div
                         v-for="error in v$.formData.lastname.$errors"
-                        :key="error"
+                        :key="error.$uid"
                       >
                         {{ error.$message }}
                       </div>
@@ -176,127 +176,69 @@
   </q-layout>
 </template>
 
-<script>
-import { useI18n } from "vue-i18n";
-import { defineComponent } from "vue";
-import { Notify } from "quasar";
-import useVuelidate from "@vuelidate/core";
-import { useReCaptcha } from "vue-recaptcha-v3";
-import {
-  required,
-  minLength,
-  maxLength,
-  email,
-  strongPassword,
-} from "../boot/vuelidate";
-import { locales } from "../boot/i18n";
-import { settings } from "../boot/settings";
+<script setup lang="ts">
+import AppBanner from 'src/components/AppBanner.vue'
+import { Notify } from 'quasar'
+import useVuelidate from '@vuelidate/core'
+import { useReCaptcha } from 'vue-recaptcha-v3'
+import { required, minLength, maxLength, email, strongPassword } from '../boot/vuelidate'
+import { locales } from '../boot/i18n'
+import { settings as _settings } from '../boot/settings'
 
-import AppBanner from "src/components/AppBanner.vue";
+const settings = _settings as Record<string, any>
+const { client } = useFeathers()
+const userService = client.service('user')
+const { locale, t } = useI18n({ useScope: 'global' })
+const { executeRecaptcha, recaptchaLoaded } = useReCaptcha()!
+const router = useRouter()
 
-export default defineComponent({
-  components: { AppBanner },
-  setup() {
-    const { client } = useFeathers();
-    const userService = client.service("user");
-    const { locale } = useI18n({ useScope: "global" });
-    const { executeRecaptcha, recaptchaLoaded } = useReCaptcha();
-
-    const recaptcha = async () => {
-      // (optional) Wait until recaptcha has been loaded.
-      await recaptchaLoaded();
-
-      // Execute reCAPTCHA with action "login".
-      const token = await executeRecaptcha("login");
-
-      // Do stuff with the received token.
-      return token;
-    };
-
-    return {
-      userService,
-      locale,
-      v$: useVuelidate(),
-      recaptcha,
-      settings,
-    };
-  },
-  data() {
-    return {
-      formData: {
-        firstname: "",
-        lastname: "",
-        language: "",
-        email: "",
-        password: "",
-      },
-    };
-  },
-  validations: {
+const registrationComplete = ref(false)
+const formData = reactive({
+  firstname: '',
+  lastname: '',
+  language: '',
+  email: '',
+  password: '',
+})
+const v$ = useVuelidate(
+  {
     formData: {
-      firstname: {
-        required,
-        minLength: minLength(2),
-      },
-      lastname: {
-        required,
-        minLength: minLength(2),
-      },
-      email: {
-        required,
-        email,
-      },
-      password: {
-        required,
-        minLength: minLength(8),
-        maxLength: maxLength(64),
-        strongPassword,
-      },
+      firstname: { required, minLength: minLength(2) },
+      lastname: { required, minLength: minLength(2) },
+      email: { required, email },
+      password: { required, minLength: minLength(8), maxLength: maxLength(64), strongPassword },
     },
   },
-  mounted() {
-    if (!this.settings.register_enabled) {
-      this.$router.push("/");
-    }
-  },
-  computed: {
-    disableSubmit() {
-      return this.v$.formData.$invalid;
-    },
-    localeOptions() {
-      return locales.map((loc) => {
-        return {
-          value: loc,
-          label: this.$t("locales." + loc),
-        };
-      });
-    },
-    hasLocales() {
-      return locales.length > 1;
-    },
-  },
-  methods: {
-    onSubmit() {
-      // Execute reCAPTCHA with action "login".
-      this.recaptcha().then((token) => {
-        const data = this.formData;
-        data.language = this.locale;
-        data.token = token;
-        data.clientId = "amber_visit";
-        this.userService
-          .create(data)
-          .then(() => {
-            this.$router.push("/login");
-          })
-          .catch((err) => {
-            console.error(err);
-            Notify.create({
-              message: this.$t(err.message),
-              color: "negative",
-            });
-          });
-      });
-    },
-  },
-});
+  { formData }
+)
+
+const disableSubmit = computed(() => v$.value.formData.$invalid)
+const localeOptions = computed(() =>
+  locales.map((loc) => ({ value: loc, label: t('locales.' + loc) }))
+)
+const hasLocales = computed(() => locales.length > 1)
+
+onMounted(() => {
+  if (!settings.register_enabled) {
+    router.push('/')
+  }
+})
+
+async function recaptcha() {
+  await recaptchaLoaded()
+  return executeRecaptcha('login')
+}
+
+function onSubmit() {
+  recaptcha().then((token) => {
+    const data = { ...formData, language: locale.value, token, clientId: 'amber_visit' }
+    userService
+      .create(data)
+      .then(() => router.push('/login'))
+      .catch((err: { message: string }) => {
+        console.error(err)
+        Notify.create({ message: t(err.message), color: 'negative' })
+      })
+  })
+}
 </script>

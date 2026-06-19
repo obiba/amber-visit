@@ -34,7 +34,7 @@
                         @click="showPassword = !showPassword" />
                     </template>
                     <template v-slot:error>
-                      <div v-for="error in v$.formData.password.$errors" :key="error">
+                      <div v-for="error in v$.formData.password.$errors" :key="error.$uid">
                         {{ error.$message }}
                       </div>
                     </template>
@@ -53,88 +53,43 @@
   </q-layout>
 </template>
 
-<script>
-import { defineComponent } from "vue";
-import useVuelidate from "@vuelidate/core";
-import {
-  required,
-  minLength,
-  maxLength,
-  strongPassword,
-} from "../boot/vuelidate";
-import { Notify } from "quasar";
-import { settings } from "../boot/settings";
+<script setup lang="ts">
+import AppBanner from 'src/components/AppBanner.vue'
+import useVuelidate from '@vuelidate/core'
+import { required, minLength, maxLength, strongPassword } from '../boot/vuelidate'
+import { Notify } from 'quasar'
+import { settings as _settings } from '../boot/settings'
 
-import AppBanner from "src/components/AppBanner.vue";
+const settings = _settings as Record<string, any>
+const { client } = useFeathers()
+const authManagementService = client.service('authManagement')
+const router = useRouter()
+const route = useRoute()
+const { t } = useI18n()
 
-export default defineComponent({
-  components: { AppBanner },
-  setup() {
-    const { client } = useFeathers();
-    const authManagementService = client.service("authManagement");
+const showPassword = ref(false)
+const formData = reactive({ password: '' })
+const v$ = useVuelidate(
+  { formData: { password: { required, minLength: minLength(8), maxLength: maxLength(64), strongPassword } } },
+  { formData }
+)
 
-    return {
-      authManagementService,
-      v$: useVuelidate(),
-      settings,
-    };
-  },
-  data() {
-    return {
-      valid: false,
-      showPassword: false,
-      formData: {
-        password: "",
-      },
-    };
-  },
-  validations: {
-    formData: {
-      password: {
-        required,
-        minLength: minLength(8),
-        maxLength: maxLength(64),
-        strongPassword,
-      },
-    },
-  },
-  computed: {
-    disableSubmit() {
-      return this.v$.formData.$invalid;
-    },
-  },
-  methods: {
-    async resetPassword() {
-      const token = this.$route.query.token;
-      if (token) {
-        this.authManagementService
-          .create({
-            action: "resetPwdLong",
-            value: { token: token, password: this.formData.password },
-          })
-          .then(() => {
-            Notify.create({
-              message: this.$t("reset.success"),
-              color: "positive",
-              icon: "fas fa-check",
-            });
-            this.$router.push("/login");
-          })
-          .catch((err) => {
-            Notify.create({
-              message: this.$t("reset.failure"),
-              color: "negative",
-              icon: "fas fa-times",
-            });
-          });
-      } else {
-        Notify.create({
-          message: this.$t("reset.bad_link"),
-          color: "negative",
-          icon: "fas fa-times",
-        });
-      }
-    },
-  },
-});
+const disableSubmit = computed(() => v$.value.formData.$invalid)
+
+async function resetPassword() {
+  const token = route.query.token
+  if (token) {
+    authManagementService
+      .create({ action: 'resetPwdLong', value: { token, password: formData.password } })
+      .then(() => {
+        Notify.create({ message: t('reset.success'), color: 'positive', icon: 'fas fa-check' })
+        router.push('/login')
+      })
+      .catch(() => {
+        Notify.create({ message: t('reset.failure'), color: 'negative', icon: 'fas fa-times' })
+      })
+  } else {
+    Notify.create({ message: t('reset.bad_link'), color: 'negative', icon: 'fas fa-times' })
+  }
+}
 </script>

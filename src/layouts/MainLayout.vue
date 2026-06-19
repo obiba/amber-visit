@@ -70,7 +70,7 @@
             color="secondary"
             text-color="white"
             class="q-ma-none"
-            >{{ itwStore.user?.email }}</q-chip
+            >{{ itwUser?.email }}</q-chip
           >
           <q-chip
             v-else
@@ -115,104 +115,73 @@
   </q-layout>
 </template>
 
-<script>
-import { defineComponent, ref } from "vue";
-import EssentialLink from "components/EssentialLink.vue";
-import { locales } from "../boot/i18n";
-import { settings } from "../boot/settings";
-import { useCookies } from "vue3-cookies";
+<script setup lang="ts">
+import EssentialLink from 'src/components/EssentialLink.vue'
+import { locales } from '../boot/i18n'
+import { settings as _settings } from '../boot/settings'
+import { useCookies } from 'vue3-cookies'
+import { useQuasar } from 'quasar'
 
-export default defineComponent({
-  name: "MainLayout",
+const settings = _settings as Record<string, any>
+const authStore = useAuthStore()
+const itwStore = useInterviewStore()
+const { locale, t } = useI18n({ useScope: 'global' })
+const { cookies } = useCookies()
+const q = useQuasar()
+const router = useRouter()
 
-  components: {
-    EssentialLink,
-  },
+const leftDrawerOpen = ref(false)
+const itwUser = computed(() => itwStore.user as any)
 
-  setup() {
-    const authStore = useAuthStore();
-    const itwStore = useInterviewStore();
-    const leftDrawerOpen = ref(false);
-    const { locale } = useI18n({ useScope: "global" });
-    const { cookies } = useCookies();
+const localeOptions = computed(() => {
+  let commonLocales: string[] = []
+  const design = itwStore.design as any
+  if (design?.i18n) {
+    commonLocales = Object.keys(design.i18n).filter((loc: string) => locales.includes(loc))
+  }
+  return commonLocales
+    .map((loc) => ({ value: loc, label: getLocaleLabel(loc) }))
+    .sort((a, b) => (a.label > b.label ? 1 : a.label < b.label ? -1 : 0))
+})
 
-    return {
-      cookies,
-      locale,
-      settings,
-      leftDrawerOpen,
-      toggleLeftDrawer() {
-        leftDrawerOpen.value = !leftDrawerOpen.value;
-      },
-      interviewsCount: 0,
-      authStore,
-      itwStore,
-    };
-  },
-  mounted() {
-    if (!this.itwStore.isAuthenticated) {
-      this.onLogout();
-    } else if (!this.itwStore.user) {
-      this.authStore.reAuthenticate().then((response) => {
-        if (response) this.itwStore.setUser(response.user);
-      });
-    }
-  },
-  computed: {
-    localeOptions() {
-      // intersection of locales and locales in design
-      let commonLocales = [];
-      if (this.itwStore.design && this.itwStore.design.i18n) {
-        commonLocales = Object.keys(this.itwStore.design.i18n).filter((loc) =>
-          locales.includes(loc)
-        );
-      }
-      return commonLocales
-        .map((loc) => {
-          return {
-            value: loc,
-            label: this.getLocaleLabel(loc),
-          };
-        })
-        .sort((loc1, loc2) => {
-          if (loc1.label > loc2.label) return 1;
-          if (loc1.label < loc2.label) return -1;
-          return 0;
-        });
-    },
-    hasLocales() {
-      return locales.length > 1 && this.localeOptions.length > 1;
-    },
-  },
-  methods: {
-    getLocaleLabel(loc) {
-      const key = `locales.${loc}`;
-      let label = this.$t(key);
-      if (label === key) {
-        label = loc.toUpperCase();
-      }
-      return label;
-    },
-    onLocaleSelection(opt) {
-      this.locale = opt.value;
-      this.$q.lang.set(opt.value);
-      this.$i18n.locale = opt.value;
-      this.cookies.set("locale", opt.value);
-    },
-    onLogout() {
-      // TODO make sure no save is pending
-      this.itwStore.reset(true);
-      if (this.authStore.isAuthenticated) {
-        this.authStore.logout().then(() => {
-          this.$router.push("login");
-        });
-      } else {
-        this.$router.push("login");
-      }
-    },
-    onSaveNow() {
-      this.itwStore.savePendingRecords();
-    },
-  },
-});
+const hasLocales = computed(() => locales.length > 1 && localeOptions.value.length > 1)
+
+onMounted(() => {
+  if (!itwStore.isAuthenticated) {
+    onLogout()
+  } else if (!itwStore.user) {
+    authStore.reAuthenticate().then((response: Record<string, any>) => {
+      if (response) itwStore.setUser(response.user)
+    })
+  }
+})
+
+function toggleLeftDrawer() {
+  leftDrawerOpen.value = !leftDrawerOpen.value
+}
+
+function getLocaleLabel(loc: string) {
+  const key = `locales.${loc}`
+  const label = t(key)
+  return label === key ? loc.toUpperCase() : label
+}
+
+function onLocaleSelection(opt: { value: string }) {
+  locale.value = opt.value
+  q.lang.set(opt.value as any)
+  cookies.set('locale', opt.value)
+}
+
+function onLogout() {
+  itwStore.reset(true)
+  if (authStore.isAuthenticated) {
+    authStore.logout().then(() => router.push('login'))
+  } else {
+    router.push('login')
+  }
+}
+
+function onSaveNow() {
+  itwStore.savePendingRecords()
+}
 </script>
