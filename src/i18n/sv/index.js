@@ -48,6 +48,7 @@ export default {
     send_email_token: "Skicka token",
     failed: "Felaktig kombination av e-post och lösenord.",
     failed_token: "Felaktig token.",
+    continue_with: "Eller fortsätt med",
   },
   register: {
     title: "Registrera nytt medlemskap",
@@ -123,4 +124,6 @@ export default {
   interview_filling_date: "Fyllningsdatum",
   interview_filling_date_hint:
     "Datum då frågeformuläret fylldes i (till exempel manuellt), om det skiljer sig från elektronisk inmatning.",
+  github: "GitHub",
+  google: "Google",
 };

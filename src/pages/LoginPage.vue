@@ -16,7 +16,7 @@
           </div>
           <div v-show="showForm" class="col">
             <q-card :class="settings.theme.front.card">
-              <q-card-section v-if="strategy === 'local'">
+              <q-card-section v-if="strategy === 'local'" class="q-pa-none">
                 <q-card-section v-show="!withToken">
                   <div class="text-center q-pt-sm">
                     <div class="col text-subtitle">
@@ -94,6 +94,13 @@
                     {{ $t("login.forgot_password") }}
                   </q-btn>
                 </q-card-section>
+                <q-card-section v-if="!withToken && authProviders.length > 0" class="text-center q-pt-none">
+                  <div class="text-subtitle q-mb-md">{{ $t('login.continue_with') }}</div>
+                  <template v-for="provider in authProviders" :key="provider">
+                    <q-btn :label="$t(provider)" no-caps :href="`${baseURL}/oauth/${provider}?redirect=/login`" color="primary" class="q-mr-md">
+                    </q-btn>
+                  </template>
+                </q-card-section>
               </q-card-section>
               <q-card-section v-if="strategy !== 'local'">
                 <div class="text-center q-pt-sm">
@@ -165,8 +172,10 @@ import { defineComponent, ref } from "vue";
 import AppBanner from "src/components/AppBanner.vue";
 import { locales } from "../boot/i18n";
 import { settings } from "../boot/settings";
+import { baseURL } from "../boot/axios";
 import { Notify, copyToClipboard } from "quasar";
 import { useCookies } from "vue3-cookies";
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
   name: "LoginPage",
@@ -175,17 +184,21 @@ export default defineComponent({
   },
   setup() {
     const authStore = useAuthStore();
-    const { api } = useFeathers();
-    const interviewDesignService = api.service("itwd");
+    const { client } = useFeathers();
+    const interviewDesignService = client.service("itwd");
     const itwStore = useInterviewStore();
     const { locale } = useI18n({ useScope: "global" });
     const { cookies } = useCookies();
+    const router = useRouter()
 
     return {
       cookies,
       locale,
       settings,
+      baseURL,
       authStore,
+      router,
+      Notify,
       interviewDesignService,
       itwStore,
       email: ref(""),
@@ -200,10 +213,32 @@ export default defineComponent({
       payload: ref({}),
       withPassword: ref(false),
       showForm: ref(false),
-      showPassword: ref(false)
+      showPassword: ref(false),
+      authProviders: ref([]),
     };
   },
-  mounted() {
+  async mounted() {
+    const hash = new URLSearchParams(window.location.hash.substring(1))
+    const oauthToken = hash.get('access_token')
+    const oauthError = hash.get('error')
+
+    if (oauthToken || oauthError) {
+      window.history.replaceState(null, '', window.location.pathname)
+    }
+
+    if (oauthToken) {
+      try {
+        await this.authStore.authenticate({ strategy: 'jwt', accessToken: oauthToken })
+        this.router.push('/')
+      } catch (err) {
+        this.Notify.create({ message: this.$t('login.failed'), color: 'negative' })
+      }
+      return
+    } else if (oauthError) {
+      this.Notify.create({ message: this.$t('login.failed'), color: 'negative' })
+      return
+    }
+
     if (this.authStore.isAuthenticated) {
       this.authStore.logout();
     }
@@ -218,6 +253,9 @@ export default defineComponent({
       this.showForm = true;
     }
     this.showPassword = false;
+    this.authStore.getOAuthProviders().then(resp => {
+      this.authProviders = resp.providers || []
+    })
   },
   computed: {
     localeOptions() {

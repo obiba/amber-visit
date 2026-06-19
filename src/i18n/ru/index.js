@@ -48,6 +48,7 @@ export default {
     send_email_token: "Отправить токен",
     failed: "Неверная комбинация e-mail/пароль.",
     failed_token: "Неверный маркер.",
+    continue_with: "Или продолжить с",
   },
   register: {
     title: "Зарегистрировать новое членство",
@@ -126,4 +127,6 @@ export default {
   interview_filling_date: "Дата заполнения",
   interview_filling_date_hint:
     "Дата заполнения анкеты (например, вручную), если она отличается от электронной записи.",
+  github: "GitHub",
+  google: "Google",
 };

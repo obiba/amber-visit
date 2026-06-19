@@ -49,6 +49,7 @@ export default {
     send_email_token: "Lähetä tunnus",
     failed: "Väärä sähköpostiosoite/salasana-yhdistelmä.",
     failed_token: "Väärä tunniste.",
+    continue_with: "Tai jatka seuraavalla",
   },
   register: {
     title: "Rekisteröidy uusi jäsen",
@@ -124,4 +125,6 @@ export default {
   interview_filling_date: "Täyttöpäivämäärä",
   interview_filling_date_hint:
     "Kyselyn täyttöpäivämäärä (esimerkiksi manuaalisesti), jos eri kuin sähköinen täyttö.",
+  github: "GitHub",
+  google: "Google",
 };

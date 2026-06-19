@@ -63,8 +63,8 @@ import AppBanner from "src/components/AppBanner.vue";
 export default defineComponent({
   components: { AppBanner },
   setup() {
-    const { api } = useFeathers();
-    const authManagementService = api.service("authManagement");
+    const { client } = useFeathers();
+    const authManagementService = client.service("authManagement");
 
     return {
       authManagementService,

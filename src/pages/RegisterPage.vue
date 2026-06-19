@@ -197,8 +197,8 @@ import AppBanner from "src/components/AppBanner.vue";
 export default defineComponent({
   components: { AppBanner },
   setup() {
-    const { api } = useFeathers();
-    const userService = api.service("user");
+    const { client } = useFeathers();
+    const userService = client.service("user");
     const { locale } = useI18n({ useScope: "global" });
     const { executeRecaptcha, recaptchaLoaded } = useReCaptcha();
 

@@ -48,6 +48,7 @@ export default {
     send_email_token: "Send token",
     failed: "Forkert kombination af e-mail/adgangskode.",
     failed_token: "Forkert token.",
+    continue_with: "Eller fortsæt med",
   },
   register: {
     title: "Registrer nyt medlemskab",
@@ -123,4 +124,6 @@ export default {
   interview_filling_date: "Påfyldningsdato",
   interview_filling_date_hint:
     "Dato, hvor spørgeskemaet blev udfyldt (f.eks. manuelt), hvis det er forskelligt fra elektronisk indtastning.",
+  github: "GitHub",
+  google: "Google",
 };

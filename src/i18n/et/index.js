@@ -48,6 +48,7 @@ export default {
     send_email_token: "Saada märk",
     failed: "Vale e-posti ja salasõna kombinatsioon.",
     failed_token: "Vale sümbol.",
+    continue_with: "Või jätkake sellega",
   },
   register: {
     title: "Registreeri uus liikmelisus",
@@ -123,4 +124,6 @@ export default {
   interview_filling_date: "Täitmise kuupäev",
   interview_filling_date_hint:
     "Küsimustiku täitmise kuupäev (näiteks käsitsi), kui see erineb elektroonilisest sisestamisest.",
+  github: "GitHub",
+  google: "Google",
 };

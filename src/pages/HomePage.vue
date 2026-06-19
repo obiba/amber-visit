@@ -199,8 +199,8 @@ export default defineComponent({
   name: "HomePage",
   setup() {
     const authStore = useAuthStore();
-    const { api } = useFeathers();
-    const interviewDesignService = api.service("itwd");
+    const { client } = useFeathers();
+    const interviewDesignService = client.service("itwd");
     const itwStore = useInterviewStore();
     const { locale } = useI18n({ useScope: "global" });
     return {

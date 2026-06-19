@@ -49,6 +49,7 @@ export default {
     send_email_token: "Token senden",
     failed: "Falsche E-Mail/Kennwort-Kombination.",
     failed_token: "Falsches Token.",
+    continue_with: "Oder fahren Sie fort mit",
   },
   register: {
     title: "Registrieren Sie eine neue Mitgliedschaft",
@@ -126,4 +127,6 @@ export default {
   interview_filling_date: "Abgabe Tag",
   interview_filling_date_hint:
     "Datum, an dem der Fragebogen ausgefüllt wurde (z. B. manuell), falls abweichend von der elektronischen Eingabe.",
+  github: "GitHub",
+  google: "Google",
 };
