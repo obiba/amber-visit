@@ -2,7 +2,7 @@ import { api } from "../feathers-client";
 
 // Provides access to Feathers Client(s)
 export const useFeathers = () => {
-  return { api };
+  return { client: api};
 };
 
 /**

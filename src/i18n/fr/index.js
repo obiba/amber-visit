@@ -49,6 +49,7 @@ export default {
     send_email_token: "Envoyer le jeton",
     failed: "Combinaison courriel/mot de passe incorrecte.",
     failed_token: "Jeton incorrect.",
+    continue_with: "Ou continuer avec",
   },
   register: {
     title: "Créer un compte",
@@ -127,4 +128,6 @@ export default {
   interview_filling_date: "Date de remplissage",
   interview_filling_date_hint:
     "Date à laquelle le questionnaire a été rempli (manuellement par exemple), si différent de la saisie électronique.",
+  github: "GitHub",
+  google: "Google",
 };

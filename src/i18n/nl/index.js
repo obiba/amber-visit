@@ -49,6 +49,7 @@ export default {
     send_email_token: "Token verzenden",
     failed: "Onjuiste e-mail/wachtwoord combinatie.",
     failed_token: "Onjuist token.",
+    continue_with: "Of ga verder met",
   },
   register: {
     title: "Registreer nieuw lidmaatschap",
@@ -126,4 +127,6 @@ export default {
   interview_filling_date: "Vuldatum",
   interview_filling_date_hint:
     "Datum waarop de vragenlijst is ingevuld (bijvoorbeeld handmatig), indien verschillend van elektronische invoer.",
+  github: "GitHub",
+  google: "Google",
 };

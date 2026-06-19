@@ -4,10 +4,10 @@ import { ref, computed, toHandlers } from "vue";
 export const useInterviewStore = defineStore(
   "itw",
   () => {
-    const { api } = useFeathers();
-    const itwdService = api.service("itwd");
-    const itwService = api.service("itw");
-    const interviewService = api.service("interview");
+    const { client } = useFeathers();
+    const itwdService = client.service("itwd");
+    const itwService = client.service("itw");
+    const interviewService = client.service("interview");
     const authStore = useAuthStore();
 
     const user = ref(null);

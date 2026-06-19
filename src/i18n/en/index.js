@@ -49,6 +49,7 @@ export default {
     send_email_token: "Send token",
     failed: "Incorrect email/password combination.",
     failed_token: "Incorrect token.",
+    continue_with: "Or continue with",
   },
   register: {
     title: "Register new membership",
@@ -125,4 +126,6 @@ export default {
   interview_filling_date: "Filling date",
   interview_filling_date_hint:
     "Date on which the questionnaire was filled in (manually for example), if different from electronic entry.",
+  github: "GitHub",
+  google: "Google",
 };

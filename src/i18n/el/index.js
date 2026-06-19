@@ -49,6 +49,7 @@ export default {
     send_email_token: "Αποστολή διακριτικού",
     failed: "Λανθασμένος συνδυασμός email/κωδικού πρόσβασης.",
     failed_token: "Λανθασμένο διακριτικό.",
+    continue_with: "Ή συνεχίστε με",
   },
   register: {
     title: "Εγγραφή νέας συνδρομής",
@@ -128,4 +129,6 @@ export default {
   interview_filling_date: "Ημερομηνία πλήρωσης",
   interview_filling_date_hint:
     "Ημερομηνία συμπλήρωσης του ερωτηματολογίου (για παράδειγμα χειροκίνητα), εάν διαφέρει από την ηλεκτρονική καταχώρηση.",
+  github: "GitHub",
+  google: "Google",
 };
