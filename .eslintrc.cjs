@@ -5,7 +5,9 @@ module.exports = {
   root: true,
 
   parserOptions: {
-    ecmaVersion: 2021, // Allows for the parsing of modern ECMAScript features
+    parser: "@typescript-eslint/parser",
+    ecmaVersion: 2022,
+    sourceType: "module",
   },
 
   env: {

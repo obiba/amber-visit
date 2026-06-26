@@ -42,12 +42,14 @@
     "@intlify/vite-plugin-vue-i18n": "^6.0.3",
     "@obiba/quasar-app-extension-amber": "1.2.0",
     "@quasar/app-vite": "^2.0.0",
+    "@typescript-eslint/parser": "^8.62.0",
     "autoprefixer": "^10.4.2",
     "eslint": "^8.10.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-vue": "^9.0.0",
     "postcss": "^8.4.14",
-    "prettier": "^2.5.1"
+    "prettier": "^2.5.1",
+    "typescript": "^6.0.3"
   },
   "engines": {
     "node": ">= 18",
