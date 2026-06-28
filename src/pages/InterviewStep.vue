@@ -13,6 +13,30 @@
           " size="12px" flat dense round icon="info" class="text-subtitle2 float-right" @click="onShowFormDescription">
           </q-btn>
         </q-toolbar-title>
+        <div class="q-gutter-sm row items-center no-wrap">
+          <q-btn-dropdown
+            v-show="hasLocales"
+            flat
+            :label="getLocaleLabel(locale)"
+          >
+            <q-list>
+              <q-item
+                clickable
+                v-close-popup
+                @click="onLocaleSelection(localeOpt)"
+                v-for="localeOpt in localeOptions"
+                :key="localeOpt.value"
+              >
+                <q-item-section>
+                  <q-item-label>{{ localeOpt.label }}</q-item-label>
+                </q-item-section>
+                <q-item-section avatar v-if="locale === localeOpt.value">
+                  <q-icon color="primary" name="check" />
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </q-btn-dropdown>
+        </div>
       </q-toolbar>
       <q-toolbar v-if="hasIdLabel()" class="bg-secondary q-pt-sm q-pb-sm" style="min-height: 20px">
         <div>{{ idLabel }}: {{ formData._id }}</div>
@@ -105,11 +129,14 @@
 </template>
 
 <script setup lang="ts">
+import { useCookies } from 'vue3-cookies'
+import { useQuasar } from 'quasar'
 import { marked } from 'marked'
 import { makeBlitzarQuasarSchemaForm, makeSchemaFormTr, getBlitzarErrors } from '@obiba/quasar-ui-amber'
 import { Notify, scroll } from 'quasar'
 import { BlitzForm, validateFormPerSchema } from '@blitzar/form'
 import { settings as _settings } from '../boot/settings'
+import { locales } from '../boot/i18n'
 
 const { getScrollTarget, setVerticalScrollPosition } = scroll
 
@@ -119,6 +146,8 @@ const itwStore = useInterviewStore()
 const { locale, t } = useI18n({ useScope: 'global' })
 const router = useRouter()
 const route = useRoute()
+const { cookies } = useCookies()
+const q = useQuasar()
 
 const form = ref()
 const errorsRemain = ref(false)
@@ -133,6 +162,19 @@ const showFormDescription = ref(false)
 const mode = ref('multi')
 const errorMode = ref('interaction')
 const lang = ref<Record<string, string>>({})
+
+const localeOptions = computed(() => {
+  let commonLocales: string[] = []
+  const design = itwStore.design as any
+  if (design?.i18n) {
+    commonLocales = Object.keys(design.i18n).filter((loc: string) => locales.includes(loc))
+  }
+  return commonLocales
+    .map((loc) => ({ value: loc, label: getLocaleLabel(loc) }))
+    .sort((a, b) => (a.label > b.label ? 1 : a.label < b.label ? -1 : 0))
+})
+
+const hasLocales = computed(() => locales.length > 1 && localeOptions.value.length > 1)
 
 const stepName = computed(() => route.params.name as string)
 const caseReportLicense = computed(() => step.value.schema?.license as string | undefined)
@@ -168,6 +210,16 @@ watch(mode, (newValue) => {
     debug: debug.value,
   })
   updateProgress()
+  remountCounter.value++
+})
+
+watch(locale, (newValue) => {
+  schema.value = makeBlitzarQuasarSchemaForm(step.value.schema, {
+    locale: newValue,
+    ...(newValue !== 'single' ? { stepId: '__page' } : {}),
+    debug: debug.value,
+  })
+  lang.value = { requiredField: t('required_field') }
   remountCounter.value++
 })
 
@@ -335,4 +387,17 @@ function onLogout() {
     router.push('../login')
   }
 }
+
+function getLocaleLabel(loc: string) {
+  const key = `locales.${loc}`
+  const label = t(key)
+  return label === key ? loc.toUpperCase() : label
+}
+
+function onLocaleSelection(opt: { value: string }) {
+  locale.value = opt.value
+  q.lang.set(opt.value as any)
+  cookies.set('locale', opt.value)
+}
+
 </script>
