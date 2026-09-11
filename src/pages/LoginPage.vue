@@ -168,7 +168,7 @@
 </template>
 
 <script setup lang="ts">
-import AppBanner from 'src/components/AppBanner.vue'
+import AppBanner from '@/components/AppBanner.vue'
 import { locales } from '../boot/i18n'
 import { settings as _settings } from '../boot/settings'
 const settings = _settings as Record<string, any>

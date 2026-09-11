@@ -119,8 +119,8 @@
 </template>
 
 <script setup lang="ts">
-import EssentialLink from 'src/components/EssentialLink.vue'
-import amberMark from 'src/assets/amber-mark-negative.svg'
+import EssentialLink from '@/components/EssentialLink.vue'
+import amberMark from '@/assets/amber-mark-negative.svg'
 import { locales } from '../boot/i18n'
 import { settings as _settings } from '../boot/settings'
 import { useCookies } from 'vue3-cookies'

@@ -75,7 +75,7 @@
 </template>
 
 <script setup lang="ts">
-import AppBanner from 'src/components/AppBanner.vue'
+import AppBanner from '@/components/AppBanner.vue'
 import { required, email } from '../boot/vuelidate'
 import useVuelidate from '@vuelidate/core'
 import { settings as _settings } from '../boot/settings'
