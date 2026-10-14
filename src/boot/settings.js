@@ -1,3 +1,5 @@
+import { Dark } from 'quasar'
+
 const appEnv = window.env
 const settings = {}
 
@@ -8,5 +10,8 @@ if (response.ok) {
 
 settings.version = process.env.VERSION
 settings.register_enabled = appEnv.RECAPTCHA_SITE_KEY !== undefined
+
+// dark flavor of the OBiBa theme, applied app-wide
+Dark.set(settings.theme?.dark === true)
 
 export { settings }

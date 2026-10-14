@@ -5,7 +5,7 @@
         <div class="col"></div>
         <div class="col-md-6 col-sm-8 col-xs-12">
           <div v-if="authStore.isAuthenticated">
-            <q-card flat class="q-mb-md bg-grey-3">
+            <q-card flat class="q-mb-md">
               <q-card-section>
                 <q-list>
                   <q-item v-if="itwStore.participant && !receive">
@@ -22,7 +22,7 @@
                       <q-input v-model="code" :label="$t('main.code')" mask="XXXXXX" class="q-mb-md" />
                     </q-item-section>
                     <q-item-section avatar>
-                      <q-btn color="dark" @click="onLoad(code)" :disable="!code || code.length < 6" class="q-mt-md">{{
+                      <q-btn color="primary" @click="onLoad(code)" :disable="!code || code.length < 6" class="q-mt-md">{{
                         $t("start") }}</q-btn>
                       <q-btn v-if="itwStore.participant" :label="$t('cancel')" color="secondary" flat no-caps
                         class="q-mt-sm" @click="onReceive(false)" />
@@ -108,7 +108,7 @@
             </q-card-section>
           </q-card>
 
-          <q-card v-if="authStore.isAuthenticated && itwStore.completed && !receive" class="bg-grey-3">
+          <q-card v-if="authStore.isAuthenticated && itwStore.completed && !receive">
             <q-card-section>
               <q-input filled v-model="itwStore.fillingDate" :label="$t('interview_filling_date')"
                 :hint="$t('interview_filling_date_hint')" class="q-mb-md">
@@ -133,7 +133,7 @@
             itwStore.supporters &&
             itwStore.supporters.length > 0
           ">
-            <q-card flat class="q-mb-md bg-grey-3">
+            <q-card flat class="q-mb-md">
               <q-card-section>
                 <q-list>
                   <q-item>

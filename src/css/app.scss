@@ -1,12 +1,51 @@
-// app global css in SCSS form
+// app global css in SCSS form, OBiBa design system (dark flavor)
+
+// ----------------------------------------------------------------------------
+//  Base: flat, 1px lines, no shadows
+// ----------------------------------------------------------------------------
+body {
+  background: $surface;
+  color: $ink;
+  -webkit-font-smoothing: antialiased;
+}
+
+.text-h1, .text-h2, .text-h3, .text-h4, .text-h5, .text-h6,
+.q-toolbar__title {
+  font-family: $display-font-family;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+// sign-in screens background (flat, no photography)
 .bg-brand {
-  background-image: url(assets/hero-bg.jpg);
+  background: $dark-page;
 }
 
 a {
-  color: #3f3f3f;
+  color: $primary;
   text-decoration: underline;
+  text-underline-offset: 0.18em;
   background-color: transparent;
+}
+
+.q-btn {
+  text-transform: none;
+  &:before { box-shadow: none; }
+}
+
+.q-card {
+  box-shadow: none;
+  border: 1px solid $border;
+}
+
+.brand-mark {
+  height: 28px;
+  width: 28px;
+}
+
+.banner-mark {
+  height: 64px;
+  width: 64px;
 }
 
 a.q-btn {
@@ -21,7 +60,8 @@ a.q-btn {
   padding: 20px;
   margin-bottom: 20px;
   background-color: white;
-  border-radius: 10px;
+  border: 1px solid $border;
+  border-radius: 6px;
 }
 
 .blitz-field.invisible {
@@ -35,11 +75,11 @@ a.q-btn {
 }
 
 .blitz-field__sub-label {
-  color: #9e9e9e;
+  color: $text-muted;
 }
 
 .blitz-field__error {
-  color: #c10015;
+  color: $negative;
 }
 
 .blitz-field > .blitz-field__error {
@@ -48,7 +88,7 @@ a.q-btn {
 }
 
 div[error="true"] {
-  color: #c10015;
+  color: $negative;
 }
 
 .text-smaller {
@@ -141,4 +181,45 @@ div[error="true"] {
 
 .no-spinner input[type="number"] {
   -moz-appearance: textfield;
+}
+
+// ----------------------------------------------------------------------------
+//  Dark flavor (settings.theme.dark): deep teal surfaces, light amber accents
+// ----------------------------------------------------------------------------
+.body--dark {
+  background: $dark-page;
+  color: $ink-dark;
+
+  .q-card {
+    border-color: $border-dark;
+  }
+
+  .q-drawer {
+    background: $dark;
+  }
+
+  .q-header,
+  .q-footer {
+    border-color: $border-dark;
+  }
+
+  // amber text and links need the light tint to stay readable on deep teal
+  a,
+  .text-primary {
+    color: $accent !important;
+  }
+
+  .text-caption,
+  .q-item__label--caption {
+    color: $text-muted-dark;
+  }
+
+  .blitz-field {
+    background-color: $dark;
+    border-color: $border-dark;
+  }
+
+  .blitz-field__sub-label {
+    color: $text-muted-dark;
+  }
 }

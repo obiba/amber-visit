@@ -1,6 +1,6 @@
 <template>
   <q-layout v-if="itwStore.isAuthenticated" view="lHh Lpr lFf">
-    <q-header elevated :class="settings.theme.header">
+    <q-header bordered :class="settings.theme.header">
       <q-toolbar>
         <q-btn
           flat
@@ -11,7 +11,10 @@
           @click="toggleLeftDrawer"
         />
 
-        <q-toolbar-title> {{ $t("main.brand") }} </q-toolbar-title>
+        <q-toolbar-title class="row items-center no-wrap">
+          <img :src="amberMark" alt="" class="brand-mark q-mr-sm" />
+          {{ $t("main.brand") }}
+        </q-toolbar-title>
 
         <div class="q-gutter-sm row items-center no-wrap">
           <q-btn-dropdown
@@ -40,7 +43,7 @@
       </q-toolbar>
       <q-toolbar
         v-if="itwStore.pending"
-        class="bg-warning text-black q-pt-sm q-pb-sm"
+        class="bg-warning text-dark q-pt-sm q-pb-sm"
         style="min-height: 20px"
       >
         <div>{{ $t("main.pending_save") }}</div>
@@ -117,6 +120,7 @@
 
 <script setup lang="ts">
 import EssentialLink from 'src/components/EssentialLink.vue'
+import amberMark from 'src/assets/amber-mark-negative.svg'
 import { locales } from '../boot/i18n'
 import { settings as _settings } from '../boot/settings'
 import { useCookies } from 'vue3-cookies'
