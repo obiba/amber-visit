@@ -1,5 +1,5 @@
 import { createI18n } from "vue-i18n";
-import messages from "src/i18n";
+import messages from "@/i18n";
 import { settings } from "./settings";
 import { merge } from "merge-anything";
 import { Quasar } from "quasar";

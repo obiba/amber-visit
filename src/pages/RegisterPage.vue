@@ -177,7 +177,7 @@
 </template>
 
 <script setup lang="ts">
-import AppBanner from 'src/components/AppBanner.vue'
+import AppBanner from '@/components/AppBanner.vue'
 import { Notify } from 'quasar'
 import useVuelidate from '@vuelidate/core'
 import { useReCaptcha } from 'vue-recaptcha-v3'

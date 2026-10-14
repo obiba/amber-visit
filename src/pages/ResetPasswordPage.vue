@@ -54,7 +54,7 @@
 </template>
 
 <script setup lang="ts">
-import AppBanner from 'src/components/AppBanner.vue'
+import AppBanner from '@/components/AppBanner.vue'
 import useVuelidate from '@vuelidate/core'
 import { required, minLength, maxLength, strongPassword } from '../boot/vuelidate'
 import { Notify } from 'quasar'

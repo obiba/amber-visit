@@ -4,13 +4,15 @@
   "description": "Interview data collection for Amber",
   "productName": "Amber Visit",
   "author": "Yannick Marcon <yannick.marcon@obiba.org>",
+  "type": "module",
   "private": true,
   "scripts": {
     "lint": "eslint --ext .js,.vue ./",
     "format": "prettier --write \"**/*.{js,vue,scss,html,md,json}\" --ignore-path .gitignore",
     "test": "echo \"No test specified\" && exit 0",
     "dev": "quasar dev",
-    "build": "quasar build"
+    "build": "quasar build",
+    "postinstall": "quasar prepare"
   },
   "dependencies": {
     "@blitzar/form": "git+https://github.com/obiba/blitzar.git#tag=v1.0.13-obiba&workspace=packages/form",
@@ -20,7 +22,8 @@
     "@feathersjs/feathers": "5.0.11",
     "@fontsource-variable/instrument-sans": "^5.3.0",
     "@fontsource-variable/sora": "^5.3.0",
-    "@quasar/cli": "^2.4.1",
+    "@obiba/quasar-ui-amber": "^1.1.6",
+    "@quasar/cli": "^5.0.8",
     "@quasar/extras": "^1.16.13",
     "@vuelidate/core": "^2.0.3",
     "@vuelidate/validators": "^2.0.4",
@@ -31,19 +34,17 @@
     "merge-anything": "^5.1.7",
     "pinia": "^3.0.4",
     "pinia-plugin-persistedstate": "^3.2.0",
-    "quasar": "^2.19.3",
+    "quasar": "^2.32.2",
     "secure-ls": "^1.2.6",
-    "unplugin-auto-import": "^0.18.6",
+    "unplugin-auto-import": "^21.1.0",
     "vue": "^3.0.0",
     "vue-i18n": "^9.0.0",
     "vue-recaptcha-v3": "^2.0.1",
-    "vue-router": "^4.0.0",
+    "vue-router": "^5.3.1",
     "vue3-cookies": "^1.0.6"
   },
   "devDependencies": {
-    "@intlify/vite-plugin-vue-i18n": "^6.0.3",
-    "@obiba/quasar-app-extension-amber": "1.2.0",
-    "@quasar/app-vite": "^2.0.0",
+    "@quasar/app-vite": "^3.8.3",
     "@typescript-eslint/parser": "^8.62.0",
     "autoprefixer": "^10.4.2",
     "eslint": "^8.10.0",
@@ -54,7 +55,7 @@
     "typescript": "^6.0.3"
   },
   "engines": {
-    "node": ">= 18",
+    "node": "^24 || ^22.22.0",
     "npm": ">= 6.13.4",
     "yarn": ">= 1.21.1"
   }

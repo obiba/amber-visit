@@ -55,7 +55,7 @@
 </template>
 
 <script setup lang="ts">
-import AppBanner from 'src/components/AppBanner.vue'
+import AppBanner from '@/components/AppBanner.vue'
 import { Notify } from 'quasar'
 import { settings as _settings } from '../boot/settings'
 
