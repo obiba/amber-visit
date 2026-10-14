@@ -2,13 +2,13 @@
   "theme": {
     "front": {
       "bg": "bg-brand text-white",
-      "card": "bg-dark no-shadow"
+      "card": "bg-white text-dark"
     },
     "header": "bg-dark text-white",
-    "footer": "bg-grey-8 text-white",
-    "drawer": "bg-grey-4 text-secondary",
-    "page": "bg-black",
-    "dark": true
+    "footer": "bg-dark text-white",
+    "drawer": "",
+    "page": "",
+    "dark": false
   },
   "links": [
     {

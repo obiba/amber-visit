@@ -1,6 +1,6 @@
 <template>
   <q-layout v-if="itwStore.isAuthenticated" v-cloak view="hHh lpR fFf">
-    <q-header elevated class="print-hide" :class="settings.theme.header">
+    <q-header bordered class="print-hide" :class="settings.theme.header">
       <q-toolbar>
         <q-toolbar-title>
           {{ tr(step.label) }}
@@ -44,7 +44,7 @@
     </q-header>
 
     <q-page-container>
-      <q-page class="bg-grey-2">
+      <q-page>
         <div v-if="isMulti()">
           <q-linear-progress :value="progress" animation-speed="100" size="xl" />
         </div>
@@ -52,7 +52,7 @@
           <div class="row">
             <div v-if="!$q.screen.lt.sm" class="col-md-3 col-sm-2 text-center">
               <q-icon v-if="canPrevious()" :name="$q.lang.rtl ? 'arrow_forward' : 'arrow_back'" size="xl"
-                color="secondary" class="print-hide fixed q-mt-xl bg-warning q-pa-md cursor-pointer"
+                color="white" class="print-hide fixed q-mt-xl bg-secondary q-pa-md cursor-pointer"
                 style="border-radius: 50%; margin-left: -50px" @click="previousStep" />
             </div>
             <div class="col-md-6 col-sm-8 col-xs-12 q-mt-sm q-mb-sm">
@@ -66,8 +66,8 @@
               </div> -->
             </div>
             <div v-if="!$q.screen.lt.sm" class="col-md-3 col-sm-2 text-center">
-              <q-icon v-if="canNext()" :name="$q.lang.rtl ? 'arrow_back' : 'arrow_forward'" size="xl" color="secondary"
-                class="print-hide fixed q-mt-xl bg-warning q-pa-md cursor-pointer"
+              <q-icon v-if="canNext()" :name="$q.lang.rtl ? 'arrow_back' : 'arrow_forward'" size="xl" color="white"
+                class="print-hide fixed q-mt-xl bg-secondary q-pa-md cursor-pointer"
                 style="border-radius: 50%; margin-left: -25px" @click="nextStep" />
               <q-icon v-else name="cloud_upload" size="xl" color="white"
                 class="print-hide fixed q-mt-xl bg-primary q-pa-md cursor-pointer"
@@ -78,7 +78,7 @@
       </q-page>
     </q-page-container>
 
-    <q-footer elevated class="print-hide" :class="settings.theme.footer">
+    <q-footer bordered class="print-hide" :class="settings.theme.footer">
       <q-toolbar>
         <q-separator dark vertical v-if="mode === 'single' && toc.length > 1" />
         <q-btn-dropdown v-if="mode === 'single' && toc.length > 1" stretch flat icon="toc"

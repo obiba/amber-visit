@@ -42,7 +42,7 @@
                 <q-btn
                   :label="$t('verify.login')"
                   to="/login"
-                  color="dark"
+                  color="primary"
                   class="text-bold"
                 />
               </q-card-section>
