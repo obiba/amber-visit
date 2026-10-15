@@ -57,8 +57,8 @@
             </div>
             <div class="col-md-6 col-sm-8 col-xs-12 q-mt-sm q-mb-sm">
               <div>
-                <BlitzForm ref="form" :key="remountCounter" :schema="schema" v-model="formData" :columnCount="1"
-                  :show-errors-on="errorMode" :lang="lang" gridGap="32px" />
+                <AmberForm ref="form" :key="remountCounter" :schema="step.schema" v-model="formData" :locale="locale"
+                  :page="isMulti() ? formData.__page : undefined" :lang="lang" apply-defaults />
               </div>
               <div v-if="isMulti()" style="height: 200px" v-touch-swipe.mouse="handleSwipe"></div>
               <!-- <div class="bg-black text-white q-mt-lg q-pa-md">
@@ -132,9 +132,8 @@
 import { useCookies } from 'vue3-cookies'
 import { useQuasar } from 'quasar'
 import { marked } from 'marked'
-import { makeBlitzarQuasarSchemaForm, makeSchemaFormTr, getBlitzarErrors } from '@obiba/quasar-ui-amber'
+import { AmberForm, makeSchemaFormTr, getPageCount } from '@obiba/quasar-ui-amber'
 import { Notify, scroll } from 'quasar'
-import { BlitzForm, validateFormPerSchema } from '@blitzar/form'
 import { settings as _settings } from '../boot/settings'
 import { locales } from '../boot/i18n'
 
@@ -152,15 +151,12 @@ const q = useQuasar()
 const form = ref()
 const errorsRemain = ref(false)
 const errors = ref<any[]>([])
-const debug = ref(false)
 const remountCounter = ref(0)
 const progress = ref(0)
 const formData = ref<Record<string, any>>({})
-const schema = ref<any[]>([])
 const step = ref<any>({ schema: { items: [] } })
 const showFormDescription = ref(false)
 const mode = ref('multi')
-const errorMode = ref('interaction')
 const lang = ref<Record<string, string>>({})
 
 const localeOptions = computed(() => {
@@ -194,7 +190,7 @@ const toc = computed(() => {
 const idLabel = computed(() => (step.value.schema.idLabel ? tr(step.value.schema.idLabel) : 'ID'))
 
 const isFinalStep = computed(
-  () => isMulti() && formData.value.__page === step.value.schema.items.length - 1
+  () => isMulti() && formData.value.__page === getPageCount(step.value.schema) - 1
 )
 
 const modeOptions = computed(() => [
@@ -202,23 +198,13 @@ const modeOptions = computed(() => [
   { value: 'multi', label: t('multi_steps') },
 ])
 
-watch(mode, (newValue) => {
+watch(mode, () => {
   updateFormData()
-  schema.value = makeBlitzarQuasarSchemaForm(step.value.schema, {
-    locale: locale.value,
-    ...(newValue !== 'single' ? { stepId: '__page' } : {}),
-    debug: debug.value,
-  })
   updateProgress()
   remountCounter.value++
 })
 
-watch(locale, (newValue) => {
-  schema.value = makeBlitzarQuasarSchemaForm(step.value.schema, {
-    locale: newValue,
-    ...(newValue !== 'single' ? { stepId: '__page' } : {}),
-    debug: debug.value,
-  })
+watch(locale, () => {
   lang.value = { requiredField: t('required_field') }
   remountCounter.value++
 })
@@ -231,11 +217,6 @@ onMounted(() => {
   step.value = itwStore.getStepDesign(stepName.value)
   if (step.value) {
     if (step.value.schema.layout) mode.value = step.value.schema.layout
-    schema.value = makeBlitzarQuasarSchemaForm(step.value.schema, {
-      locale: locale.value,
-      stepId: '__page',
-      debug: debug.value,
-    })
     lang.value = { requiredField: t('required_field') }
     const record = itwStore.record
     const initForm = () => {
@@ -282,7 +263,7 @@ function onScroll(id: string) {
 }
 
 function updateProgress() {
-  progress.value = formData.value.__page / (step.value.schema.items.length - 1)
+  progress.value = formData.value.__page / (getPageCount(step.value.schema) - 1)
 }
 
 function isMulti() {
@@ -314,7 +295,7 @@ function canPrevious() {
 }
 
 function canNext() {
-  return isMulti() && formData.value.__page < step.value.schema.items.length - 1
+  return isMulti() && formData.value.__page < getPageCount(step.value.schema) - 1
 }
 
 function toggleMode(value: string) {
@@ -333,8 +314,7 @@ function mergeStepData(payload: { data: Record<string, any> }) {
 }
 
 function onValidate() {
-  errorMode.value = 'always'
-  errors.value = getBlitzarErrors(schema.value, validateFormPerSchema(formData.value, schema.value))
+  errors.value = form.value.validate()
   errorsRemain.value = errors.value.length > 0
 }
 
@@ -356,7 +336,6 @@ function nextStep() {
   if (errorsRemain.value) {
     Notify.create({ message: t('validation_errors', { errors: formatErrorMessages() }), html: true, color: 'negative' })
   } else {
-    errorMode.value = 'interaction'
     mergeStepData({ data: { __page: formData.value.__page + 1 } })
     updateProgress()
     remountCounter.value++
