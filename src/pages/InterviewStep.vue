@@ -132,7 +132,7 @@
 import { useCookies } from 'vue3-cookies'
 import { useQuasar } from 'quasar'
 import { marked } from 'marked'
-import { AmberForm, makeSchemaFormTr, getPageCount } from '@obiba/quasar-ui-amber'
+import { AmberForm, makeSchemaFormTr, getPageCount, getToc, getTocElement } from '@obiba/quasar-ui-amber'
 import { Notify, scroll } from 'quasar'
 import { settings as _settings } from '../boot/settings'
 import { locales } from '../boot/i18n'
@@ -175,17 +175,7 @@ const hasLocales = computed(() => locales.length > 1 && localeOptions.value.leng
 const stepName = computed(() => route.params.name as string)
 const caseReportLicense = computed(() => step.value.schema?.license as string | undefined)
 
-const toc = computed(() => {
-  const result: { id: string; label: string }[] = []
-  if (step.value.schema?.items) {
-    step.value.schema.items
-      .filter((item: any) => ['group', 'section'].includes(item.type))
-      .forEach((item: any) =>
-        result.push({ id: item.name.replaceAll('.', '_').toLowerCase(), label: tr(item.label) })
-      )
-  }
-  return result.filter((entry) => entry.label)
-})
+const toc = computed<{ id: string; label: string }[]>(() => getToc(step.value.schema, { tr }))
 
 const idLabel = computed(() => (step.value.schema.idLabel ? tr(step.value.schema.idLabel) : 'ID'))
 
@@ -255,7 +245,7 @@ function onShowFormDescription() {
 }
 
 function onScroll(id: string) {
-  const ele = document.getElementById(id)
+  const ele = getTocElement(id)
   if (ele) {
     setVerticalScrollPosition(getScrollTarget(ele), ele.offsetTop, 200)
   }
