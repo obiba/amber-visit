@@ -1938,7 +1938,7 @@ __metadata:
     typescript: "npm:^6.0.3"
     unplugin-auto-import: "npm:^21.1.0"
     vue: "npm:^3.0.0"
-    vue-i18n: "npm:^11"
+    vue-i18n: "npm:^11.2.2"
     vue-recaptcha-v3: "npm:^2.0.1"
     vue-router: "npm:^5.3.1"
     vue3-cookies: "npm:^1.0.6"
@@ -6219,7 +6219,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-i18n@npm:^11":
+"vue-i18n@npm:^11.2.2":
   version: 11.4.14
   resolution: "vue-i18n@npm:11.4.14"
   dependencies:

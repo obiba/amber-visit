@@ -58,7 +58,7 @@
             <div class="col-md-6 col-sm-8 col-xs-12 q-mt-sm q-mb-sm">
               <div>
                 <AmberForm ref="form" :key="remountCounter" :schema="step.schema" v-model="formData" :locale="locale"
-                  :page="isMulti() ? formData.__page : undefined" :lang="lang" apply-defaults />
+                  :page="isMulti() ? page() : undefined" :lang="lang" apply-defaults />
               </div>
               <div v-if="isMulti()" style="height: 200px" v-touch-swipe.mouse="handleSwipe"></div>
               <!-- <div class="bg-black text-white q-mt-lg q-pa-md">
@@ -190,7 +190,7 @@ const toc = computed(() => {
 const idLabel = computed(() => (step.value.schema.idLabel ? tr(step.value.schema.idLabel) : 'ID'))
 
 const isFinalStep = computed(
-  () => isMulti() && formData.value.__page === getPageCount(step.value.schema) - 1
+  () => isMulti() && page() >= lastPage()
 )
 
 const modeOptions = computed(() => [
@@ -206,7 +206,6 @@ watch(mode, () => {
 
 watch(locale, () => {
   lang.value = { requiredField: t('required_field') }
-  remountCounter.value++
 })
 
 onMounted(() => {
@@ -262,8 +261,16 @@ function onScroll(id: string) {
   }
 }
 
+function page(): number {
+  return formData.value.__page ?? 0
+}
+
+function lastPage() {
+  return Math.max(getPageCount(step.value.schema) - 1, 0)
+}
+
 function updateProgress() {
-  progress.value = formData.value.__page / (getPageCount(step.value.schema) - 1)
+  progress.value = lastPage() ? page() / lastPage() : 1
 }
 
 function isMulti() {
@@ -280,7 +287,6 @@ function formatErrorMessages() {
   const msgs: string[] = []
   for (let i = 0; i < Math.min(errors.value.length, 3); i++) {
     const err = errors.value[i]
-    if (err.message === 'Field is required') err.message = t('required_field')
     err.message = err.message.charAt(0).toLowerCase() + err.message.slice(1)
     msgs.push(`<li>${err.label}: ${err.message}</li>`)
   }
@@ -291,11 +297,11 @@ function formatErrorMessages() {
 }
 
 function canPrevious() {
-  return isMulti() && formData.value.__page > 0
+  return isMulti() && page() > 0
 }
 
 function canNext() {
-  return isMulti() && formData.value.__page < getPageCount(step.value.schema) - 1
+  return isMulti() && page() < lastPage()
 }
 
 function toggleMode(value: string) {
@@ -321,9 +327,8 @@ function onValidate() {
 function previousStep() {
   if (!canPrevious()) return
   updateFormData()
-  mergeStepData({ data: { __page: formData.value.__page - 1 } })
+  mergeStepData({ data: { __page: page() - 1 } })
   updateProgress()
-  remountCounter.value++
   errorsRemain.value = false
   errors.value = []
   window.scrollTo(0, 0)
@@ -336,9 +341,8 @@ function nextStep() {
   if (errorsRemain.value) {
     Notify.create({ message: t('validation_errors', { errors: formatErrorMessages() }), html: true, color: 'negative' })
   } else {
-    mergeStepData({ data: { __page: formData.value.__page + 1 } })
+    mergeStepData({ data: { __page: page() + 1 } })
     updateProgress()
-    remountCounter.value++
     window.scrollTo(0, 0)
   }
 }
